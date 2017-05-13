@@ -7,110 +7,143 @@ and open the template in the editor.
     Created on : 11/mai/2017, 15:53:54
     Author     : G04
 */
+
+/*---------------------------------GENERAL---------------------------------*/
 body{
     /*font-family: 'Segoe UI',Arial,sans-serif;*/
     font-family: Roboto;
     font-size: 14px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin: 30px 50px;
+}
+h1#main-title{
+    margin:0px 0px 10px 0px;
+    padding:20px 12px;
+    background-color: rgba(84,144,242,1); /*blue*/
+    border-radius: 0px 0px 6px 6px;
+    color:white;
+}
+@font-face{
+    font-family: Roboto;
+    src: url(../fonts/Roboto-Regular.ttf);
 }
 
-/*---------------------------------HEADER*/
 
+/*-----FORMS-----*/
+form{
+    display: inline-block;
+    vertical-align: top;
+}
+form label:not(.notalabel), form#import legend{
+    font-size: 16px;
+    font-weight: bold;
+}
+textarea{
+    padding: 0px;
+}
+fieldset{
+    margin:0;
+    border-color: lightgrey;
+}
+
+/*---------------------------------HEADER---------------------------------*/
 header > img{
-    margin-top: 20px;
-    height: 80px;
+    max-height: 80px;
+    max-width: 400px;
+    height: auto;
+    width: 100%;
     margin-bottom: 20px;
 }
-nav  ul{
+header > nav ul{
     list-style-type: none;
     margin: 0;
     padding:0;
     background-color: grey;
 }
 
-nav li{
+header > nav li{
     background:rgba(0,0,0, 0.2);
 }
-nav> ul > li{
+header > nav > ul > li{
     display: inline-block;
 }
-
-nav> ul > li a {
+header > nav a {
     display: inline-block;
     color: white;
     padding: 10px 16px;
     text-decoration: none;
     font-size: 16px;
-
 }
-
-/*sub menu*/
-nav > ul ul {
+/*-----SUB-MENU-----*/
+header > nav > ul ul {
     position: absolute;
     display: none;
-    list-style-type:none;
-    padding: 0;
 }
-.drop:hover  ul {
+.drop:hover ul {
     display: block;
     box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
 }
 
-nav> ul li:hover{
+header > nav li:hover{
     background: rgba(0,0,0, 0.5);
 }
-#nav_login{
+#nav_right{
     float:right;
 }
-/*--------------------------------FOOTER*/
-footer >p > img{
-    max-height: 50px;
-    max-width: 50px;
+/*---------------------------------FOOTER---------------------------------*/
+footer img{
+    height: 50px;
+    width: 50px;
     vertical-align: middle;
 }
 footer > p{
     display:inline-block;
+    margin-bottom: 0px;
 }
 footer{
     text-align: center;
 }
-
-/*------------------------AUTHENTICATION*/
-
-form input:not([type=submit]){
-    padding: 3px 0px;
-}
-
-form{
-    display: inline-block;
-    vertical-align: top;
-    /*width: fit-content;*/
-}
-form#login, form#registar{
-    margin: 0px 10px;
-}
-form > p{
-    margin-top: 10px;
-    display: flex;
-}
-
-form input{
-    font-size: 16px;
-}
-form#login{   
-    text-align: right;
-    margin-top: 120px;
-}
+/*-----------------------------AUTHENTICATION-----------------------------*/
 main#auth{
-    width: max-content;
+    width: fit-content;
     margin: 20px auto 20px auto;
+    display: flex;
 }
 main#auth > hr{
     display: inline-block;
     border: 1px solid lightgrey;
     height: 475px;
 }
+form input:not([type=submit]), form select{
+    padding: 3px 0px;
+}
+.auth-form{
+    margin: 0px 10px;
+    font-size: 16px;
+}
+
+form input{
+    margin-top: 10px;
+    display: block;
+   
+    font-size: 16px;
+}
+
+form#registar input{
+    max-width: 300px;
+    min-width: 200px;
+    width: 100%;
+}
+
+form#registar label{
+    margin-top: 10px;
+    display: block;
+}
+
+form#login{   
+    text-align: right;
+    margin-top: 120px;
+}
+
 
 form input[type=submit], form input[type=reset]{
     background-color: rgb(84,144,242);
@@ -118,6 +151,7 @@ form input[type=submit], form input[type=reset]{
     width: 100%;
     padding:5px;
     color:white;
+    font-size: 16px;
 }
 form input[type=reset]{
     background-color: grey;
@@ -126,30 +160,23 @@ form input[type=submit]:hover, form input[type=reset]:hover{
     opacity: 0.8;
 }
 form#change-profile input[type=submit], form#change-profile input[type=reset]{
-    width: 49%;
-    display: inline;
+    max-width: 49%;
+    display: inline-block;
 }
 form#change-profile{
     margin-left: 20px;
+    max-width: 250px;
+}
+form#change-profile input{
+    width: 100%;
 }
 form input#Cp1R ,form input#Cp2R{
-    width: 96px;
+    max-width: 85px;
+    width: auto;
+    display: inline-block;
 }
 
-@font-face{
-    font-family: Roboto;
-    src: url(../fonts/Roboto-Regular.ttf);
-}
-h1#main-title{
-    margin: 0px;
-    margin-bottom: 10px;
-    padding:20px 0px;
-    padding-left: 20px;
-    background-color: rgba(84,144,242,1);
-    border-radius: 0px 0px 6px 6px;
 
-    color:white;
-}
 /*------------------------IMPORT*/
 
 form#import{
@@ -162,23 +189,21 @@ form#import{
     padding: 10px;
 }
 
-form#import input:not([type=radio]), form#import textarea, form#import select {
+form#import input:not([type=radio]):not([type=submit]), form#import textarea, form#import select {
     display: block;
     margin-bottom: 10px;
     margin-top: 2px;
     width: 100%;
     font-size: 14px;
+
 }
+
 
 form#import fieldset{
     margin-bottom: 10px;
     margin-top: 2px; 
 }
-form#import label:not(.notalabel), form#import legend{
-    font-size: 16px;
-    font-weight: bold;
 
-}
 
 
 /*-------------------------------------PERFIL*/

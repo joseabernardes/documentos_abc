@@ -12,9 +12,8 @@
                 </ul>
             </li><!--
             --><li><a href="../v_private/change-profile.php">Alterar Perfil</a></li><!--
-            <li><a id="nav_login" href="/v_public/authentication.php">Login/Registar</a></li>-->
-            <!--
-            --><li class="drop" id="nav_login">
+            --><li><a href="/v_public/authentication.php">Login/Registar</a></li>
+            <li class="drop" id="nav_right">
                 <a  href="#">José Bernardes</a>
                 <ul>
                     <li><a href="../v_private/profile-page.php">Perfil</a></li>

@@ -10,7 +10,8 @@
 
         <form id="import">
             <?php include_once '../partials/_document.php'; ?>
-            <label for="doc">Documento</label><textarea name="doc" required id="doc" rows="5"></textarea>
+            <label for="doc">Documento</label><textarea name="doc" required id="doc" rows="15"></textarea>
+               <input type="submit" value="Criar" name="submit">
         </form>
 
         <?php include_once '../partials/_footer.php'; ?>
