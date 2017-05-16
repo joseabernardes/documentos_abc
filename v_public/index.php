@@ -14,6 +14,7 @@ and open the template in the editor.
         <?php include_once '../partials/_header.php'; ?>
         <br>
         <br>
+        <input type="search">
         <br>
         <br> 
         <br> 

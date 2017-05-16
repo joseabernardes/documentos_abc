@@ -15,20 +15,21 @@
                 <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
                 <input type="submit" value="Login">
             </form>
-            <hr>
+            <!--<hr>-->
             <form id="registar" class="auth-form">
                 <h2>REGISTAR</h2>
                 <input required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
                 <input required id="PassR" type="text" placeholder="password" name="PassR" maxlength="50">
                 <input required id="PassR2" type="text" placeholder="Confirme Password" name="PassR2" maxlength="50">
-                <input required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
-                <label for="file">Fotografia</label><input required id="file" type="file" name="file"/>
+               <input required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
+                <label for="file">Fotografia</label>
+                <input required accept="image/*" id="file" type="file" name="file"/>
                 <input required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
                 <input required id="addressR" type="text" placeholder="Rua" name="Addressr" maxlength="50">
                 <input required id="CityR" type="text" placeholder="Cidade" name="CityR" maxlength="50">
-                <input required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4">
-                <span>-</span>
-                <input required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
+                <input required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
+                --><span>-</span><!--
+                --><input required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
                 <input type="submit" value="Registar" name="submit">
             </form>
         </main>

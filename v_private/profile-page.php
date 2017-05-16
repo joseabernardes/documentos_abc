@@ -13,6 +13,7 @@
             <p>ESTG</p>
             <a>Contact</a>
         </div>
+        APRESENTAR LISTA DE DOCUMENTOS INSERIDOS, CONSIDERANDO AS PERMISSÕES
 
         <?php include_once '../partials/_footer.php'; ?>
     </body>
