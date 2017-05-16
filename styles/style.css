@@ -7,103 +7,182 @@ and open the template in the editor.
     Created on : 11/mai/2017, 15:53:54
     Author     : G04
 */
+
+/*---------------------------------GENERAL---------------------------------*/
 body{
     /*font-family: 'Segoe UI',Arial,sans-serif;*/
     font-family: Roboto;
     font-size: 14px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin: 30px 50px;
 }
 
-/*---------------------------------HEADER*/
+@media screen and (max-width:800px) {
+    body{
+        margin: 30px 10px;
+    }
+}
+h1#main-title{
+    margin:0px 0px 10px 0px;
+    padding:20px 12px;
+    background-color: rgba(84,144,242,1); /*blue*/
+    border-radius: 0px 0px 6px 6px;
+    color:white;
+}
+@font-face{
+    font-family: Roboto;
+    src: url(../fonts/Roboto-Regular.ttf);
+}
+
+/*---------------------------------HEADER---------------------------------*/
 
 header > img{
-    margin-top: 20px;
-    height: 80px;
+    max-height: 80px;
+    max-width: 400px;
+    height: auto;
+    width: 100%;
     margin-bottom: 20px;
 }
-nav  ul{
+header > nav ul{
     list-style-type: none;
     margin: 0;
     padding:0;
     background-color: grey;
 }
 
-nav li{
+header > nav li{
     background:rgba(0,0,0, 0.2);
 }
-nav> ul > li{
+header > nav > ul > li{
     display: inline-block;
+    position: relative;
 }
 
-nav> ul > li a {
-    display: inline-block;
+header > nav a {
+    display: block;
     color: white;
     padding: 10px 16px;
     text-decoration: none;
     font-size: 16px;
-
 }
 
-/*sub menu*/
-nav > ul ul {
-    position: absolute;
-    display: none;
-    list-style-type:none;
-    padding: 0;
-}
-.drop:hover  ul {
+button {
+    background: none;
+    color: white;
+    padding: 10px 16px;
+    margin: 0;
     display: block;
-    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
-}
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    /*cursor: pointer;*/
 
-nav> ul li:hover{
+}
+header > nav li:hover{
     background: rgba(0,0,0, 0.5);
 }
-#nav_login{
+#nav_right{
     float:right;
 }
-/*--------------------------------FOOTER*/
-footer >p > img{
-    max-height: 50px;
-    max-width: 50px;
+/*-----SUB-MENU-----*/
+.drop:hover ul {
+    display: block;
+    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.5);
+}
+header > nav > ul ul {
+    position: absolute;
+    display: none;
+    width: 100%;
+    z-index: 99;
+}
+
+@media screen and (max-width:800px) {
+    header > nav > ul > li{
+        display: block;
+    }
+    header > nav li{
+        margin-top: 1px;
+    }
+    #nav_right{
+        float:none;
+    }
+    .drop:hover ul {
+        display: block;
+        /*box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.5);*/
+    }
+    header > nav > ul li{ /*todas as li's'*/
+        text-align: center;
+    }
+
+
+
+
+}
+
+/*---------------------------------FOOTER---------------------------------*/
+footer img{
+    height: 50px;
+    width: 50px;
     vertical-align: middle;
 }
 footer > p{
     display:inline-block;
+    margin-bottom: 0px;
 }
 footer{
     text-align: center;
 }
 
-/*------------------------AUTHENTICATION*/
+/*---------------------------------FORMS---------------------------------*/
 
-form input:not([type=submit]){
-    padding: 3px 0px;
+form input, form select, form textarea{
+    padding: 5px;
+    box-sizing: border-box;
 }
-
-form{
-    display: inline-block;
-    vertical-align: top;
-    /*width: fit-content;*/
-}
-form#login, form#registar{
-    margin: 0px 10px;
-}
-form > p{
-    margin-top: 10px;
+form p{
     display: flex;
 }
 
-form input{
+form input[type=submit]{
+    background-color: rgb(84,144,242);
+}
+form input[type=reset]{
+    background-color: grey;
+}
+form input[type=submit], form input[type=reset]{
+    color:white;
+    border: none;
     font-size: 16px;
 }
-form#login{   
-    text-align: right;
-    margin-top: 120px;
+form input[type=submit]:hover, form input[type=reset]:hover{
+    opacity: 0.8;
 }
+
+form label:not(.visibility), form#import legend{
+    font-size: 16px;
+    font-weight: bold;
+}
+textarea{
+    padding: 0px;
+}
+fieldset{
+    margin:0;
+    border-color: lightgrey;
+}
+
+/*-----------------------------AUTHENTICATION-----------------------------*/
+
+.auth-form input{
+    font-size: 16px;
+    display: block;
+    margin: 14px 0px;
+}
+.auth-form{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 main#auth{
-    width: max-content;
+    width: fit-content;
     margin: 20px auto 20px auto;
 }
 main#auth > hr{
@@ -111,48 +190,51 @@ main#auth > hr{
     border: 1px solid lightgrey;
     height: 475px;
 }
+form#registar{
+    padding-left: 5px;
+    border-left: 2px solid lightgrey;
+}
 
-form input[type=submit], form input[type=reset]{
-    background-color: rgb(84,144,242);
-    border: none;
-    width: 100%;
-    padding:5px;
-    color:white;
+form#login{   
+    padding-right: 3px;
 }
-form input[type=reset]{
-    background-color: grey;
+
+form#login input, form#login select, form#login textarea{
+    width: 200px;
 }
-form input[type=submit]:hover, form input[type=reset]:hover{
-    opacity: 0.8;
+form span{
+    margin: 0px 2px;
 }
-form#change-profile input[type=submit], form#change-profile input[type=reset]{
-    width: 49%;
-    display: inline;
-}
-form#change-profile{
-    margin-left: 20px;
+form#registar input, form#change-profile input{
+    width: 300px;
 }
 form input#Cp1R ,form input#Cp2R{
-    width: 96px;
+    min-width: 83.5px;
+    width: 146px;
+    display: inline-block;
 }
 
-@font-face{
-    font-family: Roboto;
-    src: url(../fonts/Roboto-Regular.ttf);
-}
-h1#main-title{
-    margin: 0px;
-    margin-bottom: 10px;
-    padding:20px 0px;
-    padding-left: 20px;
-    background-color: rgba(84,144,242,1);
-    border-radius: 0px 0px 6px 6px;
 
-    color:white;
-}
-/*------------------------IMPORT*/
 
-form#import{
+
+/*-----------------------------CHANGE-PROFILE-----------------------------*/
+form#change-profile input[type=submit]{
+    margin-right: 4px;
+}
+form#change-profile input[type=submit], form#change-profile input[type=reset]{
+    max-width: 148px;
+    min-width: 85px;
+}
+form#change-profile{
+    margin:0px 10px;
+}
+/*--------------------------------DOCUMENT--------------------------------*/
+
+
+form#document input:not([type=radio]), form#document select, form#document textarea, form#document fieldset{
+    width: 600px;
+}
+form#document{
     /*border: 1px solid violet;*/
     width: auto;
     max-width: 600px;
@@ -161,25 +243,40 @@ form#import{
     margin-right: auto;
     padding: 10px;
 }
+form#document input[type=radio]{
+    display: none;
+}
+form#document .visibility{
+    background-color: rgba(240,182,56,0.6);
+    padding: 5px 15px;
+    margin: 0px 2px;
+    width: 200px;
+    text-align: center;
+}
+.visibility:hover{
+    opacity: 0.8;
+}
 
-form#import input:not([type=radio]), form#import textarea, form#import select {
+form#document input[type=radio]:checked + .visibility {
+    background-color: rgba(240,182,56,1);
+}
+/*
+
+form#import input:not([type=radio]):not([type=submit]), form#import textarea, form#import select {
     display: block;
     margin-bottom: 10px;
     margin-top: 2px;
     width: 100%;
     font-size: 14px;
+
 }
 
-form#import fieldset{
+*/
+form#document fieldset{
     margin-bottom: 10px;
-    margin-top: 2px; 
+    margin-top: 2px;
+    display: inline-flex;
 }
-form#import label:not(.notalabel), form#import legend{
-    font-size: 16px;
-    font-weight: bold;
-
-}
-
 
 /*-------------------------------------PERFIL*/
 
