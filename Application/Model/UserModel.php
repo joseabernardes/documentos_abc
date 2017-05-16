@@ -1,79 +1,120 @@
 <?php
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of UserModel
+ *
+ * @author Pc
+ */
 class UserModel {
 
-    private $email;
-    private $password;
-    private $name;
-    private $tokenID;
-    private $tokenVALUE;
+    private $UserID;
+    private $UserPASS;
+    private $UserEMAIL;
+    private $UserNAME;
+    private $UserPHOTO;
+    private $UserPHONE;
+    private $UserAUTHLEVEL;
+    private $UserADDRESS;
+    private $UserTokenID;
 
-    function __construct($email, $password, $name, $tokenID = null, $tokenVALUE = null) {
-        $this->email = $email;
-        $this->password = $password;
-        $this->name = $name;
-        $this->tokenID = $tokenID;
-        $this->tokenVALUE = $tokenVALUE;
+    function __construct($UserID, $UserPASS, $UserEMAIL, $UserNAME, $UserPHOTO, $UserPHONE, $UserAUTHLEVEL, $UserADDRESS, $UserTokenID) {
+        $this->UserID = $UserID;
+        $this->UserPASS = $UserPASS;
+        $this->UserEMAIL = $UserEMAIL;
+        $this->UserNAME = $UserNAME;
+        $this->UserPHOTO = $UserPHOTO;
+        $this->UserPHONE = $UserPHONE;
+        $this->UserAUTHLEVEL = $UserAUTHLEVEL;
+        $this->UserADDRESS = $UserADDRESS;
+        $this->UserTokenID = $UserTokenID;
     }
 
-    function getID() {
-        return $this->email;
+    function getUserID() {
+        return $this->UserID;
     }
 
-    function getPassword() {
-        return $this->password;
+    function getUserPASS() {
+        return $this->UserPASS;
     }
 
-    function getName() {
-        return $this->name;
+    function getUserEMAIL() {
+        return $this->UserEMAIL;
     }
 
-    function getTokenID() {
-        return $this->tokenID;
+    function getUserNAME() {
+        return $this->UserNAME;
     }
 
-    function getTokenVALUE() {
-        return $this->tokenVALUE;
+    function getUserPHOTO() {
+        return $this->UserPHOTO;
     }
 
-    function setID($email) {
-        $this->email = $email;
+    function getUserPHONE() {
+        return $this->UserPHONE;
     }
 
-    function setPassword($password) {
-        $this->password = $password;
+    function getUserAUTHLEVEL() {
+        return $this->UserAUTHLEVEL;
     }
 
-    function setName($name) {
-        $this->name = $name;
+    function getUserADDRESS() {
+        return $this->UserADDRESS;
     }
 
-    function setTokenID($tokenID) {
-        $this->tokenID = $tokenID;
+    function getUserTokenID() {
+        return $this->UserTokenID;
     }
 
-    function setTokenVALUE($tokenVALUE) {
-        $this->tokenVALUE = $tokenVALUE;
+    function setUserID($UserID) {
+        $this->UserID = $UserID;
+    }
+
+    function setUserPASS($UserPASS) {
+        $this->UserPASS = $UserPASS;
+    }
+
+    function setUserEMAIL($UserEMAIL) {
+        $this->UserEMAIL = $UserEMAIL;
+    }
+
+    function setUserNAME($UserNAME) {
+        $this->UserNAME = $UserNAME;
+    }
+
+    function setUserPHOTO($UserPHOTO) {
+        $this->UserPHOTO = $UserPHOTO;
+    }
+
+    function setUserPHONE($UserPHONE) {
+        $this->UserPHONE = $UserPHONE;
+    }
+
+    function setUserAUTHLEVEL($UserAUTHLEVEL) {
+        $this->UserAUTHLEVEL = $UserAUTHLEVEL;
+    }
+
+    function setUserADDRESS($UserADDRESS) {
+        $this->UserADDRESS = $UserADDRESS;
+    }
+
+    function setUserTokenID($UserTokenID) {
+        $this->UserTokenID = $UserTokenID;
     }
 
     public static function convertArrayToObject(Array &$data) {
-        return self::createObject($data['UserEMAIL'], $data['UserPASS'], $data['UserNAME'], $data['TokenID'], $data['TokenVALUE']);
+        return self::createObject($data['UserID'], $data['UserPASS'], $data['UserEMAIL'], $data['UserNAME'], $data['UserPHOTO'], $data['USerPHONE'], $data['UserAUTHLEVEL'], $data['UserADDRESS'], $data['UserTokenID']);
     }
 
-    public static function createObject($email, $password, $name, $tokenID, $tokenVALUE) {
-        $user = new UserModel($email, $password, $name, $tokenID, $tokenVALUE);
+    public static function createObject($UserID, $UserPASS, $UserEMAIL, $UserNAME, $UserPHOTO, $USerPHONE, $UserAUTHLEVEL, $UserADDRESS, $UserTokenID) {
+        $user = new UserModel($UserID, $UserPASS, $UserEMAIL, $UserNAME, $UserPHOTO, $USerPHONE, $UserAUTHLEVEL, $UserADDRESS, $UserTokenID);
 
         return $user;
-    }
-
-    public function convertObjectToArray() {
-        $data = array('UserEMAIL' => $this->getId(),
-            'UserPASS' => $this->getPassword(),
-            'UserNAME' => $this->getName(),
-            'TokenID' => $this->getTokenID(),
-            'tokenVALUE' => $this->getTokenVALUE());
-
-        return $data;
     }
 
 }
