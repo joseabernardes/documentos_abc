@@ -1,10 +1,13 @@
 <?php
-session_start();
+require_once __DIR__ . '/../Config.php';
+require_once Config::getApplicationManagerPath() . 'SessionManager.php';
+SessionManager::startSession();
 
-if (array_key_exists('authUsername', $_SESSION)) {
-      header("Location: ../v_public/index.php");
-} else {
-    ?>
+
+if( SessionManager::keyExists('authUsername')){
+    header("Location: ../../index.php");
+}else{
+?>
 
 
     <!DOCTYPE html>
@@ -51,6 +54,4 @@ if (array_key_exists('authUsername', $_SESSION)) {
         </body>
     </html>
 
-    <?php
-}
-?>
+    <?php } ?>
