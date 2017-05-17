@@ -11,7 +11,7 @@
  *
  * @author Pc
  */
-class CategoryManager {
+class CategoryManager extends MyDataAccessPDO{
 
     const TABLE_NAME = 'category';
 

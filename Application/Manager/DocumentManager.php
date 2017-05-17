@@ -11,7 +11,7 @@
  *
  * @author Pc
  */
-class DocumentManager {
+class DocumentManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document';
 

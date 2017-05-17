@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../Model/UserModel.php';
+require_once __DIR__ . '/../../Config.php';
+require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
+require_once Config::getApplicationModelPath() . 'UserModel.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +15,7 @@
  *
  * @author Pc
  */
-class UserManager {
+class UserManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'user';
 
@@ -31,6 +35,16 @@ class UserManager {
 
     public function getUserByID($UserID) {
         $where = array('UserID' => $UserID);
+        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getUserByEmail($UserEMAIL) {
+        $where = array('UserEMAIL' => $UserEMAIL);
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {

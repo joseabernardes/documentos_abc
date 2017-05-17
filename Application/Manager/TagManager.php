@@ -11,7 +11,7 @@
  *
  * @author Pc
  */
-class TagManager {
+class TagManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document_tag';
 

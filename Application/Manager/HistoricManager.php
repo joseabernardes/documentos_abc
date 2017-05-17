@@ -11,7 +11,7 @@
  *
  * @author Pc
  */
-class HistoricManager {
+class HistoricManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document_editing';
 
@@ -31,7 +31,7 @@ class HistoricManager {
         foreach ($array AS $rec) {
             $list[$rec['EditingID']] = HistoricModel::convertArrayToObject($rec);
         }
-        
+
         return $list;
     }
 
