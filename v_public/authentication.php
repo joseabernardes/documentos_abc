@@ -6,6 +6,7 @@ if (array_key_exists('authUsername', $_SESSION)) {
 } else {
     ?>
 
+
     <!DOCTYPE html>
     <html>
         <head>
