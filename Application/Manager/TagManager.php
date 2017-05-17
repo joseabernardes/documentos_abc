@@ -13,7 +13,7 @@
  */
 class TagManager {
 
-    const TABLE_NAME = 'Tag';
+    const TABLE_NAME = 'document_tag';
 
     public function add(TagModel $a) {
         $ins = array();
