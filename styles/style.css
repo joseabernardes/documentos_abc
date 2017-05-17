@@ -349,9 +349,10 @@ main#view-doc div#details > span:first-child{
 
 main#view-doc div#details > span:last-child{
     background-color: rgb(240,182,56);
-    padding: 10px 16px;
-    vertical-align: middle;
+    padding: 10px 0px;
     float: right;
+    width: 40px;
+    text-align: center;
     cursor: pointer; 
 }
 
@@ -360,7 +361,8 @@ main#view-doc div#details > span:last-child:hover{
 }
 
 main#view-doc div#content{
-    /*border: 1px solid white;*/
-    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+    border: 1px solid gray;
+    /*box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);*/
     padding:5px 40px;
+    display: none;
 }
