@@ -11,7 +11,7 @@
  *
  * @author Pc
  */
-class TagModel {
+class TagModel{
 
     private $TagID;
     private $TagNAME;
