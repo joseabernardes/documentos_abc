@@ -22,7 +22,7 @@
                 <input required id="PassR" type="text" placeholder="password" name="PassR" maxlength="50">
                 <input required id="PassR2" type="text" placeholder="Confirme Password" name="PassR2" maxlength="50">
                <input required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
-                <label for="file">Fotografia</label>
+                <label>Fotografia</label>
                 <input required accept="image/*" id="file" type="file" name="file"/>
                 <input required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
                 <input required id="addressR" type="text" placeholder="Rua" name="Addressr" maxlength="50">
