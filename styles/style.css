@@ -33,6 +33,13 @@ h1#main-title{
     src: url(../fonts/Roboto-Regular.ttf);
 }
 
+.noselect{
+    -webkit-user-select: none; /* Chrome, Opera, Safari */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
 /*---------------------------------HEADER---------------------------------*/
 
 header > img{
@@ -112,10 +119,6 @@ header > nav > ul ul {
     header > nav > ul li{ /*todas as li's'*/
         text-align: center;
     }
-
-
-
-
 }
 
 /*---------------------------------FOOTER---------------------------------*/
@@ -214,9 +217,6 @@ form input#Cp1R ,form input#Cp2R{
     display: inline-block;
 }
 
-
-
-
 /*-----------------------------CHANGE-PROFILE-----------------------------*/
 form#change-profile input[type=submit]{
     margin-right: 4px;
@@ -300,4 +300,67 @@ form#document fieldset{
     width: 100%;
     font-size: 18px;
     padding: 8px 0px;
+}
+
+
+
+/*------------------------------VIEW-DOCUMENT------------------------------*/
+
+main#view-doc{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto; 
+    display: flex;
+    flex-flow: column;
+}
+
+main#view-doc > p#doc  {
+    max-width: 600px;
+    margin: 10px;
+    white-space: pre-line; 
+    text-align: justify; 
+    text-justify: inter-word;
+    line-height: 1.5;
+    padding:40px;
+    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+
+}
+main#view-doc > div#top h3{
+    margin: 10px 0px 0px 0px;
+}
+main#view-doc > div#top{
+    max-width: 680px;
+    margin:10px;
+}
+main#view-doc div#details{
+    font-size: 16px;
+    background-color: grey;
+    color:white;
+}
+main#view-doc div#details > span{
+    display: inline-block;
+}
+
+main#view-doc div#details > span:first-child{
+    padding: 10px 0px;
+    margin-left: 10px;
+    cursor: default;
+}
+
+main#view-doc div#details > span:last-child{
+    background-color: rgb(240,182,56);
+    padding: 10px 16px;
+    vertical-align: middle;
+    float: right;
+    cursor: pointer; 
+}
+
+main#view-doc div#details > span:last-child:hover{
+    opacity: 0.8;
+}
+
+main#view-doc div#content{
+    /*border: 1px solid white;*/
+    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+    padding:5px 40px;
 }

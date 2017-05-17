@@ -11,6 +11,7 @@
                 </ul>
             </li><!--
             --><li><a href="../v_private/change-profile.php">Alterar Perfil</a></li><!--
+            --><li><a href="../v_private/view-document.php">Ver Documento</a></li><!--
             --><li><a href="../v_public/authentication.php">Login/Registar</a></li>
             <li class="drop" id="nav_right">
                 <a  href="#">Joel Pereira</a>

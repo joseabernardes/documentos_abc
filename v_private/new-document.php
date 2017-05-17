@@ -1,7 +1,12 @@
 <?php
 $type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
 
-if ($type != 'import' && $type != 'create') {
+$name;
+if ($type === 'import') {
+    $name = 'Importar';
+} else if (($type === 'create')) {
+    $name = 'Criar';
+} else {
     header("Location: ../v_public/index.php");
 }
 ?>
@@ -9,11 +14,11 @@ if ($type != 'import' && $type != 'create') {
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
-        <title>Importar Documentos</title>
+        <title><?= $name ?> Documentos</title>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?>
-        <h1 id="main-title">Importar Documento</h1>
+        <h1 id="main-title"><?= $name ?> Documentos</h1>
         <form id="document" action="import-document.php" method="post" enctype="multipart/form-data">
             <label for="title">Titulo</label>
             <p><input required id="title" type="text" name="title" maxlength="50"/></p>
@@ -50,7 +55,7 @@ if ($type != 'import' && $type != 'create') {
 
 
 
-            <p><input type="submit" value="Importar" name="submit"></p>
+            <p><input type="submit" value="<?= $name ?> " name="submit"></p>
         </form>
 
         <?php include_once '../partials/_footer.php'; ?>
