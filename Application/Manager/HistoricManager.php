@@ -31,6 +31,7 @@ class HistoricManager {
         foreach ($array AS $rec) {
             $list[$rec['EditingID']] = HistoricModel::convertArrayToObject($rec);
         }
+        
         return $list;
     }
 
