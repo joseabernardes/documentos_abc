@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../Model/UserModel.php';
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'UserModel.php';
