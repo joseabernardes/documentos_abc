@@ -6,6 +6,7 @@
         <script src="../scripts/details.js" type="text/javascript"></script>
         <title>Editar Documento</title>
     </head>
+    
     <body>
         <?php include_once '../partials/_header.php'; ?>
         <h1 id="main-title">Editar Documento</h1>
