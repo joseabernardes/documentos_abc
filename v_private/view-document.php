@@ -2,6 +2,8 @@
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
+        <script src="../lib/jquery-3.2.1.js" type="text/javascript"></script>
+        <script src="../scripts/details.js" type="text/javascript"></script>
         <title>"Titulo do documento"</title>
     </head>
     <body>
@@ -13,13 +15,13 @@
                 <div id="content">
                     <h3>Data de Criação</h3>
                     5 de Março de 2017
-                         <h3>Categoria</h3>
+                    <h3>Categoria</h3>
                     Geografia
-                         <h3>Palavras-Chave</h3>
+                    <h3>Palavras-Chave</h3>
                     eu, vi, um, sapo
                     <h3>Resumo</h3>
                     A empresa “Documentos ABC” pretende criar uma plataforma simples de gestão documental. Nesse sentido, uma das medidas definidas passa pelo desenvolvimento de um portal capaz de possibilitar a importação de documentos word e respetiva possibilidade de partilha pelos diferentes utilizadores da plataforma.
-                    
+
                 </div>
             </div>
             <p id="doc">Descrição do Trabalho 

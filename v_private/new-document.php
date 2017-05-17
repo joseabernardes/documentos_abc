@@ -52,9 +52,6 @@ if ($type === 'import') {
                 <p><textarea name="doc" required id="doc" rows="15"></textarea></p>
                 <?php }
                 ?>
-
-
-
             <p><input type="submit" value="<?= $name ?> " name="submit"></p>
         </form>
 
