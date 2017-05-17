@@ -13,7 +13,7 @@
  */
 class DocumentManager {
 
-    const TABLE_NAME = 'Document';
+    const TABLE_NAME = 'document';
 
     public function add(DocumentModel $a) {
         $ins = array();

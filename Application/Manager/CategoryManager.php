@@ -13,7 +13,7 @@
  */
 class CategoryManager {
 
-    const TABLE_NAME = 'Category';
+    const TABLE_NAME = 'category';
 
     public function add(CategoryModel $a) {
         $ins = array();
