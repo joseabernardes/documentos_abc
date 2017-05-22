@@ -26,7 +26,7 @@ if( SessionManager::keyExists('authUsername')){
                     <h2>LOGIN</h2>
                     <input required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
                     <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
-                    <input type="checkbox" name="remember"><label>Remember Me</label>
+                    <input type="checkbox" id="remember" name="remember"><label for="remember">Remember Me</label>
                     <input type="submit" value="Login">
                 </form>
                 <!--<hr>-->

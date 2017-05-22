@@ -185,7 +185,7 @@ fieldset{
 }
 
 main#auth{
-    width: fit-content;
+    max-width: 550px;
     margin: 20px auto 20px auto;
 }
 main#auth > hr{
@@ -205,7 +205,7 @@ form#login{
 form#login input, form#login select, form#login textarea{
     width: 200px;
 }
-form span{
+form#change-profile span, form#registar span{
     margin: 0px 2px;
 }
 form#registar input, form#change-profile input{
@@ -231,12 +231,10 @@ form#change-profile{
 /*--------------------------------DOCUMENT--------------------------------*/
 
 
-form#document input:not([type=radio]), form#document select, form#document textarea, form#document fieldset{
+form#document input:not([type=radio]):not([type=checkbox]), form#document select, form#document textarea{
     width: 600px;
 }
 form#document{
-    /*border: 1px solid violet;*/
-    width: auto;
     max-width: 600px;
     display: block;
     margin-left: auto;
@@ -252,13 +250,14 @@ form#document .visibility{
     margin: 0px 2px;
     width: 200px;
     text-align: center;
+    cursor: pointer;
 }
 .visibility:hover{
     opacity: 0.8;
 }
 
 form#document input[type=radio]:checked + .visibility {
-    background-color: rgba(240,182,56,1);
+    background-color: rgb(240,182,56);
 }
 /*
 
@@ -272,11 +271,57 @@ form#import input:not([type=radio]):not([type=submit]), form#import textarea, fo
 }
 
 */
-form#document fieldset{
-    margin-bottom: 10px;
-    margin-top: 2px;
-    display: inline-flex;
+form#document > div#sharedBox input[type=button]{
+    background-color: lightgrey;
+    border:none;
+    width: 30px;
+    height: 100%;
+    cursor: pointer;
 }
+form#document > div#sharedBox input[type=button]:hover{
+    opacity: 0.8;
+}
+form#document > div#sharedBox input[type=button]:focus{
+    outline: none; /*remover focus*/
+}
+
+
+form#document > div#sharedBox input#addUser{
+    width: 400px;
+    border:none;
+}
+
+form#document > div#sharedBox p.results{
+    background-color: lightgrey;
+    max-width: 395px;
+    padding: 0px 5px 0px 0px;
+}
+form#document .commentBox{
+    margin: auto 0px auto auto;
+}
+
+form#document > div#sharedBox span, .commentLabel{
+    margin: auto 0px auto 5px;
+
+}
+form#document > div#sharedBox .commentLabel{
+    font-size: 12px;
+    font-weight: normal;
+}
+
+form#document > div#sharedBox input.removeButton{
+    background-color: rgb(210,68,58);
+}
+
+form#document div#sharedBox, form#document div#publicBox{
+    background-color: rgb(240,182,56);
+    padding: 10px;
+    margin: -20px 2px 14px 2px;
+    max-width: 600px;
+    min-width: 236px;
+    /*display: none;*/
+}
+
 
 /*-------------------------------------PERFIL*/
 
@@ -288,7 +333,7 @@ form#document fieldset{
 }
 
 .card a:hover{
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 .card a{
@@ -303,11 +348,10 @@ form#document fieldset{
 }
 
 
-
 /*------------------------------VIEW-DOCUMENT------------------------------*/
 
 main#view-doc{
-    width: fit-content;
+    max-width: 700px; /*para IE/EDGE*/
     margin-left: auto;
     margin-right: auto; 
     display: flex;
@@ -366,4 +410,3 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
-
