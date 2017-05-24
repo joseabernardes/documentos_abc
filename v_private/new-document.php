@@ -17,7 +17,7 @@ if ($type === 'import') {
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
-        <script src="../lib/jquery-3.2.1.js" type="text/javascript"></script>
+        <script src="../libs/jquery-3.2.1.js" type="text/javascript"></script>
         <script src="../scripts/visibility.js" type="text/javascript"></script>
         <script src="../scripts/addShared.js" type="text/javascript"></script>
         <title><?= $name ?> Documentos</title>

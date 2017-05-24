@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
-        <script src="../lib/jquery-3.2.1.js" type="text/javascript"></script>
+        <script src="../libs/jquery-3.2.1.js" type="text/javascript"></script>
         <script src="../scripts/details.js" type="text/javascript"></script>
         <title>"Titulo do documento"</title>
     </head>

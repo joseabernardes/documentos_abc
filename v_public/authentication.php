@@ -22,7 +22,7 @@ if( SessionManager::keyExists('authUsername')){
             <h1 id="main-title">Autenticação</h1>
             <main id="auth">
 
-                <form method="post" action="../AuthProcess.php" id="login" class="auth-form">
+                <form method="post" action="" id="login" class="auth-form">
                     <h2>LOGIN</h2>
                     <input required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
                     <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
