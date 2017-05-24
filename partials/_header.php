@@ -12,15 +12,23 @@
             </li><!--
             --><li><a href="../v_private/change-profile.php">Alterar Perfil</a></li><!--
             --><li><a href="../v_private/view-document.php">Ver Documento</a></li><!--
-                  --><li><a href="../v_private/edit-document.php">Editar Documento</a></li><!--
-            --><li><a href="../v_public/authentication.php">Login/Registar</a></li>
-            <li class="drop" id="nav_right">
-                <a  href="#">Joel Pereira</a>
-                <ul>
-                    <li><a href="../v_private/profile-page.php">Perfil</a></li>
-                    <li><a href="#">Sair</a></li>
-                </ul>
-            </li>
+            --><li><a href="../v_private/edit-document.php">Editar Documento</a></li>
+            <?php
+            if (session_status() === PHP_SESSION_ACTIVE && SessionManager::keyExists('authUsername')) {
+                ?>
+                <li class="drop" id="nav_right">
+                    <a  href="#">Joel Pereira</a>
+                    <ul>
+                        <li><a href="../v_private/profile-page.php">Perfil</a></li>
+                        <li><a href="#">Sair</a></li>
+                    </ul>
+                </li>
+                <?php
+            } else {
+                ?>
+                <li id="nav_right"><a href = "../v_public/authentication.php">Login/Registar</a></li>
+            <?php } ?>
         </ul>
     </nav>
 </header>
+
