@@ -4,7 +4,7 @@
         <ul>
             <li><a href="../v_public/index.php">Inicio</a></li><!--
             --><li class="drop">
-                <a href="">Adicionar Documento</a>
+                <a class="noclick" href="#">Adicionar Documento</a>
                 <ul>
                     <li><a href="../v_private/new-document.php?type=import">Importar</a></li>
                     <li><a href="../v_private/new-document.php?type=create">Criar</a></li>
@@ -15,7 +15,7 @@
                   --><li><a href="../v_private/edit-document.php">Editar Documento</a></li><!--
             --><li><a href="../v_public/authentication.php">Login/Registar</a></li>
             <li class="drop" id="nav_right">
-                <a  href="#">Joel Pereira</a>
+                <a class="noclick" href="#">Joel Pereira</a>
                 <ul>
                     <li><a href="../v_private/profile-page.php">Perfil</a></li>
                     <li><a href="#">Sair</a></li>

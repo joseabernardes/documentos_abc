@@ -296,7 +296,7 @@ form#document > div#sharedBox p.results{
     max-width: 395px;
     padding: 0px 5px 0px 0px;
 }
-form#document .commentBox{
+form#document > div#sharedBox .commentBox{
     margin: auto 0px auto auto;
 }
 
@@ -319,7 +319,16 @@ form#document div#sharedBox, form#document div#publicBox{
     margin: -20px 2px 14px 2px;
     max-width: 600px;
     min-width: 236px;
-    /*display: none;*/
+    display: none;
+}
+form#document div#publicBox .commentLabel{
+    font-size: 14px;
+    /*font-weight: normal;*/
+}
+
+form#document > div#publicBox .commentBox{
+    margin-left: 20px;
+   
 }
 
 

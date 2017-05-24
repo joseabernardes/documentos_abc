@@ -1,23 +1,29 @@
-var sharedUsers = [];
+var sharedUsers = [
+    {userID: 1, userNAME: "José Bernardes"},
+    {userID: 2, userNAME: "Joel Pereira"},
+    {userID: 3, userNAME: "Sir Alberto Xia"},
+    {userID: 4, userNAME: "Don Carlos Covas"}
+
+];
 
 
 var users = [
-    {userID: 1, userNAME: "José Paulo"},
-    {userID: 2, userNAME: "João Alfredo"}
+    {userID: 5, userNAME: "jose"},
+    {userID: 6, userNAME: "João Alfredo"}
 ];//AJAX
 
-Array.prototype.containsNAME = function (element) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i].userNAME === element) {
-            return this[i];
+Array.prototype.containsNAME = function (element, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].userNAME === element) {
+            return array[i];
         }
     }
     return -1;
 };
-Array.prototype.containsID = function (element) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i].userID === element) {
-            return this[i];
+Array.prototype.containsID = function (element, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].userID === element) {
+            return array[i];
         }
     }
     return -1;
@@ -41,9 +47,10 @@ function addUserDOM(user) {
     label.addClass("commentLabel").attr("for", commentid).text("Comentar");
     p.append(button).append(span).append(checkbox).append(label);
     $("#sharedBox").append(p);
+    addListener();
 }
 
-function removeUser(user, array) {
+function removeUserfromArray(user, array) {
     var i = array.indexOf(user);
     if (i !== -1) {
         array.splice(i, 1);
@@ -52,21 +59,30 @@ function removeUser(user, array) {
 
 function addUser() {
 
-    var user = users.containsNAME(getUserDOM());
+    var user = users.containsNAME(getUserDOM(), users);
     if (user !== -1) {
         var newUser = {userID: user.userID, userNAME: user.userNAME, allowComments: '1'};
         sharedUsers.push(newUser);
         addUserDOM(newUser);
-        removeUser(user, users);
+        removeUserfromArray(user, users);
+    } else {
+        $("#addButton").css("box-shadow", "0px 0px 5px 1px red");
+         $("#addButton").css("color", "red");
+        setTimeout(function () {
+            $("#addButton").css("box-shadow", "none");      
+                     $("#addButton").css("color", "black");
+
+        }, 300);
     }
 }
 
 function removeUserDOM(id) {
+    window.console.log($("p#" + id));
     $("p#" + id).remove();
 }
 
 function removeUser(id) {
-    var user = sharedUsers.containsID(id);
+    var user = sharedUsers.containsID(id, sharedUsers);
     if (user !== -1) {
         var newUser = {userID: user.userID, userNAME: user.userNAME};
         removeUser(user, sharedUsers);
@@ -75,18 +91,21 @@ function removeUser(id) {
     }
 
 }
-function aaa() {
-    alert("aaa");
-    
+
+function addListener() {
+    $(".removeButton").click(function (event) {
+        window.console.log(event.target);
+        window.console.log($(event.target).parent());
+        var id = $(event.target).parent().attr("id");
+        window.console.log(id);
+        removeUser(parseInt(id));
+    });
+
+
 }
 
 $(document).ready(function () {
     $("#addButton").click(addUser);
-//    $(".removeButton").click(aaa);
-    $( ".removeButton" ).click(function (event) {
-         alert("aaa");
-        var id = event.target.parent().attr("id");//MAAALLL
-        removeUser(id);
-    });
+    addListener();
 });
 
