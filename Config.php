@@ -41,4 +41,7 @@ class Config {
         return self::getApplicationPath() . '/Exceptions/';
     }
 
+        public static function getApplicationControllersPath() {
+        return self::getApplicationPath() . '/Controllers/';
+    }
 }

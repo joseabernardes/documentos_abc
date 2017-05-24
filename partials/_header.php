@@ -4,7 +4,7 @@
         <ul>
             <li><a href="../v_public/index.php">Inicio</a></li><!--
             --><li class="drop">
-                <a href="">Adicionar Documento</a>
+                <a class="noclick" href="#">Adicionar Documento</a>
                 <ul>
                     <li><a href="../v_private/new-document.php?type=import">Importar</a></li>
                     <li><a href="../v_private/new-document.php?type=create">Criar</a></li>
