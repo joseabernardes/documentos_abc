@@ -17,7 +17,7 @@
             if (session_status() === PHP_SESSION_ACTIVE && SessionManager::keyExists('authUsername')) {
                 ?>
                 <li class="drop" id="nav_right">
-                    <a  href="#">Joel Pereira</a>
+                    <a class="noclick" href="#">Joel Pereira</a>
                     <ul>
                         <li><a href="../v_private/profile-page.php">Perfil</a></li>
                         <li><a href="#">Sair</a></li>
