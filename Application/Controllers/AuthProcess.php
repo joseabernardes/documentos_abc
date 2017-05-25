@@ -1,6 +1,6 @@
 <?php
 $inputType = INPUT_POST;
-
+$email = $pass = '';
 if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
    

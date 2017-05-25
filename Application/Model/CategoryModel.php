@@ -42,7 +42,7 @@ class CategoryModel {
     }
 
     public static function createObject($CategoryID, $CategoryNAME) {
-        $category = new TagModel($CategoryID, $CategoryNAME);
+        $category = new CategoryModel($CategoryID, $CategoryNAME);
 
         return $category;
     }

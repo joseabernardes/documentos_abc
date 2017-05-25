@@ -1,17 +1,10 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once __DIR__ . '/../../Config.php';
+require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
+require_once Config::getApplicationModelPath() . 'CategoryModel.php';
 
-/**
- * Description of CategoryManager
- *
- * @author Pc
- */
-class CategoryManager extends MyDataAccessPDO{
+class CategoryManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'category';
 
@@ -27,6 +20,18 @@ class CategoryManager extends MyDataAccessPDO{
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {
+            $list[$rec['CategoryID']] = CategoryModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getAllCategories() {
+
+        $results = $this->getRecords(self::TABLE_NAME);
+
+
+        $list = array();
+        foreach ($results AS $rec) {
             $list[$rec['CategoryID']] = CategoryModel::convertArrayToObject($rec);
         }
         return $list;

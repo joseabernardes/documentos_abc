@@ -25,7 +25,7 @@ if( SessionManager::keyExists('authUsername')){
 
                 <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" id="login" class="auth-form">
                     <h2>LOGIN</h2>
-                    <input required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
+                    <input required id="email" type="text" value="<?= $email ?> " placeholder="email@email.com" name="email" maxlength="50">
                     <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
                     <input type="checkbox" id="remember" name="remember"><label for="remember">Remember Me</label>
                     <input type="submit" value="Login">
