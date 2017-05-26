@@ -17,6 +17,16 @@ and open the template in the editor.
         <input type="search">
         <br>
         <br> 
+        <?php
+        
+
+        var_dump(preg_match('/^[\pL\d ]{1,90}$/u', 'dfghjkçlkjhgf'));
+        
+        
+        
+        
+        
+        ?>
         <br> 
         <br>
         <br>

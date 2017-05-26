@@ -19,13 +19,14 @@ class DocumentManager extends MyDataAccessPDO {
         $ins = array();
         $ins['DocumentID'] = $a->getDocumentID();
         $ins['DocumentTITLE'] = $a->getDocumentTITLE();
+        $ins['DocumentSUMMARY'] = $a->getDocumentSUMMARY();
         $ins['DocumentUserID'] = $a->getDocumentUserId();
-        $ins['CategoryID'] = $a->getDocumentCategoryId();
+        $ins['DocumentCategoryID'] = $a->getDocumentCategoryId();
         $ins['DocumentDATE'] = $a->getDocumentDATE();
         $ins['DocumentCONTENT'] = $a->getDocumentCONTENT();
         $ins['DocumentPATH'] = $a->getDocumentPATH();
         $ins['DocumentVisibilityID'] = $a->getDocumentVisibilityId();
-        $ins['DocmentCOMMENTS'] = $a->getDocumentCOMMENTS();
+        $ins['DocumentCOMMENTS'] = $a->getDocumentCOMMENTS();
         $this->insert(self::TABLE_NAME, $ins);
     }
 
