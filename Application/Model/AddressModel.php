@@ -12,7 +12,7 @@
  * @author Pc
  */
 class AddressModel {
-    private static $AddressIDCounter=0;
+    static $AddressIDCounter=0;
     private $AddressID;
     private $AddressADDRESS;
     private $AddressCITY;

@@ -5,6 +5,8 @@ require_once Config::getApplicationControllersPath() . 'AuthProcess.php';
 require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
 SessionManager::startSession();
 
+        const INPUT_CLASS_ERROR_NAME = 'input_erro';
+        const SPAN_CLASS_ERROR_NAME = 'span_erro';
 
 if (SessionManager::keyExists('authUsername')) {
     header("Location: ../../index.php");
@@ -34,18 +36,28 @@ if (SessionManager::keyExists('authUsername')) {
                 <!--<hr>-->
                 <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>">
                     <h2>REGISTAR</h2>
-                    <input required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
-                    <input required id="PassR" type="text" placeholder="password" name="PassR" maxlength="50">
-                    <input required id="PassR2" type="text" placeholder="Confirme Password" name="PassR2" maxlength="50">
-                    <input required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
+                    <input class="<?= array_key_exists('emailR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
+                    <?php if (array_key_exists('emailR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['emailR'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="text" placeholder="password" name="PassR" maxlength="50">
+                    <?php if (array_key_exists('PassR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="text" placeholder="Confirme Password" name="PassR2" maxlength="50">
+                    <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
+                    <?php if (array_key_exists('NameR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['NameR'] ?></span> <?php } ?>
                     <label>Fotografia</label>
-                    <input required accept="image/*" id="file" type="file" name="file"/>
-                    <input required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
-                    <input required id="addressR" type="text" placeholder="Rua" name="Addressr" maxlength="50">
-                    <input required id="CityR" type="text" placeholder="Cidade" name="CityR" maxlength="50">
-                    <input required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
+                    <input class="<?= array_key_exists('file', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required accept="image/*" id="file" type="file" name="file"/>
+                    <?php if (array_key_exists('file', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['file'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('PhoneR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
+                    <?php if (array_key_exists('PhoneR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PhoneR'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('Addressr', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="addressR" type="text" placeholder="Rua" name="Addressr" maxlength="50">
+                    <?php if (array_key_exists('Addressr', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Addressr'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('CityR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="CityR" type="text" placeholder="Cidade" name="CityR" maxlength="50">
+                    <?php if (array_key_exists('CityR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['CityR'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('Cp1R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
                     --><span>-</span><!--
-                    --><input required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
+                    --><input class="<?= array_key_exists('Cp2R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
+                    <?php if (array_key_exists('Cp1R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?></span> <?php } ?> 
+                    <?php if (array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>
                     <input type="submit" value="Registar" name="registar">
                 </form>
             </main>

@@ -4,6 +4,7 @@ require_once Config::getApplicationManagerPath() . 'UserManager.php';
 require_once Config::getApplicationModelPath() . 'UserModel.php';
 require_once Config::getApplicationManagerPath() . 'AddressManager.php';
 require_once Config::getApplicationModelPath() . 'AddressModel.php';
+require_once Config::getApplicationManagerPath() . 'UserManager.php';
 $inputType = INPUT_POST;
 
 $input = array();
@@ -41,13 +42,52 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
 
     if ($input['PassR'] !== $input['PassR2']) {
         $errors['PassR'] = 'Password não confirmada';
+        $errors['PassR2'] = 'Password não confirmada';
     }
 
-    //------Verificar image
-    
-    
-    
-    
+    //------Verificar email igual----------
+
+    $userManager = new UserManager();
+
+    if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
+        $errors['emailR'] = 'Este email ja existe';
+    }
+
+    //-----Verificar imagem------
+
+    /*
+     * Validar file
+     */
+    if ( is_uploaded_file($_FILES["file"]["tmp_name"])) {
+
+        $file_path = __DIR__ . "/../../images/" . basename($_FILES["file"]["name"]);
+
+
+        //Verificar extenção do ficheiro
+        $extension = pathinfo($file_path, PATHINFO_EXTENSION);
+        if ($extension != "png" && $extension != "jpg" && $extension!="jpeg") {
+            $errors['file'] = 'Extensão não permitida';
+            
+        }
+
+        //Verificar se existe ficheiro igual, e acrescentar um numero antes
+        while (file_exists($file_path)) {
+            $fileName = uniqid() . '-' . $_FILES["file"]["name"];
+            $file_path = __DIR__ . "/../../images/" . basename($fileName);
+        }
+
+        //Verificar tamanho do ficheiro
+        if ($_FILES["file"]["size"] > 10000000) {
+            $errors['file'] = 'Ficheiro demasiado grande';
+        }
+        //verificar se é uma imagem 
+        
+        
+        
+    } else {
+        $errors['file'] = 'Parametro não enviado';
+    }
+
     if (count($errors) == 0) {
 
         $address = new AddressModel($input['Addressr'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
@@ -55,9 +95,8 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         $addressManager->add($address);
 
         $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
-        
-        
-        $user = new UserModel('', $input['emailR'], $password, $input['NameR'], $input['file'], $input['PhoneR'], 'USERINACTIVE',$address->getAddressID(), null);
+
+        $user = new UserModel('', $input['emailR'], $password, $input['NameR'], $input['file'], $input['PhoneR'], 'USERINACTIVE', $address->getAddressID(), null);
         $manager = new UserManager();
         $manager->add($user);
     }
