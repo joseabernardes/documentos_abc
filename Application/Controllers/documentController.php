@@ -22,9 +22,6 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         'reasons' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'type' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
     );
-
-    
-    
     foreach ($rules as $key => $value) {
         $input[$key] = filter_input($inputType, $key, $value['sanitize']);
         if (!isset($input[$key])) {
@@ -74,57 +71,36 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
      * Validar file
      */
     if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
-        
-        $file_path = basename(__DIR__ . "/../../upload/" . $_FILES["file"]["name"]);
 
-        $uploadOk = 1;
+        $file_path = __DIR__ . "/../../upload/" . basename($_FILES["file"]["name"]);
+
+
+        //Verificar extenção do ficheiro
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
+        if ($extension != "doc" && $extension != "docx") {
+            $errors['file'] = 'Extensão não permitida';
+            ;
+        }
 
-        // Check if file already exists
-        if (file_exists($file_path)) {
-            echo "Sorry, file already exists.";
-            $uploadOk = 0;
-            $errors[]= 'Ficheiro já existe';
+        //Verificar mime_type do ficheiro
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
+        finfo_close($finfo);
+        echo $mime;
+        if ($mime != 'application/msword' && $mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            $errors['file'] = 'Ficheiro não permitido';
+            echo $mime;
         }
-        
-// Check if image file is a actual image or fake image
-        if (isset($_FILES['file']['tmp_name'])) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
-            if ($mime == 'application/msword' || $mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                echo 'Its a doc format do something';
-                $uploadOk = 1;
-            } else {
-                echo 'Its  NOT a doc format do something';
-                $uploadOk = 0;
-            }
-            finfo_close($finfo);
-        }
-        
-        
-        
-        
 
-// Check file size
-        if ($_FILES["file"]["size"] > 500000) {
-            echo "Sorry, your file is too large.";
-            $uploadOk = 0;
+        //Verificar se existe ficheiro igual, e acrescentar um numero antes
+        while (file_exists($file_path)) {
+            $fileName = uniqid() . '-' . $_FILES["file"]["name"];
+            $file_path = __DIR__ . "/../../upload/" . basename($fileName);
         }
-// Allow certain file formats
-        if ($extension != "doc") {
-            echo "Sorry, only DOC files are allowed.";
-            $uploadOk = 0;
-        }
-// Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-        } else {
-            if (move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
-                echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-            }
+
+        //Verificar tamanho do ficheiro
+        if ($_FILES["file"]["size"] > 400000) {
+            $errors['file'] = 'Ficheiro demasiado grande';
         }
     } else {
         $errors['file'] = 'Parametro não enviado';
@@ -145,9 +121,11 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         }
     }
 
-    print_r($errors);
-
     if (count($errors) == 0) { //se nao tem erros
+        require_once Config::getApplicationManagerPath() . "DocumentManager.php";
+        require_once Config::getApplicationModelPath() . "DocumentModel.php";
+
+
         echo 'sem erros';
         if ($input['type'] === 'edit') {
             echo '<br>';
@@ -155,11 +133,19 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         } else if ($input['type'] === 'import') {
             echo '<br>';
             echo 'IMPORTAR';
+//            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
+//               echo 'nao upload';
+//            }
         } else if ($input['type'] === 'create') {
+            $docManager = new DocumentManager();
+            $document = new DocumentModel('', $input['title'], $input['summary'], 1, $input['category'], $DocumentDATE, $input['doc'], $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS);
+
+
+
             echo '<br>';
             echo 'CRIAR';
         }
     } else {
         echo 'com erros';
     }
-}
+}    
