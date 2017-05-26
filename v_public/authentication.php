@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Config.php';
 require_once Config::getApplicationManagerPath() . 'SessionManager.php';
+require_once Config::getApplicationControllersPath() . 'AuthProcess.php';
 SessionManager::startSession();
 
 
@@ -22,12 +23,12 @@ if( SessionManager::keyExists('authUsername')){
             <h1 id="main-title">Autenticação</h1>
             <main id="auth">
 
-                <form method="post" action="" id="login" class="auth-form">
+                <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" id="login" class="auth-form">
                     <h2>LOGIN</h2>
                     <input required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
                     <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
                     <input type="checkbox" id="remember" name="remember"><label for="remember">Remember Me</label>
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Login" name="login">
                 </form>
                 <!--<hr>-->
                 <form id="registar" class="auth-form">
@@ -44,7 +45,7 @@ if( SessionManager::keyExists('authUsername')){
                     <input required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
                     --><span>-</span><!--
                     --><input required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
-                    <input type="submit" value="Registar" name="submit">
+                    <input type="submit" value="Registar" name="registar">
                 </form>
             </main>
 
