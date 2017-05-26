@@ -23,7 +23,8 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         'type' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
     );
 
-
+    
+    
     foreach ($rules as $key => $value) {
         $input[$key] = filter_input($inputType, $key, $value['sanitize']);
         if (!isset($input[$key])) {
@@ -73,54 +74,60 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
      * Validar file
      */
     if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
-
-            $target_dir = "upload/";
-            $target_file = $target_dir . basename($_FILES["file"]["name"]);
-            echo $target_file;
-            $uploadOk = 1;
-            $extension = pathinfo($target_file, PATHINFO_EXTENSION);
-
-// Check if image file is a actual image or fake image
-            if (isset($_FILES['file']['tmp_name'])) {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
-                if ($mime == 'application/msword') {
-                    echo 'Its a doc format do something';
-                    $uploadOk = 1;
-                } else {
-                    $uploadOk = 0;
-                }
-                finfo_close($finfo);
-            }
-// Check if file already exists
-            if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
-                $uploadOk = 0;
-            }
-// Check file size
-            if ($_FILES["file"]["size"] > 400000) {
-                echo "Sorry, your file is too large.";
-                $uploadOk = 0;
-            }
-// Allow certain file formats
-            if ($extension != "doc") {
-                echo "Sorry, only DOC files are allowed.";
-                $uploadOk = 0;
-            }
-// Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-            } else {
-                if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-                    echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
-                } else {
-                    echo "Sorry, there was an error uploading your file.";
-                }
-            }
         
-    }else{
-         $errors['file'] = 'Parametro não enviado';
+        $file_path = basename(__DIR__ . "/../../upload/" . $_FILES["file"]["name"]);
+
+        $uploadOk = 1;
+        $extension = pathinfo($file_path, PATHINFO_EXTENSION);
+
+        // Check if file already exists
+        if (file_exists($file_path)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+            $errors[]= 'Ficheiro já existe';
+        }
+        
+// Check if image file is a actual image or fake image
+        if (isset($_FILES['file']['tmp_name'])) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
+            if ($mime == 'application/msword' || $mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                echo 'Its a doc format do something';
+                $uploadOk = 1;
+            } else {
+                echo 'Its  NOT a doc format do something';
+                $uploadOk = 0;
+            }
+            finfo_close($finfo);
+        }
+        
+        
+        
+        
+
+// Check file size
+        if ($_FILES["file"]["size"] > 500000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+// Allow certain file formats
+        if ($extension != "doc") {
+            echo "Sorry, only DOC files are allowed.";
+            $uploadOk = 0;
+        }
+// Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
+                echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+    } else {
+        $errors['file'] = 'Parametro não enviado';
     }
     /*
      * Ajustar erros ás 3 paginas especificas
