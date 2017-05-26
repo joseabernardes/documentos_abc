@@ -1,23 +1,27 @@
 <label for="title">Titulo</label>
-<p><input required id="title" type="text" name="title" maxlength="50" value="<?= $input['title'] ?>"/></p>
+<p><input class="<?= array_key_exists('title', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="title" type="text" name="title" maxlength="90" value="<?= $input['title'] ?>"/></p>
+<?php if (array_key_exists('title', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['title'] ?></span> <?php } ?>
 <label for="summary">Resumo</label>
-<p><textarea name="summary" required id="summary" rows="5"/><?= $input['summary'] ?></textarea></p>
+<p><textarea name="summary" class="<?= array_key_exists('summary', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" maxlength="200" id="summary" rows="5"/><?= $input['summary'] ?></textarea></p>
+<?php if (array_key_exists('summary', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['summary'] ?></span> <?php } ?>
 <label for="category">Categoria</label>
-<p><select id="category" name="category">
-
-        <option value="AI" <?php echo ($input['category'] === 'AI' ? 'selected' : '' ) ?>>Album Information</option>
-        <option value="MR" <?php echo ($input['category'] === 'MR' ? 'selected' : '' ) ?>>Music Record</option>
-        <option value="CD" <?php echo ($input['category'] === 'CD' ? 'selected' : '' ) ?>>Concert's date</option>
+<p><select id="category" class="<?= array_key_exists('category', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" name="category">
+        <?php
+        $cat = new CategoryManager();
+        $catDump = $cat->getAllCategories();
+      
+        foreach ($catDump as $value) {  
+            ?>
+            <option value="<?= $value->getCategoryID() ?>" <?php echo ($input['category'] == $value->getCategoryID() ? 'selected' : '' ) ?>><?= $value->getCategoryNAME() ?></option>
+        <?php } ?>
     </select></p> 
-<label>Visibilidade</label>
+<?php if (array_key_exists('category', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['category'] ?></span> <?php } ?>
+<label class="<?= array_key_exists('visibility', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>">Visibilidade</label>
 <p>
-    <input <?php echo ($input['visibility'] === 'publico' ? 'checked' : '' ) ?> id="publico" type="radio" name="visibility" value="publico"><label class="visibility noselect" for="publico">Público</label>
-    <input <?php echo ($input['visibility'] === 'partilhado' ? 'checked' : '' ) ?> id="partilhado" type="radio" name="visibility" value="partilhado"><label class="visibility noselect" for="partilhado">Partilhado</label>                
-    <input <?php echo ($input['visibility'] === 'privado' ? 'checked' : '' ) ?> id="privado" type="radio" name="visibility"  value="privado"><label class="visibility noselect"  for="privado">Privado</label>
+    <input <?php echo ($input['visibility'] == 1 ? 'checked' : '' ) ?> id="publico" type="radio" name="visibility" value="1"><label  class="visibility noselect <?= array_key_exists('comment_public', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" for="publico">Público</label>
+    <input <?php echo ($input['visibility'] == 2 ? 'checked' : '' ) ?> id="partilhado" type="radio" name="visibility" value="2"><label class="visibility noselect" for="partilhado">Partilhado</label>                
+    <input <?php echo ($input['visibility'] == 3 ? 'checked' : '' ) ?> id="privado" type="radio" name="visibility"  value="3"><label class="visibility noselect"  for="privado">Privado</label>
 </p>
-
-
-
 <div id="sharedBox">
     <p><input type="text" id="addUser" placeholder="Escolher utilizadores"/>
         <input type="button" id="addButton" value="+">
@@ -28,8 +32,11 @@
     <p id="4" class="results"><input type="button" class="removeButton" value="x"><span>Don Carlos Covas</span><input checked type="checkbox" class="commentBox" id="comment_4"><label class="commentLabel" for="comment_4">Comentar</label></p>
 </div>
 <div id="publicBox">
-    <p><input checked class="commentBox" id="comment_public" type="checkbox"><label class="commentLabel" for="comment_public">Comentar</label>
+    <p><input <?php echo ($input['comment_public'] === 'on' ? 'checked' : '' ) ?> class="commentBox <?= array_key_exists('comment_public', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="comment_public" name="comment_public" type="checkbox"><label class="commentLabel" for="comment_public">Comentar</label>
     </p>
+    <?php if (array_key_exists('comment_public', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['comment_public'] ?></span> <?php } ?>
 </div>
+<?php if (array_key_exists('visibility', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['visibility'] ?></span> <?php } ?>
 <label for="tags">Palavras-chave</label>
-<p><textarea name="tags" required id="tags" rows="5" placeholder="separadas,por,virgulas"><?= $input['tags'] ?></textarea></p>
+<p><textarea name="tags" class="<?= array_key_exists('tags', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="tags" rows="5" placeholder="separadas,por,virgulas"><?= $input['tags'] ?></textarea></p>
+<?php if (array_key_exists('tags', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['tags'] ?></span> <?php } ?>

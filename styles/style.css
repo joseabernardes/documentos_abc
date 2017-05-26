@@ -40,6 +40,17 @@ h1#main-title{
     user-select: none; /* Standard syntax */
 }
 
+.input_erro{
+    border:2px solid red;	
+}
+
+.span_erro{
+    display: block;
+    color:red;
+    margin-top: -10px;
+    font-size: 12px;
+}
+
 /*---------------------------------HEADER---------------------------------*/
 
 header > img{
@@ -259,23 +270,11 @@ form#document .visibility{
 form#document input[type=radio]:checked + .visibility {
     background-color: rgb(240,182,56);
 }
-/*
 
-form#import input:not([type=radio]):not([type=submit]), form#import textarea, form#import select {
-    display: block;
-    margin-bottom: 10px;
-    margin-top: 2px;
-    width: 100%;
-    font-size: 14px;
-
-}
-
-*/
 form#document > div#sharedBox input[type=button]{
     background-color: lightgrey;
     border:none;
     width: 30px;
-    height: 100%;
     cursor: pointer;
 }
 form#document > div#sharedBox input[type=button]:hover{
@@ -328,7 +327,7 @@ form#document div#publicBox .commentLabel{
 
 form#document > div#publicBox .commentBox{
     margin-left: 20px;
-   
+
 }
 
 

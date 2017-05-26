@@ -1,7 +1,7 @@
 var sharedUsers = [
     {userID: 1, userNAME: "José Bernardes"},
     {userID: 2, userNAME: "Joel Pereira"},
-    {userID: 3, userNAME: "Sir Alberto Xia"},
+    {userID: 3, userNAME: "Sir Alberto Chia"},
     {userID: 4, userNAME: "Don Carlos Covas"}
 
 ];

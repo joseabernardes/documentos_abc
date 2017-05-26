@@ -1,7 +1,7 @@
 <?php
 $inputType = INPUT_POST;
-
-if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST') {
+$email = $pass = '';
+if (filter_has_var($inputType, 'login') && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
    
     session_start();
