@@ -12,9 +12,9 @@ $input['visibility'] = 3; //valores predefinidos
 $input['comment_public'] = 'on'; //valores predefinidos
 if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = array(
-        'title' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,90}$/'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
-        'summary' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,200}$/'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'tags' => array('options' => array('regexp' => '/^([\p{L}\d]+,)*[\p{L}\d]+$/'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só caraeres e numeros separados por ,
+        'title' => array('options' => array('regexp' => '/^[\pL\d ]{1,90}$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
+        'summary' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,200}$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'tags' => array('options' => array('regexp' => '/^([\p{L}\d]+,)*[\p{L}\d]+$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só caraeres e numeros separados por ,
         'doc' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'category' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'visibility' => array('options' => array('min_range' => 1, 'max_range' => 3), 'sanitize' => FILTER_SANITIZE_NUMBER_INT, 'validate' => FILTER_VALIDATE_INT),
@@ -58,6 +58,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         }
     } else if (array_key_exists('comment_public', $errors)) { //significa que nao é publico e tem erros de comment_public(malicioso!)
         unset($errors['comment_public']); //devem ser ignorados estes erros
+        unset($input['comment_public']); //para ser enviado null
     }
 
     /*
@@ -73,13 +74,12 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
     if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
 
         $file_path = __DIR__ . "/../../upload/" . basename($_FILES["file"]["name"]);
-
+        $fileName = basename($_FILES["file"]["name"]);
 
         //Verificar extenção do ficheiro
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
         if ($extension != "doc" && $extension != "docx") {
             $errors['file'] = 'Extensão não permitida';
-            ;
         }
 
         //Verificar mime_type do ficheiro
@@ -138,13 +138,13 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
 //            }
         } else if ($input['type'] === 'create') {
             $docManager = new DocumentManager();
-            $document = new DocumentModel('', $input['title'], $input['summary'], 1, $input['category'], $DocumentDATE, $input['doc'], $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS);
-
-
+            $document = new DocumentModel('', $input['title'], $input['summary'], 1, $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
+            $docManager->add($document);
 
             echo '<br>';
             echo 'CRIAR';
         }
+//        , "upload/" . $fileName,
     } else {
         echo 'com erros';
     }

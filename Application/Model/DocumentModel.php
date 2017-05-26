@@ -24,7 +24,7 @@ class DocumentModel {
     private $DocumentVisibilityID;
     private $DocumentCOMMENTS;
 
-    function __construct($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS) {
+    function __construct($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentVisibilityId, $DocumentCOMMENTS, $DocumentPATH = null) {
         $this->DocumentID = $DocumentID;
         $this->DocumentTITLE = $DocumentTITLE;
         $this->DocumentSUMMARY = $DocumentSUMMARY;
@@ -34,7 +34,11 @@ class DocumentModel {
         $this->DocumentCONTENT = $DocumentCONTENT;
         $this->DocumentPATH = $DocumentPATH;
         $this->DocumentVisibilityId = $DocumentVisibilityId;
-        $this->DocumentCOMMENTS = $DocumentCOMMENTS;
+        if ($DocumentVisibilityId == 1) {
+            $this->DocumentCOMMENTS = $DocumentCOMMENTS;
+        } else {
+            $this->DocumentCOMMENTS = 1;
+        }
     }
 
     function getDocumentID() {
