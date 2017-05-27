@@ -62,7 +62,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         }
     } else if (array_key_exists('comment_public', $errors)) { //significa que nao é publico e tem erros de comment_public(malicioso!)
         unset($errors['comment_public']); //devem ser ignorados estes erros
-         $input['comment_public'] = 0;//para ser enviado 0
+        $input['comment_public'] = 0; //para ser enviado 0
     }
 
     /*
@@ -138,18 +138,18 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         } else if ($input['type'] === 'import') {
             echo '<br>';
             echo 'IMPORTAR';
-//            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
-//               echo 'nao upload';
-//            }
+        //            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
+        //               echo 'nao upload';
+        //            }
         } else if ($input['type'] === 'create') {
             //criar documento
             $docManager = new DocumentManager();
             $document = new DocumentModel('', $input['title'], $input['summary'], 10, $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
-            $docManager->add($document);
-//criar tags
+            $documentid = $docManager->add($document);
+            //criar tags
             $tags = explode(',', $input['tags']);
             foreach ($tags as $value) {
-                $docManager->addTagtoDocument($value, $document);
+                $docManager->addTagtoDocument($value, $documentid);
             }
 
 

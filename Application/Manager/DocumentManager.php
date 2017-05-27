@@ -28,7 +28,7 @@ class DocumentManager extends MyDataAccessPDO {
         $ins['DocumentPATH'] = $a->getDocumentPATH();
         $ins['DocumentVisibilityID'] = $a->getDocumentVisibilityId();
         $ins['DocumentCOMMENTS'] = $a->getDocumentCOMMENTS();
-        $this->insert(self::TABLE_NAME, $ins);
+        return $this->insert(self::TABLE_NAME, $ins);
     }
 
     public function getDocumentByID($DocumentID) {
@@ -89,10 +89,10 @@ class DocumentManager extends MyDataAccessPDO {
         }
     }
 
-    public function addTagtoDocument($tag, DocumentModel $document) {
+    public function addTagtoDocument($tag, $documentID) {
         $ins = array();
         $ins['TagName'] = $tag;
-        $ins['DocumentID'] = $document->getDocumentID();
+        $ins['DocumentID'] = $documentID;
         $this->insert(self::TABLE_DOCUMENT_TAG, $ins);
     }
 

@@ -12,16 +12,15 @@
  * @author Pc
  */
 class AddressModel {
-    static $AddressIDCounter=0;
+
     private $AddressID;
     private $AddressADDRESS;
     private $AddressCITY;
     private $AddressCP1;
     private $AddressCP2;
-    
-    function __construct($AddressADDRESS, $AddressCITY, $AddressCP1, $AddressCP2) {
-        self::$AddressIDCounter++;
-        $this->AddressID = self::$AddressIDCounter;
+
+    function __construct($AddressID, $AddressADDRESS, $AddressCITY, $AddressCP1, $AddressCP2) {
+        $this->AddressID = $AddressID;
         $this->AddressADDRESS = $AddressADDRESS;
         $this->AddressCITY = $AddressCITY;
         $this->AddressCP1 = $AddressCP1;
@@ -67,6 +66,5 @@ class AddressModel {
     function setAddressCP2($AddressCP2) {
         $this->AddressCP2 = $AddressCP2;
     }
-
 
 }

@@ -17,6 +17,7 @@ require_once Config::getApplicationModelPath() . 'UserModel.php';
 class UserManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'user';
+    const TABLE_TOKEN = 'token';
 
     public function add(UserModel $a) {
         $ins = array();
@@ -53,13 +54,29 @@ class UserManager extends MyDataAccessPDO {
     }
 
     public function getUserByTokenID($TokenID) {
-        $where = array('$UserTokenID' => $TokenID);
+        $where = array('UserTokenID' => $TokenID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {
-            $list[$rec['$UserID']] = UserModel::convertArrayToObject($rec);
+            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
         }
         return $list;
+    }
+
+    public function getTokenByID($TokenID) {
+        $where = array('TokenID' => $TokenID);
+        $array = $this->getRecords(self::TABLE_TOKEN, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['TokenID']] = $rec['TokenVALUE'];
+        }
+        return $list;
+    }
+
+    public function updateTokenForUser(UserModel $user, $tokenID, $tokenVALUE) {
+        $user->setTokenID($tokenID);
+        $user->setTokenVALUE($tokenVALUE);
+        $this->updateUser($user);
     }
 
 }
