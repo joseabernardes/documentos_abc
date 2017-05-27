@@ -126,6 +126,7 @@ class MyDataAccessPDO extends MyDataAcessPDOBase {
         $sql = MyDataAccessPDOSQLFactory::buildSQL(self::INSERT_OPERATION, $table, $fields);
         try {
             $this->prepareStatement($sql, $fields);
+            return $this->getConnection()->lastInsertId();
         } catch (Exception $e) {
             throw $e;
         }

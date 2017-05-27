@@ -26,22 +26,24 @@ if (SessionManager::keyExists('authUsername')) {
             <h1 id="main-title">Autenticação</h1>
             <main id="auth">
 
+
                 <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" id="login" class="auth-form">
                     <h2>LOGIN</h2>
-                    <input required id="email" type="text" value="<?= $email ?> " placeholder="email@email.com" name="email" maxlength="50">
-                    <input required id="Pass" type="text" placeholder="password" name="Pass" maxlength="50">
+                    <!--value="<?= $email ?>"-->
+                    <input required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
+                    <input required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50">
                     <input type="checkbox" id="remember" name="remember"><label for="remember">Remember Me</label>
                     <input type="submit" value="Login" name="login">
                 </form>
                 <!--<hr>-->
-                <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>">
+                <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data">
                     <h2>REGISTAR</h2>
                     <input class="<?= array_key_exists('emailR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
                     <?php if (array_key_exists('emailR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['emailR'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="text" placeholder="password" name="PassR" maxlength="50">
+                    <input class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
                     <?php if (array_key_exists('PassR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="text" placeholder="Confirme Password" name="PassR2" maxlength="50">
-                    <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="password" placeholder="Confirme Password" name="PassR2" maxlength="50">
+                    <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>                  
                     <input class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
                     <?php if (array_key_exists('NameR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['NameR'] ?></span> <?php } ?>
                     <label>Fotografia</label>
@@ -56,8 +58,7 @@ if (SessionManager::keyExists('authUsername')) {
                     <input class="<?= array_key_exists('Cp1R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
                     --><span>-</span><!--
                     --><input class="<?= array_key_exists('Cp2R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
-                    <?php if (array_key_exists('Cp1R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?></span> <?php } ?> 
-                    <?php if (array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>
+                    <?php if (array_key_exists('Cp1R', $errors) || array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?> &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>                   
                     <input type="submit" value="Registar" name="registar">
                 </form>
             </main>

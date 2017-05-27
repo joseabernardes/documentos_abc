@@ -25,7 +25,9 @@ class AddressManager extends MyDataAccessPDO {
         $ins['AddressCITY'] = $a->getAddressCITY();
         $ins['AddressCP1'] = $a->getAddressCP1();
         $ins['AddressCP2'] = $a->getAddressCP2();
-        $this->insert(self::TABLE_NAME, $ins);
+        return $this->insert(self::TABLE_NAME, $ins);
+        
     }
+    
 
 }
