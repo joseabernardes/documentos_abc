@@ -40,7 +40,7 @@ if ($type === 'import') {
                 }
             }
             ?>
-                <input type="hidden" name="type" value="<?= $type ?> ">
+            <input type="hidden" name="type" value="<?= $type ?> ">
             <p><input type="submit" value="<?= $name ?> " name="submit"></p>
         </form>
 

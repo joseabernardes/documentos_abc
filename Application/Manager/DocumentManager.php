@@ -14,6 +14,7 @@
 class DocumentManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document';
+    const TABLE_DOCUMENT_TAG = 'document_tag';
 
     public function add(DocumentModel $a) {
         $ins = array();
@@ -86,6 +87,13 @@ class DocumentManager extends MyDataAccessPDO {
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function addTagtoDocument($tag, DocumentModel $document) {
+        $ins = array();
+        $ins['TagName'] = $tag;
+        $ins['DocumentID'] = $document->getDocumentID();
+        $this->insert(self::TABLE_DOCUMENT_TAG, $ins);
     }
 
 }

@@ -34,11 +34,7 @@ class DocumentModel {
         $this->DocumentCONTENT = $DocumentCONTENT;
         $this->DocumentPATH = $DocumentPATH;
         $this->DocumentVisibilityId = $DocumentVisibilityId;
-        if ($DocumentVisibilityId == 1) {
-            $this->DocumentCOMMENTS = $DocumentCOMMENTS;
-        } else {
-            $this->DocumentCOMMENTS = 1;
-        }
+        $this->DocumentCOMMENTS = $DocumentCOMMENTS;
     }
 
     function getDocumentID() {

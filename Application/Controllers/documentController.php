@@ -12,15 +12,15 @@ $input['visibility'] = 3; //valores predefinidos
 $input['comment_public'] = 'on'; //valores predefinidos
 if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = array(
-        'title' => array('options' => array('regexp' => '/^[\pL\d ]{1,90}$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
-        'summary' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,200}$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'tags' => array('options' => array('regexp' => '/^([\p{L}\d]+,)*[\p{L}\d]+$/u'), 'sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só caraeres e numeros separados por ,
-        'doc' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
-        'category' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
+        'title' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,90}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
+        'summary' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,200}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'tags' => array('options' => array('regexp' => '/^([\p{L}\d]+,)*[\p{L}\d]+$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só caraeres e numeros separados por ,
+        'doc' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
+        'category' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'visibility' => array('options' => array('min_range' => 1, 'max_range' => 3), 'sanitize' => FILTER_SANITIZE_NUMBER_INT, 'validate' => FILTER_VALIDATE_INT),
-        'comment_public' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
-        'reasons' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
-        'type' => array('sanitize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
+        'comment_public' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
+        'reasons' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
+        'type' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
     );
     foreach ($rules as $key => $value) {
         $input[$key] = filter_input($inputType, $key, $value['sanitize']);
@@ -33,6 +33,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         }
         $input[$key] = trim($input[$key]);
     }
+    print_r($input);
     /*
      * Validar Categorias
      */
@@ -53,12 +54,15 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
      * Validar comment_public
      */
     if ($input['visibility'] == 1) {
-        if (!array_key_exists('comment_public', $errors) && $input['comment_public'] != 'on' && $input['comment_public'] != 'off') {
-            $errors['comment_public'] = 'Parametro Invalido';
+        unset($errors['comment_public']);
+        if ($input['comment_public'] == 'on') {
+            $input['comment_public'] = 1;
+        } else {
+            $input['comment_public'] = 0;
         }
     } else if (array_key_exists('comment_public', $errors)) { //significa que nao é publico e tem erros de comment_public(malicioso!)
         unset($errors['comment_public']); //devem ser ignorados estes erros
-        unset($input['comment_public']); //para ser enviado null
+         $input['comment_public'] = 0;//para ser enviado 0
     }
 
     /*
@@ -126,6 +130,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         require_once Config::getApplicationModelPath() . "DocumentModel.php";
 
 
+
         echo 'sem erros';
         if ($input['type'] === 'edit') {
             echo '<br>';
@@ -137,9 +142,16 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
 //               echo 'nao upload';
 //            }
         } else if ($input['type'] === 'create') {
+            //criar documento
             $docManager = new DocumentManager();
-            $document = new DocumentModel('', $input['title'], $input['summary'], 1, $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
+            $document = new DocumentModel('', $input['title'], $input['summary'], 10, $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
             $docManager->add($document);
+//criar tags
+            $tags = explode(',', $input['tags']);
+            foreach ($tags as $value) {
+                $docManager->addTagtoDocument($value, $document);
+            }
+
 
             echo '<br>';
             echo 'CRIAR';

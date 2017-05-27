@@ -22,14 +22,11 @@ class TagManager extends MyDataAccessPDO {
         $this->insert(self::TABLE_NAME, $ins);
     }
 
-    public function getTagByID($TagID) {
-        $where = array('TagID' => $TagID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['TagID']] = TagModel::convertArrayToObject($rec);
-        }
-        return $list;
+    public function addTagtoDocument(TagModel $tag, DocumentModel $document) {
+        $ins = array();
+        $ins['TagID'] = $tag->getTagID();
+        $ins['DocumentID'] = $document->getDocumentID();
+        $this->insert(self::TABLE_DOCUMENT_TAG, $ins);
     }
 
 }
