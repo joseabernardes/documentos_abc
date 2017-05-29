@@ -20,7 +20,7 @@
                     <a  class="noclick" href="#">Joel Pereira</a>
                     <ul>
                         <li><a href="../v_private/profile-page.php">Perfil</a></li>
-                        <li><a href="#">Sair</a></li>
+                        <li><a href="../logout.php">Sair</a></li>
                     </ul>
                 </li>
                 <?php

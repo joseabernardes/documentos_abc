@@ -72,12 +72,8 @@ class SessionManager {
      * @throws SessionException
      */
     public static function destroySession() {
-        if (!self::startSession()) {
-            session_unset();
-            session_destroy();
-        } else {
-            throw new SessionException("There is no open Session");
-        }
+        session_unset();
+        session_destroy();
     }
 
     /**
