@@ -1,3 +1,13 @@
+<?php
+require_once __DIR__ . '/../Config.php';
+require_once Config::getApplicationManagerPath() . 'SessionManager.php';
+SessionManager::startSession();
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.

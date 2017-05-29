@@ -47,7 +47,7 @@ function addUserDOM(user) {
     label.addClass("commentLabel").attr("for", commentid).text("Comentar");
     p.append(button).append(span).append(checkbox).append(label);
     $("#sharedBox").append(p);
-    addListener();
+//    addListener();
 }
 
 function removeUserfromArray(user, array) {
@@ -67,10 +67,10 @@ function addUser() {
         removeUserfromArray(user, users);
     } else {
         $("#addButton").css("box-shadow", "0px 0px 5px 1px red");
-         $("#addButton").css("color", "red");
+        $("#addButton").css("color", "red");
         setTimeout(function () {
-            $("#addButton").css("box-shadow", "none");      
-                     $("#addButton").css("color", "black");
+            $("#addButton").css("box-shadow", "none");
+            $("#addButton").css("color", "black");
 
         }, 300);
     }
@@ -91,15 +91,16 @@ function removeUser(id) {
     }
 
 }
+function aaa(event) {
+    window.console.log(event.target);
+    window.console.log($(event.target).parent());
+    var id = $(event.target).parent().attr("id");
+    window.console.log(id);
+    removeUser(parseInt(id));
+}
 
 function addListener() {
-    $(".removeButton").click(function (event) {
-        window.console.log(event.target);
-        window.console.log($(event.target).parent());
-        var id = $(event.target).parent().attr("id");
-        window.console.log(id);
-        removeUser(parseInt(id));
-    });
+    $(".removeButton").click(aaa);
 
 
 }

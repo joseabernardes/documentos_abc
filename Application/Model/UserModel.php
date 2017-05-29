@@ -108,7 +108,7 @@ class UserModel {
     }
 
     public static function convertArrayToObject(Array &$data) {
-        return self::createObject($data['UserID'], $data['UserPASS'], $data['UserEMAIL'], $data['UserNAME'], $data['UserPHOTO'], $data['USerPHONE'], $data['UserAUTHLEVEL'], $data['UserADDRESS'], $data['UserTokenID']);
+        return self::createObject($data['UserID'], $data['UserPASS'], $data['UserEMAIL'], $data['UserNAME'], $data['UserPHOTO'], $data['UserPHONE'], $data['UserAUTHLEVEL'], $data['UserADDRESS'], $data['UserTokenID']);
     }
 
     public static function createObject($UserID, $UserPASS, $UserEMAIL, $UserNAME, $UserPHOTO, $USerPHONE, $UserAUTHLEVEL, $UserADDRESS, $UserTokenID) {

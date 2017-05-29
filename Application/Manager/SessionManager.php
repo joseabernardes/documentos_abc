@@ -71,8 +71,8 @@ class SessionManager {
      * 
      * @throws SessionException
      */
-    public static function destroySession() {
-        if (!self::startSession()) {
+    public static function destroySession($key) {
+        if (self::keyExists($key)) {
             session_unset();
             session_destroy();
         } else {
