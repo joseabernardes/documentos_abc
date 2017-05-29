@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+require_once __DIR__ . '/Config.php';
 require_once Config::getApplicationManagerPath() . 'SessionManager.php';
 
 if (array_key_exists('authUsername', $_SESSION)) {
@@ -12,7 +13,7 @@ if (array_key_exists('authUsername', $_SESSION)) {
             setcookie('rememberme', "", time() - 60, "/");
         }
     }
-    SessionManager::destroySession();
+    SessionManager::destroySession('authUsername');
     header('Location:v_public/index.php');
 }
 

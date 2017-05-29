@@ -2,12 +2,13 @@
 
 $inputType = INPUT_POST;
 $email = $pass = '';
+$errors = array();
 if (filter_has_var($inputType, 'login') && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     session_start();
     $email = filter_input($inputType, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
     $pass = filter_input($inputType, 'Pass', FILTER_SANITIZE_SPECIAL_CHARS);
-    $remember  = filter_input($inputType, 'remember', FILTER_SANITIZE_SPECIAL_CHARS);
+    $remember = filter_input($inputType, 'remember', FILTER_SANITIZE_SPECIAL_CHARS);
 
     require_once __DIR__ . '/../../Config.php';
     require_once Config::getApplicationManagerPath() . 'SessionManager.php';
@@ -16,30 +17,30 @@ if (filter_has_var($inputType, 'login') && $_SERVER['REQUEST_METHOD'] === 'POST'
     $users = new UserManager();
     $usersDump = $users->getUserByEmail($email);
     $user = reset($usersDump);
-    $errors = array();
+
     if ($user) {
-        echo "tentando fazer login";
+        //echo "tentando fazer login";
         try {
             if (password_verify($pass, $user->getUserPASS())) {
                 SessionManager::addSessionValue('authUsername', $user->getUserID());
-                  echo "FEITO";
+                //echo "FEITO";
                 if ($remember === 'on') {
                     $tokenID = bin2hex(openssl_random_pseudo_bytes(32)); //rond
                     $tokenVALUE = bin2hex(openssl_random_pseudo_bytes(32)); //rond
                     $users->updateTokenForUser($user, $tokenID, password_hash($tokenVALUE, PASSWORD_DEFAULT));
                     setcookie('rememberme', "{$tokenID}___{$tokenVALUE}", time() + 3600 * 24, "/");
                 }
-                header("Location: .../v_public/index.php");
+                header("Location: ../v_public/index.php");
             } else {
-                $errors['password'] = 'Password nao existe';
+                $errors['password'] = 'Password Errada';
             }
         } catch (Exception $ex) {
             
         }
     } else {
         $errors['email'] = 'Email nao existe';
-        echo "user não existe";
+        // echo "user não existe";
     }
-    
-    print_r($errors);
+
+    // print_r($errors);
 }
