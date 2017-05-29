@@ -33,6 +33,14 @@ class UserManager extends MyDataAccessPDO {
         $this->insert(self::TABLE_NAME, $ins);
     }
 
+    public function updateUser(UserModel $obj) {
+        try {
+            $this->update(self::TABLE_NAME, $obj->convertObjectToArray(), array('UserID' => $obj->getUserID()));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
     public function getUserByID($UserID) {
         $where = array('UserID' => $UserID);
         $array = $this->getRecords(self::TABLE_NAME, $where);

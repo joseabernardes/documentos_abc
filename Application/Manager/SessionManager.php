@@ -15,7 +15,6 @@ class SessionManager {
      * @throws SessionException
      */
     public static function addSessionValue($key, $value) {
-        self::startSession();
         if (!array_key_exists($key, $_SESSION)) {
             $_SESSION[$key] = $value;
         } else {
@@ -30,7 +29,6 @@ class SessionManager {
      * @throws SessionException
      */
     public static function updateSessionValue($key, $value) {
-        self::startSession();
         if (array_key_exists($key, $_SESSION)) {
             $_SESSION[$key] = $value;
         } else {
@@ -44,7 +42,6 @@ class SessionManager {
      * @throws SessionException
      */
     public static function deleteSessionValue($key) {
-        self::startSession();
         if (array_key_exists($key, $_SESSION)) {
             unset($_SESSION[$key]);
         } else {
@@ -59,7 +56,6 @@ class SessionManager {
      * @throws SessionException
      */
     public static function getSessionValue($key) {
-        self::startSession();
         if (array_key_exists($key, $_SESSION)) {
             return $_SESSION[$key];
         } else {
@@ -94,7 +90,6 @@ class SessionManager {
     }
 
     public static function keyExists($key) {
-        self::startSession();
         if (array_key_exists($key, $_SESSION)) {
             return true;
         } else {
