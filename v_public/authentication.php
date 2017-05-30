@@ -10,7 +10,7 @@ SessionManager::startSession();
         const SPAN_CLASS_ERROR_NAME = 'span_erro';
 
 if (SessionManager::keyExists('authUsername')) {
-    header("Location: ../../index.php");
+    header("Location: index.php");
 } else if (filter_input(INPUT_COOKIE, 'rememberme')) {
 
     //echo 'Tentanto fazer login';
