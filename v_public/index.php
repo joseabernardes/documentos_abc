@@ -1,8 +1,5 @@
 <?php
-require_once __DIR__ . '/../Config.php';
-require_once Config::getApplicationManagerPath() . 'SessionManager.php';
-SessionManager::startSession();
-
+require_once __DIR__ . '/../partials/_init.php';
 ?>
 
 
@@ -25,17 +22,12 @@ and open the template in the editor.
         <br>
         <br>
         <input type="search">
+
+
         <br>
         <br> 
         <?php
-        
 
-       echo preg_match('/^[\pL\d ]{1,90}$/u', 'sdfghjçhjkl');
-        
-        
-        
-        
-        
         ?>
         <br> 
         <br>
@@ -44,6 +36,6 @@ and open the template in the editor.
         <br> 
         <br>
 
-        <?php include_once '../partials/_footer.php'; ?>
+<?php include_once '../partials/_footer.php'; ?>
     </body>
 </html>

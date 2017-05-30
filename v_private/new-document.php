@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Config.php';
+require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 require_once Config::getApplicationControllersPath() . "documentController.php";
 

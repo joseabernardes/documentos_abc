@@ -37,7 +37,7 @@ function addUserDOM(user) {
     var p = $("<p></p>");
     p.addClass("results").attr("id", user.userID);
     var button = $("<input></input>");
-    button.addClass("removeButton").attr("type", "button").attr("value", "x");
+    button.addClass("removeButton").attr("type", "button").attr("value", "x").click(removeUser);
     var span = $("<span></span>");
     span.text(user.userNAME);
     var checkbox = $("<input></input>");
@@ -81,32 +81,18 @@ function removeUserDOM(id) {
     $("p#" + id).remove();
 }
 
-function removeUser(id) {
-    var user = sharedUsers.containsID(id, sharedUsers);
+function removeUser(event) {
+    var id = $(event.target).parent().attr("id");
+    var user = sharedUsers.containsID(parseInt(id), sharedUsers);
     if (user !== -1) {
         var newUser = {userID: user.userID, userNAME: user.userNAME};
         removeUser(user, sharedUsers);
         users.push(newUser);
         removeUserDOM(user.userID);
     }
-
 }
-function aaa(event) {
-    window.console.log(event.target);
-    window.console.log($(event.target).parent());
-    var id = $(event.target).parent().attr("id");
-    window.console.log(id);
-    removeUser(parseInt(id));
-}
-
-function addListener() {
-    $(".removeButton").click(aaa);
-
-
-}
-
 $(document).ready(function () {
     $("#addButton").click(addUser);
-    addListener();
+    $(".removeButton").click(removeUser);
 });
 

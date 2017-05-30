@@ -117,4 +117,19 @@ class UserModel {
         return $user;
     }
 
+    public function convertObjectToArray() {
+        $data = array(
+            'UserID' => $this->getUserID(),
+            'UserPASS' => $this->getUserPASS(),
+            'UserEMAIL' => $this->getUserEMAIL(),
+            'UserNAME' => $this->getUserNAME(),
+            'UserPHOTO' => $this->getUserPHOTO(),
+            'UserPHONE' => $this->getUserPHONE(),
+            'UserAUTHLEVEL' => $this->getUserAUTHLEVEL(),
+            'UserADDRESS' => $this->getUserADDRESS(),
+            'UserTokenID' => $this->getUserTokenID()
+        );
+        return $data;
+    }
+
 }

@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../partials/_init.php'; ?>
+
 <!DOCTYPE html>
 <html>
     <head>

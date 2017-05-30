@@ -1,11 +1,9 @@
 <?php
-
 $inputType = INPUT_POST;
 $email = $pass = '';
-$errors = array();
+$remember = 'on';
+$loginErrors = array();
 if (filter_has_var($inputType, 'login') && $_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    session_start();
     $email = filter_input($inputType, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
     $pass = filter_input($inputType, 'Pass', FILTER_SANITIZE_SPECIAL_CHARS);
     $remember = filter_input($inputType, 'remember', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -32,13 +30,13 @@ if (filter_has_var($inputType, 'login') && $_SERVER['REQUEST_METHOD'] === 'POST'
                 }
                 header("Location: ../v_public/index.php");
             } else {
-                $errors['password'] = 'Password Errada';
+                $loginErrors['password'] = 'Password Errada';
             }
         } catch (Exception $ex) {
             
         }
     } else {
-        $errors['email'] = 'Email nao existe';
+        $loginErrors['email'] = 'Email nao existe';
         // echo "user não existe";
     }
 

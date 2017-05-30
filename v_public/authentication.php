@@ -1,10 +1,9 @@
 <?php
-require_once __DIR__ . '/../Config.php';
-require_once Config::getApplicationManagerPath() . 'SessionManager.php';
+require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
 require_once Config::getApplicationControllersPath() . 'AuthProcess.php';
 require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
-SessionManager::startSession();
+
 
         const INPUT_CLASS_ERROR_NAME = 'input_erro';
         const SPAN_CLASS_ERROR_NAME = 'span_erro';
@@ -20,16 +19,18 @@ if (SessionManager::keyExists('authUsername')) {
         $tokenID = $tokens[0];
         $tokenVALUE = $tokens[1];
         $userManager = new UserManager();
-        $user = reset($userManager->getUserByTokenID($tokenID)); //retorna o primeiro (e presumivelmente o UNICO) user
+        $userDump = $userManager->getUserByTokenID($tokenID);
+        $user = reset($userDump); //retorna o primeiro (e presumivelmente o UNICO) user
 
         if ($user) {
             echo 'OK';
-            if (password_verify($tokenVALUE, reset($userManager->getTokenByID($TokenID)))) {
-                Session::addSessionValue('authUsername', $user->getUserID());
+            $passDump =$userManager->getTokenByID($tokenID);
+            if (password_verify($tokenVALUE,reset($passDump))) {
+                SessionManager::addSessionValue('authUsername', $user->getUserID());
                 echo 'VALID';
             } else {
                 echo 'INVALID';
-                $users->deleteToken($user); //remover o TOKEN
+                $userManager->deleteToken($user); //remover o TOKEN
             }
         }
     }
@@ -53,11 +54,12 @@ if (SessionManager::keyExists('authUsername')) {
                 <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" id="login" class="auth-form">
                     <h2>LOGIN</h2>
                     
-                    <input class="<?= array_key_exists('email', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50">
-                    <?php if (array_key_exists('email', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['email'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('password', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50">
-                    <?php if (array_key_exists('password', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['password'] ?></span> <?php } ?>
-                    <input type="checkbox" id="remember" name="remember"><label for="remember">Remember Me</label>
+                    <input class="<?= array_key_exists('email', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50" value="<?= $email ?>">
+                    <?php if (array_key_exists('email', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['email'] ?></span> <?php } ?>
+                    <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
+                    <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
+                    <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
+                    
                     <input type="submit" value="Login" name="login">
                 </form>
                 <!--<hr>-->
