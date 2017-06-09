@@ -92,13 +92,11 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
 
     if (count($errors) == 0) {
 
-        $address = new AddressModel('', $input['Addressr'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
+        $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
 
         $addressManager = new AddressManager();
         $addressID = $addressManager->add($address);
-        //echo $addressManager->getid();
         $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
-
         $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
         $manager = new UserManager();
         $manager->add($user);

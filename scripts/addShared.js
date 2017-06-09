@@ -5,22 +5,40 @@ var sharedUsers = [
     {userID: 4, userNAME: "Don Carlos Covas"}
 
 ];
+var users = [];//AJAX
 
 
-function details(title,desc,user,mail,date,opin,photo) {
-     $("#title").text(title);
-     $("#desc").text(desc);
-     $("#user").text(user);
-     $("#mail").text(mail).attr("href","mailto:" + title);
-     $("#date").text(date);
-     $("#opin").text(opin);
-     $("#photo").attr("src",photo);
+function proce(data) {
+    //valicaçoes tratamento de erros
+    //try catch
+    var json = JSON.parse(data);
+//    alert(json.newState);
+
+    if (json.length > 0) {
+        users = json;
+        console.log(users);
+    }
+
+
 }
 
-var users = [
-    {userID: 5, userNAME: "jose"},
-    {userID: 6, userNAME: "João Alfredo"}
-];//AJAX
+
+function getUsers() {
+
+    $.get('../Application/Services/getUsers.php', function (data) {
+        proce(data);
+
+    })
+            .fail(function () {
+                alert("erro");
+            });
+
+
+
+
+}
+
+
 
 Array.prototype.containsNAME = function (element, array) {
     for (var i = 0; i < array.length; i++) {
@@ -60,14 +78,14 @@ function addUserDOM(user) {
 //    addListener();
 
 
-   var h3 = $("<h3></h3>");
-   h3.text("sfsdg");
-   var img = $("<img>");
-   img.attr("src", "link");
-   img.attr("sad","af");
-   var div = $("<div></div>");
-   div.append(h3).append(img);
-   div.html();
+    var h3 = $("<h3></h3>");
+    h3.text("sfsdg");
+    var img = $("<img>");
+    img.attr("src", "link");
+    img.attr("sad", "af");
+    var div = $("<div></div>");
+    div.append(h3).append(img);
+    div.html();
 }
 
 function removeUserfromArray(user, array) {
@@ -81,7 +99,7 @@ function addUser() {
 
     var user = users.containsNAME(getUserDOM(), users);
     if (user !== -1) {
-        var newUser = {userID: user.userID, userNAME: user.userNAME, allowComments: '1'};
+        var newUser = {userID:parseInt(user.userID), userNAME: user.userNAME, allowComments: '1'};
         sharedUsers.push(newUser);
         addUserDOM(newUser);
         removeUserfromArray(user, users);
@@ -106,12 +124,14 @@ function removeUser(event) {
     var user = sharedUsers.containsID(parseInt(id), sharedUsers);
     if (user !== -1) {
         var newUser = {userID: user.userID, userNAME: user.userNAME};
-        removeUser(user, sharedUsers);
+        removeUserfromArray(user, sharedUsers);
         users.push(newUser);
         removeUserDOM(user.userID);
     }
 }
 $(document).ready(function () {
+    getUsers();//AJAX
+    console.log(sharedUsers);
     $("#addButton").click(addUser);
     $(".removeButton").click(removeUser);
 });

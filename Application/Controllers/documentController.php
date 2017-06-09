@@ -151,6 +151,10 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             foreach ($tags as $value) {
                 $docManager->addTagtoDocument($value, $documentid);
             }
+            
+            if($input['visibility'] == '3'){
+                
+            }
 
 
             echo '<br>';
