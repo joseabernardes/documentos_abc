@@ -447,3 +447,17 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
+/* Validar users*/
+
+.article{
+    display: inline-block;
+}
+
+#image{
+    width: 100px;
+    height: 100px;
+}
+
+.classe{
+   list-style-type: none;
+}

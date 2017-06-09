@@ -61,6 +61,16 @@ class UserManager extends MyDataAccessPDO {
         return $list;
     }
 
+    public function getUserByAuthLevel($UserAUTHLEVEL) {
+        $where = array('UserAUTHLEVEL' => $UserAUTHLEVEL);
+        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
     public function getUserByTokenID($TokenID) {
         $where = array('UserTokenID' => $TokenID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
