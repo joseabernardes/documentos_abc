@@ -138,9 +138,9 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         } else if ($input['type'] === 'import') {
             echo '<br>';
             echo 'IMPORTAR';
-        //            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
-        //               echo 'nao upload';
-        //            }
+            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
+                echo 'nao upload';
+            }
         } else if ($input['type'] === 'create') {
             //criar documento
             $docManager = new DocumentManager();

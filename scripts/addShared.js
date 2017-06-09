@@ -7,6 +7,16 @@ var sharedUsers = [
 ];
 
 
+function details(title,desc,user,mail,date,opin,photo) {
+     $("#title").text(title);
+     $("#desc").text(desc);
+     $("#user").text(user);
+     $("#mail").text(mail).attr("href","mailto:" + title);
+     $("#date").text(date);
+     $("#opin").text(opin);
+     $("#photo").attr("src",photo);
+}
+
 var users = [
     {userID: 5, userNAME: "jose"},
     {userID: 6, userNAME: "João Alfredo"}
@@ -48,6 +58,16 @@ function addUserDOM(user) {
     p.append(button).append(span).append(checkbox).append(label);
     $("#sharedBox").append(p);
 //    addListener();
+
+
+   var h3 = $("<h3></h3>");
+   h3.text("sfsdg");
+   var img = $("<img>");
+   img.attr("src", "link");
+   img.attr("sad","af");
+   var div = $("<div></div>");
+   div.append(h3).append(img);
+   div.html();
 }
 
 function removeUserfromArray(user, array) {

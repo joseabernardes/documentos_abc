@@ -84,7 +84,7 @@ class UserManager extends MyDataAccessPDO {
 //    public function deleteToken()
 
     public function updateTokenForUser(UserModel $user, $tokenID, $tokenVALUE) {
-
+        $this->deleteToken($user);
         $this->addToken($tokenID, $tokenVALUE);
         $user->setUserTokenID($tokenID);
         $this->updateUser($user);
@@ -98,13 +98,14 @@ class UserManager extends MyDataAccessPDO {
     }
 
     public function deleteToken(UserModel $user) {
+        $id = $user->getUserTokenID();
         $user->setUserTokenID(null);
+        $this->updateUser($user);
         try {
-            $this->delete(self::TABLE_TOKEN, array('TokenID' => $user->getUserTokenID()));
+            $this->delete(self::TABLE_TOKEN, array('TokenID' => $id));
         } catch (Exception $e) {
             throw $e;
         }
-        $this->updateUser($user);
     }
 
 }
