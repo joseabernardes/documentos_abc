@@ -65,7 +65,7 @@ header > nav ul{
     margin: 0;
     padding:0;
     background-color: grey;
-        /*display: flex;*/
+    /*display: flex;*/
 }
 
 header > nav li{
@@ -250,7 +250,7 @@ form#login #remember + label{
 }
 
 div#passCont{
-    	position:relative;
+    position:relative;
 }
 #pwdLogin,#pwd1, #pwd2{
     position: absolute;
@@ -448,17 +448,31 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
-/* Validar users*/
+/*-----------------Validar users----------------*/
 
 .article{
     display: inline-block;
+    padding: 5px 5px 5px 5px;
+    margin: 20px 20px 20px 20px;
 }
 
 #image{
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
+    border:2px solid rgba(84,144,242,1);
+    margin-right: 38px;
 }
 
 .classe{
-   list-style-type: none;
+    list-style-type: none;
 }
+
+.article li{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.article label{
+    color:rgba(84,144,242,1);
+}
+
