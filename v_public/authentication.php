@@ -23,14 +23,16 @@ if (SessionManager::keyExists('authUsername')) {
         $user = reset($userDump); //retorna o primeiro (e presumivelmente o UNICO) user
 
         if ($user) {
-            echo 'OK';
-            $passDump =$userManager->getTokenByID($tokenID);
-            if (password_verify($tokenVALUE,reset($passDump))) {
+            // echo 'OK';
+            $passDump = $userManager->getTokenByID($tokenID);
+            if (password_verify($tokenVALUE, reset($passDump))) {
                 SessionManager::addSessionValue('authUsername', $user->getUserID());
-                echo 'VALID';
+                //echo 'VALID';
+                header("Location: index.php");
             } else {
-                echo 'INVALID';
+                //echo 'INVALID';
                 $userManager->deleteToken($user); //remover o TOKEN
+                header("Location: index.php");
             }
         }
     }
@@ -43,7 +45,7 @@ if (SessionManager::keyExists('authUsername')) {
         <head>
             <?php include_once '../partials/_head.php'; ?>
             <title>Autenticação</title>
-
+            <script src="../scripts/password.js" type="text/javascript"></script>
         </head>
         <body>
             <?php include_once '../partials/_header.php'; ?>
@@ -53,13 +55,18 @@ if (SessionManager::keyExists('authUsername')) {
 
                 <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" id="login" class="auth-form">
                     <h2>LOGIN</h2>
-                    
+
                     <input class="<?= array_key_exists('email', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50" value="<?= $email ?>">
                     <?php if (array_key_exists('email', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['email'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
+                    <div class="embed-submit-field">
+                        <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
+                        <button id="eye" type="button">
+                            <img src="../images/logo.png" alt="eye"/>
+                        </button>
+                    </div>
                     <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
                     <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
-                    
+
                     <input type="submit" value="Login" name="login">
                 </form>
                 <!--<hr>-->
@@ -85,7 +92,7 @@ if (SessionManager::keyExists('authUsername')) {
                     <input class="<?= array_key_exists('Cp1R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
                     --><span>-</span><!--
                     --><input class="<?= array_key_exists('Cp2R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
-                    <?php if (array_key_exists('Cp1R', $errors) || array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?=  $errors['Cp1R']  ?> &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>                   
+                    <?php if (array_key_exists('Cp1R', $errors) || array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?> &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>                   
                     <input type="submit" value="Registar" name="registar">
                 </form>
             </main>

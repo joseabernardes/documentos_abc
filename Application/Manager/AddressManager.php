@@ -26,8 +26,16 @@ class AddressManager extends MyDataAccessPDO {
         $ins['AddressCP1'] = $a->getAddressCP1();
         $ins['AddressCP2'] = $a->getAddressCP2();
         return $this->insert(self::TABLE_NAME, $ins);
-        
     }
-    
+
+    public function getAddressByID($AddressID) {
+        $where = array('AddressID' => $AddressID);
+        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['AddressID']] = AddressModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
 
 }
