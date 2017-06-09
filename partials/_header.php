@@ -1,3 +1,22 @@
+<?php
+require_once Config::getApplicationManagerPath() . 'UserManager.php';
+require_once Config::getApplicationModelPath() . 'UserModel.php';
+
+try {
+    $bool = TRUE;
+    $userMan = new UserManager();
+    $userMana = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
+    $userModel = reset($userMana);
+
+    if (!$userModel) {
+        throw new SessionException('User não existe');
+    }
+} catch (SessionException $exc) {
+    $bool = FALSE;
+}
+?>
+
+
 <header>
     <img src="../images/logo.png"  alt="Documentos ABC"/>
     <nav>
@@ -14,10 +33,10 @@
             --><li><a href="../v_private/view-document.php">Ver Documento</a></li><!--
             --><li><a href="../v_private/edit-document.php">Editar Documento</a></li>
             <?php
-            if (SessionManager::keyExists('authUsername')) {
+            if ($bool) {
                 ?>
                 <li class="drop" id="nav_right">
-                    <a  class="noclick" href="#">Joel Pereira</a>
+                    <a  class="noclick" href="#"> <?= $userModel->getUserNAME() ?></a>
                     <ul>
                         <li><a href="../v_private/profile-page.php">Perfil</a></li>
                         <li><a href="../logout.php">Sair</a></li>

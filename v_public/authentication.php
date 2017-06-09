@@ -38,7 +38,7 @@ if (!$loggedIn) {
         <head>
             <?php include_once '../partials/_head.php'; ?>
             <title>Autenticação</title>
-
+            <script src="../scripts/password.js" type="text/javascript"></script>
         </head>
         <body>
             <?php include_once '../partials/_header.php'; ?>
@@ -51,9 +51,13 @@ if (!$loggedIn) {
 
                     <input class="<?= array_key_exists('email', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50" value="<?= $email ?>">
                     <?php if (array_key_exists('email', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['email'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
-                    <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
-                    <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember me</label>
+                    <div id="passCont">
+                        <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
+                        <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
+                        <img id="pwdLogin" src="../images/password/hide.png" alt=""/>
+                    </div>
+
+                    <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
 
                     <input type="submit" value="Login" name="login">
                 </form>
@@ -62,9 +66,15 @@ if (!$loggedIn) {
                     <h2>REGISTAR</h2>
                     <input value="<?= $input['emailR'] ?>" class="<?= array_key_exists('emailR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
                     <?php if (array_key_exists('emailR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['emailR'] ?></span> <?php } ?>
-                    <input  title="8 caracteres (1 Maiuscula, 1 Minuscula, 1 numero e um caracter especial[#?!@$%^&+*-])" pattern='(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}' class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
+                    <div id="passCont">
+                        <input  title="8 caracteres (1 Maiuscula, 1 Minuscula, 1 numero e um caracter especial[#?!@$%^&+*-])" pattern='(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}' class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
+                     <img id="pwd1" src="../images/password/hide.png" alt=""/>
+                    </div>
                     <?php if (array_key_exists('PassR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="password" placeholder="Confirme Password" name="PassR2" maxlength="50">
+                    <div id="passCont">
+                        <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="password" placeholder="Confirme Password" name="PassR2" maxlength="50">
+                      <img id="pwd2" src="../images/password/hide.png" alt=""/>
+                    </div>
                     <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>                  
                     <input value="<?= $input['NameR'] ?>" class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
                     <?php if (array_key_exists('NameR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['NameR'] ?></span> <?php } ?>

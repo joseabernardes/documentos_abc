@@ -247,6 +247,16 @@ form#login #remember + label{
     font-weight: normal;
     font-size: 14px;
 }
+
+div#passCont{
+    	position:relative;
+}
+#pwdLogin,#pwd1, #pwd2{
+    position: absolute;
+    right: 4px;
+    top: 6px;
+    width: 20px;
+}
 /*-----------------------------CHANGE-PROFILE-----------------------------*/
 form#change-profile input[type=submit]{
     margin-right: 4px;

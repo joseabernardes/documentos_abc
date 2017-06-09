@@ -67,4 +67,14 @@ class AddressModel {
         $this->AddressCP2 = $AddressCP2;
     }
 
+    public static function convertArrayToObject(Array &$data) {
+        return self::createObject($data['AddressID'], $data['AddressADDRESS'], $data['AddressCITY'], $data['AddressCP1'], $data['AddressCP2']);
+    }
+
+    public static function createObject($AddressID, $AddressADDRESS, $AddressCITY, $AddressCP1, $AddressCP2) {
+        $address = new AddressModel($AddressID, $AddressADDRESS, $AddressCITY, $AddressCP1, $AddressCP2);
+
+        return $address;
+    }
+
 }
