@@ -101,6 +101,7 @@ function addUser() {
     if (user !== -1) {
         var newUser = {userID:parseInt(user.userID), userNAME: user.userNAME, allowComments: '1'};
         sharedUsers.push(newUser);
+        
         addUserDOM(newUser);
         removeUserfromArray(user, users);
     } else {
