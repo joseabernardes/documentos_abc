@@ -100,6 +100,7 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
         $manager = new UserManager();
         $manager->add($user);
+        $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
     }
 }
     
