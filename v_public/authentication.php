@@ -7,39 +7,32 @@ require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
 
         const INPUT_CLASS_ERROR_NAME = 'input_erro';
         const SPAN_CLASS_ERROR_NAME = 'span_erro';
-
+$loggedIn = false;
 if (SessionManager::keyExists('authUsername')) {
-    header("Location: index.php");
+    $loggedIn = true;
 } else if (filter_input(INPUT_COOKIE, 'rememberme')) {
-
-    //echo 'Tentanto fazer login';
     $cookie = filter_input(INPUT_COOKIE, 'rememberme');
     $tokens = explode('___', $cookie);
     if (count($tokens) == 2) {
+
         $tokenID = $tokens[0];
         $tokenVALUE = $tokens[1];
         $userManager = new UserManager();
         $userDump = $userManager->getUserByTokenID($tokenID);
         $user = reset($userDump); //retorna o primeiro (e presumivelmente o UNICO) user
-
         if ($user) {
-            // echo 'OK';
             $passDump = $userManager->getTokenByID($tokenID);
             if (password_verify($tokenVALUE, reset($passDump))) {
                 SessionManager::addSessionValue('authUsername', $user->getUserID());
-                //echo 'VALID';
-                header("Location: index.php");
+                $loggedIn = true;
             } else {
-                //echo 'INVALID';
                 $userManager->deleteToken($user); //remover o TOKEN
-                header("Location: index.php");
             }
         }
     }
-} else {
+}
+if (!$loggedIn) {
     ?>
-
-
     <!DOCTYPE html>
     <html>
         <head>
@@ -58,13 +51,11 @@ if (SessionManager::keyExists('authUsername')) {
 
                     <input class="<?= array_key_exists('email', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="email" type="text" placeholder="email@email.com" name="email" maxlength="50" value="<?= $email ?>">
                     <?php if (array_key_exists('email', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['email'] ?></span> <?php } ?>
-                    <div class="embed-submit-field">
-                        <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
-                        <button id="eye" type="button">
-                            <img src="../images/logo.png" alt="eye"/>
-                        </button>
-                    </div>
+                    <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
                     <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
+                    <img id="pwd" src="../images/password/hide.png" alt=""/>
+          
+                    
                     <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
 
                     <input type="submit" value="Login" name="login">
@@ -103,4 +94,8 @@ if (SessionManager::keyExists('authUsername')) {
         </body>
     </html>
 
-<?php } ?>
+    <?php
+} else {
+    header("Location: index.php");
+}
+?>

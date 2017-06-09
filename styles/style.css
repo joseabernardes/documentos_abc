@@ -434,3 +434,18 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
+
+/*img*/
+
+#pwd{
+    width: 20px;
+    height: 20px;
+}
+
+#Pass{
+    background-image: url(../images/password/hide.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    
+}
