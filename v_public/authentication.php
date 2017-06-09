@@ -53,34 +53,37 @@ if (!$loggedIn) {
                     <?php if (array_key_exists('email', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['email'] ?></span> <?php } ?>
                     <input class="<?= array_key_exists('password', $loginErrors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Pass" type="password" placeholder="password" name="Pass" maxlength="50" value="<?= $pass ?>">
                     <?php if (array_key_exists('password', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['password'] ?></span> <?php } ?>
-                    <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
+                    <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember me</label>
 
                     <input type="submit" value="Login" name="login">
                 </form>
                 <!--<hr>-->
                 <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data">
                     <h2>REGISTAR</h2>
-                    <input class="<?= array_key_exists('emailR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
+                    <input value="<?= $input['emailR'] ?>" class="<?= array_key_exists('emailR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="emailR" type="text" placeholder="email@email.com" name="emailR" maxlength="50">
                     <?php if (array_key_exists('emailR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['emailR'] ?></span> <?php } ?>
-                    <input title="8 caracteres (1 Maiuscula, 1 Minuscula, 1 numero e um caracter especial[#?!@$%^&+*-])" pattern='(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}' class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
+                    <input  title="8 caracteres (1 Maiuscula, 1 Minuscula, 1 numero e um caracter especial[#?!@$%^&+*-])" pattern='(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}' class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
                     <?php if (array_key_exists('PassR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR'] ?></span> <?php } ?>
                     <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="password" placeholder="Confirme Password" name="PassR2" maxlength="50">
                     <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>                  
-                    <input class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
+                    <input value="<?= $input['NameR'] ?>" class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
                     <?php if (array_key_exists('NameR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['NameR'] ?></span> <?php } ?>
                     <label>Fotografia</label>
-                    <input class="<?= array_key_exists('file', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required accept="image/*" id="file" type="file" name="file"/>
+                    <input  class="<?= array_key_exists('file', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required accept="image/*" id="file" type="file" name="file"/>
                     <?php if (array_key_exists('file', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['file'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('PhoneR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
+                    <input value="<?= $input['PhoneR'] ?>" class="<?= array_key_exists('PhoneR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
                     <?php if (array_key_exists('PhoneR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PhoneR'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('Addressr', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="addressR" type="text" placeholder="Rua" name="Addressr" maxlength="50">
-                    <?php if (array_key_exists('Addressr', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Addressr'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('CityR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="CityR" type="text" placeholder="Cidade" name="CityR" maxlength="50">
+                    <input value="<?= $input['addressR'] ?>" class="<?= array_key_exists('addressR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="addressR" type="text" placeholder="Rua" name="addressR" maxlength="50">
+                    <?php if (array_key_exists('addressR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['addressR'] ?></span> <?php } ?>
+                    <input value="<?= $input['CityR'] ?>" class="<?= array_key_exists('CityR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="CityR" type="text" placeholder="Cidade" name="CityR" maxlength="50">
                     <?php if (array_key_exists('CityR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['CityR'] ?></span> <?php } ?>
-                    <input class="<?= array_key_exists('Cp1R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
+                    <input value="<?= $input['Cp1R'] ?>" class="<?= array_key_exists('Cp1R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp1R" type="text" placeholder="Codigo "name="Cp1R" maxlength="4"><!--                
                     --><span>-</span><!--
-                    --><input class="<?= array_key_exists('Cp2R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
-                    <?php if (array_key_exists('Cp1R', $errors) || array_key_exists('Cp2R', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?> &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>                   
+                    --><input value="<?= $input['Cp2R'] ?>" class="<?= array_key_exists('Cp2R', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="Cp2R" type="text" placeholder="Postal" name="Cp2R" maxlength="3">
+                    <div id="postError">
+                        <?php if (array_key_exists('Cp1R', $errors)) { ?><span id="left" class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?></span> <?php } ?>
+                        <?php if (array_key_exists('Cp2R', $errors)) { ?><span id="right" class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>
+                    </div>
                     <input type="submit" value="Registar" name="registar">
                 </form>
             </main>

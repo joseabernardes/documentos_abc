@@ -9,7 +9,7 @@ $inputType = INPUT_POST;
 
 $input = array();
 $errors = array();
-$input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['Addressr'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+$input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
 
 if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -18,8 +18,8 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         'PassR' => array('options' => array('regexp' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'PassR2' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'NameR' => array('options' => array('regexp' => '/^[\p{L} ]{1,100}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'PhoneR' => array('options' => array('regexp' => '/^[92]{1}\d{8}$/'), 'sanitize' => FILTER_SANITIZE_NUMBER_INT, 'validate' => FILTER_VALIDATE_REGEXP),
-        'Addressr' => array('options' => array('regexp' => '/^.{1,100}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'PhoneR' => array('options' => array('regexp' => '/^[9]{1}\d{8}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'addressR' => array('options' => array('regexp' => '/^.{1,100}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'CityR' => array('options' => array('regexp' => '/^[\p{L} ]{1,30}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'Cp1R' => array('options' => array('regexp' => '/^4\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'Cp2R' => array('options' => array('regexp' => '/^\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP)

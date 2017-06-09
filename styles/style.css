@@ -183,6 +183,15 @@ fieldset{
     border-color: lightgrey;
 }
 
+#postError #left, #postError #right{
+    display: inline-block;
+}
+#postError #right{
+    float:right;
+    margin-bottom: 14px;
+}
+
+
 /*-----------------------------AUTHENTICATION-----------------------------*/
 
 .auth-form input{
@@ -228,6 +237,16 @@ form input#Cp1R ,form input#Cp2R{
     display: inline-block;
 }
 
+form#login #remember{
+    display: inline-block;
+    width: auto;
+    margin:0px 5px;
+
+}
+form#login #remember + label{
+    font-weight: normal;
+    font-size: 14px;
+}
 /*-----------------------------CHANGE-PROFILE-----------------------------*/
 form#change-profile input[type=submit]{
     margin-right: 4px;
