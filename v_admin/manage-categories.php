@@ -26,11 +26,9 @@ and open the template in the editor.
     </head>
     <body>
 <?php include_once '../partials/_header.php'; ?> 
-        <h1 id="main-title">Criar Categoria</h1>
-        <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>">
-            <input required id="catName" type="text" placeholder="Introduza o nome" name="catName" maxlength="20">
-            <input type="submit" value="Guardar" name="guardar">
-        </form>
+        <h1 id="main-title">Gerir Categorias</h1>
+
+        
 <?php include_once '../partials/_footer.php'; ?>
     </body>
 </html>
