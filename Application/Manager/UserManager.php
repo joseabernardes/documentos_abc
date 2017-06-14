@@ -51,8 +51,19 @@ class UserManager extends MyDataAccessPDO {
         return $list;
     }
 
-        public function getUsers() {
+    public function getUsers() {
         $array = $this->getRecordsByUserQuery("SELECT * FROM user WHERE UserAUTHLEVEL != 'USERINACTIVE'");
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getUsersEmailStarts($email) {
+        $email = $this->getConnection()->quote($email . '%');
+        $sql = "SELECT * FROM user WHERE UserEMAIL LIKE {$email}";
+        $array = $this->getRecordsByUserQuery($sql);
         $list = array();
         foreach ($array AS $rec) {
             $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);

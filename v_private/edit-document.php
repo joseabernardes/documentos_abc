@@ -24,7 +24,7 @@ $doc_id = '';
             <p><textarea name="reasons" class="<?= array_key_exists('reasons', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="reasons" rows="5"><?=$input['reasons'] ?></textarea></p>
             <?php if (array_key_exists('reasons', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['reasons'] ?></span> <?php } ?>
             <p><input type="submit" value="Guardar" name="submit"></p>
-            <input type="hidden" name="sharedUsers">
+      
             <input type="hidden" name="type" value="edit">
         </form>
         <?php include_once __DIR__ . '/../partials/_footer.php'; ?>

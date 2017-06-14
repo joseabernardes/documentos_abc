@@ -15,6 +15,7 @@ class DocumentManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document';
     const TABLE_DOCUMENT_TAG = 'document_tag';
+    const TABLE_DOCUMENT_USER_SHARED = 'document_user_shared';
 
     public function add(DocumentModel $a) {
         $ins = array();
@@ -29,6 +30,14 @@ class DocumentManager extends MyDataAccessPDO {
         $ins['DocumentVisibilityID'] = $a->getDocumentVisibilityId();
         $ins['DocumentCOMMENTS'] = $a->getDocumentCOMMENTS();
         return $this->insert(self::TABLE_NAME, $ins);
+    }
+    
+        public function updateDocument(DocumentModel $obj) {
+        try {
+            $this->update(self::TABLE_NAME, $obj->convertObjectToArray(), array('DocumentID' => $obj->getDocumentID()));
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     public function getDocumentByID($DocumentID) {
@@ -94,6 +103,14 @@ class DocumentManager extends MyDataAccessPDO {
         $ins['TagName'] = $tag;
         $ins['DocumentID'] = $documentID;
         $this->insert(self::TABLE_DOCUMENT_TAG, $ins);
+    }
+
+    public function addSharedUsers($documentID, $userID, $comments) {
+        $ins = array();
+        $ins['DocumentID'] = $documentID;
+        $ins['UserID'] = $userID;
+        $ins['DocumentUserCOMMENTS'] = $comments;
+        $this->insert(self::TABLE_DOCUMENT_USER_SHARED, $ins);
     }
 
 }

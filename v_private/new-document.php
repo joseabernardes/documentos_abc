@@ -40,9 +40,8 @@ if ($type === 'import') {
                 }
             }
             ?>
-            <input type="hidden" name="sharedUsers">
             <input type="hidden" name="type" value="<?= $type ?> ">
-            <p><input type="submit" value="<?= $name ?> " name="submit"></p>
+            <p><input type="submit" id="submit" value="<?= $name ?> " name="submit"></p>
         </form>
 
         <?php include_once '../partials/_footer.php'; ?>

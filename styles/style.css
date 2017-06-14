@@ -65,7 +65,7 @@ header > nav ul{
     margin: 0;
     padding:0;
     background-color: grey;
-        /*display: flex;*/
+    /*display: flex;*/
 }
 
 header > nav li{
@@ -207,6 +207,7 @@ fieldset{
 
 main#auth{
     max-width: 550px;
+    display: block;
     margin: 20px auto 20px auto;
 }
 main#auth > hr{
@@ -250,7 +251,7 @@ form#login #remember + label{
 }
 
 div#passCont{
-    	position:relative;
+    position:relative;
 }
 #pwdLogin,#pwd1, #pwd2{
     position: absolute;
@@ -320,6 +321,10 @@ form#document > div#sharedBox input#addUser{
     border:none;
 }
 
+form#document > div#sharedBox input#addUser:focus{
+    outline: none;
+}
+
 form#document > div#sharedBox p.results{
     background-color: lightgrey;
     max-width: 395px;
@@ -348,7 +353,7 @@ form#document div#sharedBox, form#document div#publicBox{
     margin: -20px 2px 14px 2px;
     max-width: 600px;
     min-width: 236px;
-    display: none;
+    display: none;                                     
 }
 form#document div#publicBox .commentLabel{
     font-size: 14px;
@@ -358,6 +363,36 @@ form#document div#publicBox .commentLabel{
 form#document > div#publicBox .commentBox{
     margin-left: 20px;
 
+}
+
+div#searchBar{
+    display:flex;
+    position:relative;
+    margin: 14px 0px;
+}
+
+div#searchBar ul{
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+    top: 10px;
+    width: 100%;
+    max-width: 400px;
+    display: none;
+
+    border-bottom: 1px solid;
+    border-color: grey;
+
+}
+
+div#searchBar ul li{
+    background-color: white; 
+    padding: 5px;
+    cursor: pointer;
+}
+
+div#searchBar ul li:hover{
+    background-color: lightgray; 
 }
 
 
@@ -460,5 +495,5 @@ main#view-doc div#content{
 }
 
 .classe{
-   list-style-type: none;
+    list-style-type: none;
 }

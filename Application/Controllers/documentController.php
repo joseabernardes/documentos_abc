@@ -6,14 +6,14 @@ $inputType = INPUT_POST;
 $errors = array();
 
 $input = array();
-$input['title'] = $input['summary'] = $input['tags'] = $input['doc'] = $input['reasons'] = '';
+$input['title'] = $input['summary'] = $input['tags'] = $input['doc'] = $input['reasons'] = $input['sharedUsers'] = '';
 $input['category'] = 1; //valores predefinidos
-$input['visibility'] = 3; //valores predefinidos
+$input['visibility'] = 2; //valores predefinidos
 $input['comment_public'] = 'on'; //valores predefinidos
-if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST' && SessionManager::keyExists('authUsername')) {
     $rules = array(
         'title' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,90}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
-        'summary' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,200}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'summary' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'tags' => array('options' => array('regexp' => '/^([\p{L}\d]+,)*[\p{L}\d]+$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só caraeres e numeros separados por ,
         'doc' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'category' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
@@ -33,7 +33,33 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         }
         $input[$key] = trim($input[$key]);
     }
-    print_r($input);
+
+    /*
+     * Validar e Sanitizar utilizadores partilhados
+     */
+    $input['sharedUsers'] = urldecode(filter_input($inputType, 'sharedUsers'));
+    $sharedUsers = json_decode($input['sharedUsers']);
+    foreach ($sharedUsers as $value) {
+        $value->userEMAIL = filter_var($value->userEMAIL, FILTER_SANITIZE_EMAIL);
+        $value->userID = filter_var($value->userID, FILTER_SANITIZE_NUMBER_INT);
+        $value->allowComments = filter_var($value->allowComments, FILTER_VALIDATE_BOOLEAN);
+
+        if (!$value->userEMAIL || !filter_var($value->userEMAIL, FILTER_VALIDATE_EMAIL) || !$value->userID || !filter_var($value->userID, FILTER_VALIDATE_INT)) {
+            $errors['sharedUsers'] = 'Parametro Invalido';
+        }
+    }
+
+
+    /**
+     * Validar Summary
+     */
+    $size = mb_strlen($input['summary'], "UTF-8");
+    echo $size;
+    if ($size < 1 || $size > 200) {
+        $errors['summary'] = 'Parametro Invalido';
+    }
+
+
     /*
      * Validar Categorias
      */
@@ -124,15 +150,16 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             unset($errors['reasons']);
         }
     }
-
+    print_r($input);
     if (count($errors) == 0) { //se nao tem erros
         require_once Config::getApplicationManagerPath() . "DocumentManager.php";
         require_once Config::getApplicationModelPath() . "DocumentModel.php";
+        $docManager = new DocumentManager();
 
 
 
-        echo 'sem erros';
         if ($input['type'] === 'edit') {
+
             echo '<br>';
             echo 'EDITAR';
         } else if ($input['type'] === 'import') {
@@ -143,25 +170,26 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             }
         } else if ($input['type'] === 'create') {
             //criar documento
-            $docManager = new DocumentManager();
-            $document = new DocumentModel('', $input['title'], $input['summary'], 10, $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
+
+            $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
             $documentid = $docManager->add($document);
             //criar tags
             $tags = explode(',', $input['tags']);
             foreach ($tags as $value) {
                 $docManager->addTagtoDocument($value, $documentid);
             }
-            
-            if($input['visibility'] == '3'){
-                
+
+            if ($input['visibility'] == '3') {
+
+                foreach ($sharedUsers as $value) {
+                    $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
+                }
             }
-
-
-            echo '<br>';
-            echo 'CRIAR';
+            header("Location: view-document.php?id=" . $documentid);
         }
 //        , "upload/" . $fileName,
     } else {
+        $input['sharedUsers'] = urlencode($input['sharedUsers']);
         echo 'com erros';
     }
 }    
