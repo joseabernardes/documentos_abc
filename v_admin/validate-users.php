@@ -34,11 +34,11 @@ and open the template in the editor.
                     <ul>
                         <li class="classe"> <img id="image" src="..<?= $value->getUserPHOTO()?>" alt="ALT"></li>
                         <li class="classe"> <label>Nome:</label> <?= $value->getUserNAME()?></li>
-                        <li class="classe"> <label>Tele:</label> <?= $value->getUserPHONE()?></li>
-                        <li class="classe"> <label>Nome:</label> <?= $ad->getAddressCITY()?></li>
-                        <input type="checkbox"><label>Validar</label>
+                        <li class="classe"> <label>Telemóvel:</label> <?= $value->getUserPHONE()?></li>
+                        <li class="classe"> <label>Cidade:</label> <?= $ad->getAddressCITY()?></li>
+                        <li class="classe"><input type="checkbox"><label>Validar</label></li>
                     </ul>           
-                </article>
+            </article>
             <?php } ?>
         </section>
     <?php include_once '../partials/_footer.php'; ?>

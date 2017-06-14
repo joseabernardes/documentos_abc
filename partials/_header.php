@@ -38,13 +38,7 @@ try {
                 ?>
 
             --><li><a href="../v_admin/validate-users.php">Validar Utilizadores</a></li><!--
-                --><li class="drop">
-                    <a class="noclick" href="#">Categorias</a>
-                    <ul>
-                        <li><a href="#">Criar</a></li>
-                        <li><a href="#">Editar</a></li>
-                    </ul>
-                </li><!--
+                --><li class="drop"><a class="noclick" href="#">Categorias</a></li><!--
                                                                                                                                   
             <?php }
 

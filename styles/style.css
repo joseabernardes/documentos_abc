@@ -483,17 +483,30 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
-/* Validar users*/
+/*-----------------Validar users----------------*/
 
 .article{
     display: inline-block;
+    padding: 5px 5px 5px 5px;
+    margin: 20px 20px 20px 20px;
 }
 
 #image{
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
+    border:2px solid rgba(84,144,242,1);
 }
 
 .classe{
     list-style-type: none;
 }
+
+.article li{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.article label{
+    color:rgba(84,144,242,1);
+}
+
