@@ -20,6 +20,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title>Validar Utilizadores</title>
         <?php include_once '../partials/_head.php'; ?>
+        <script src="../scripts/validateusers.js" type="text/javascript"></script>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?> 
@@ -36,7 +37,7 @@ and open the template in the editor.
                         <li class="classe"> <label>Nome:</label> <?= $value->getUserNAME()?></li>
                         <li class="classe"> <label>Telemóvel:</label> <?= $value->getUserPHONE()?></li>
                         <li class="classe"> <label>Cidade:</label> <?= $ad->getAddressCITY()?></li>
-                        <li class="classe"><input type="checkbox"><label>Validar</label></li>
+                        <li class="classe"><input class="check" id="<?= $value->getUserID()?>" type="checkbox"><label>Validar</label></li>
                     </ul>           
             </article>
             <?php } ?>
