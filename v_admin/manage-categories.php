@@ -31,7 +31,7 @@ and open the template in the editor.
             
             foreach ($catArray as $value) {
                 ?>
-                <li  class="cate"><input class="delete" type="button" value="-" id="<?php $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
+                <li  class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
                 <?php } ?>
             </ul>    
         </div>    
