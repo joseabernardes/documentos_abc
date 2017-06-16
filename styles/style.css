@@ -587,7 +587,7 @@ main#view-doc div#comments a#asd{
 
 
 .check{
-    /*display: none;*/
+    display: none;
 }
 
 .valid{
@@ -604,4 +604,19 @@ main#view-doc div#comments a#asd{
 
 #image{
     width: 100%;
+}
+/*--------------Categorias---------*/
+
+.delete{
+    background-color: rgb(255,50,30);
+    border:none;
+    width: 30px;
+    cursor: pointer;
+    margin: 10px 10px 0px 0px;
+
+}
+
+.cate{
+    list-style-type: none;
+    
 }

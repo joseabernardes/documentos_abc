@@ -12,7 +12,7 @@ class CategoryManager extends MyDataAccessPDO {
         $ins = array();
         $ins['CategoryID'] = $a->getCategoryID();
         $ins['CategoryNAME'] = $a->getCategoryNAME();
-        $this->insert(self::TABLE_NAME, $ins);
+        return $this->insert(self::TABLE_NAME, $ins);
     }
 
     public function getCategoryByName($CategoryNAME) {
@@ -45,6 +45,14 @@ class CategoryManager extends MyDataAccessPDO {
             $list[$rec['CategoryID']] = CategoryModel::convertArrayToObject($rec);
         }
         return $list;
+    }
+
+    public function deleteCategory($id) {
+        try {
+            $this->delete(self::TABLE_NAME, array('CategoryID' => $id));
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
 }
