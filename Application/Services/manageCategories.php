@@ -57,7 +57,7 @@ if ($type === 'add') {
                     $docMa->updateDocument($value);
                    
                 }
-                 echo 'false';
+                 echo 'true';
             } else {
                 echo $bool;
             }
