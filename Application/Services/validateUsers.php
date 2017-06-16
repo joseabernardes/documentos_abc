@@ -14,17 +14,26 @@ if (!empty($id) && SessionManager::keyExists('authUsername')) {
         $mu = $um->getUserByID(SessionManager::getSessionValue('authUsername'));
         $u = reset($mu);
         if ($u->getUserAUTHLEVEL() === 'ADMIN') {
+            $type = filter_input(INPUT_POST, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $ar = $um->getUserByID($id);
             $us = reset($ar);
-            $us->setUserAUTHLEVEL('USER');
-            $um->updateUser($us);
-            $bool = 'true';
+            if ($type == TRUE) {
+                $us->setUserAUTHLEVEL('USER');
+                $um->updateUser($us);
+                $bool = 'true';
+                echo $bool;
+            } else if (type == FALSE) {
+                $us->setUserAUTHLEVEL('USERINACTIVE');
+                $um->updateUser($us);
+                $bool = 'false';
+                echo $bool;
+            }
+        } else {
             echo $bool;
         }
     } catch (Exception $exc) {
         echo $bool;
     }
-    echo $bool;
 } else {
     echo $bool;
 }

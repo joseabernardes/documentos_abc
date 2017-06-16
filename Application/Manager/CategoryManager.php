@@ -15,6 +15,16 @@ class CategoryManager extends MyDataAccessPDO {
         $this->insert(self::TABLE_NAME, $ins);
     }
 
+    public function getCategoryByName($CategoryNAME) {
+        $where = array('CategoryNAME' => $CategoryNAME);
+        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['CategoryID']] = CategoryModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
     public function getCategoryByID($CategoryID) {
         $where = array('CategoryID' => $CategoryID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
