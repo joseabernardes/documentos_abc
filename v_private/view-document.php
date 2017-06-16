@@ -12,8 +12,8 @@ $doc = $docManager->getDocumentByID($doc_id);
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
-        <script src="../libs/jquery-3.2.1.js" type="text/javascript"></script>
         <script src="../scripts/details.js" type="text/javascript"></script>
+        <script src="../scripts/addComment.js" type="text/javascript"></script>
         <title><?= empty($doc) ? 'Documento não existe' : reset($doc)->getDocumentTITLE() ?></title>
     </head>
     <body>
@@ -113,46 +113,44 @@ $doc = $docManager->getDocumentByID($doc_id);
                                     <h3>Razões</h3>
                                     <span><?= $value->getEditingReason() ?></span> 
                                     <hr>
-
-
                                     <?php
                                 }
                             }
                             ?>
-
-
-
-
-
                         </div>
                     </div>
-
-
                     <p id="doc">
-                        <?= $doc->getDocumentCONTENT() ?> 
+                        <?= $doc->getDocumentCONTENT() ?>
                     </p>
 
-                    <div id="comments">
-                        <h2>Comentários</h2>
+                    <div id="commentsBox">
+                        <h2>3 Comentário(s)</h2>
+                        <ol>
+                            <li class="comment">
+                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
+                                <p>Este documento é muito bonito, adorei!</p>
+                            </li>
+                            <li class="comment">
+                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
+                                <p>Este documento é muito bonito, adorei!</p>
+                            </li>
+                            <li class="comment">
+                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
+                                <p>Este documento é muito bonito, adorei!</p>
+                            </li>
+                        </ol>
+
                         <div id="newComment">
                             <label for="commentArea">Comentário:</label>
                             <p><textarea title="Introduza o seu comentário" id="commentArea" rows="5"></textarea></p>
-                            <p id="leftInput"><label for="name">Nome:*</label>
-                                <input required id="name" type="text" maxlength="4"></p>
-                              <p id="rightInput"><label for="email">Email:*</label>
-                                  <input required id="email" type="email" maxlength="4"></p>
-                           
-                              <a id="asd">ddd</a>
-
-                            <!--                            d<br>
-                                                        d<br>
-                                                        d<br>
-                                                        d<br>
-                            -->
+                            <div id="inputcontainer">
+                                <p id="leftInput"><label for="name">Nome: *</label>
+                                    <input required id="name" type="text"></p>
+                                <p id="rightInput"><label for="email">Email: *</label>
+                                    <input required id="email" type="email"></p>
+                            </div>
+                            <p><input type="button" id="send" value="Publicar"></p>
                         </div>
-
-
-
                     </div>
                 </main>
 
