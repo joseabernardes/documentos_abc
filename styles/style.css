@@ -192,7 +192,7 @@ footer{
 
 /*---------------------------------FORMS---------------------------------*/
 
-form input, form select, form textarea{
+form input, form select, textarea{
     padding: 5px;
     box-sizing: border-box;
 }
@@ -485,8 +485,8 @@ main#view-doc > p#doc  {
     box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
 
 }
-main#view-doc #content span  {
-display: block;
+main#view-doc .content span  {
+    display: block;
     white-space: pre-line; 
     text-align: justify; 
     text-justify: inter-word;
@@ -494,29 +494,29 @@ display: block;
 }
 
 
-main#view-doc > div#top h3{
+main#view-doc > div.top h3{
     margin: 10px 0px 0px 0px;
 }
-main#view-doc > div#top{
+main#view-doc > div.top{
     max-width: 680px;
     margin:10px;
 }
-main#view-doc div#details{
+main#view-doc div.expand{
     font-size: 16px;
     background-color: grey;
     color:white;
 }
-main#view-doc div#details > span{
+main#view-doc div.expand > span{
     display: inline-block;
 }
 
-main#view-doc div#details > span:first-child{
+main#view-doc div.expand > span:first-child{
     padding: 10px 0px;
     margin-left: 10px;
     cursor: default;
 }
 
-main#view-doc div#details > span:last-child{
+main#view-doc div.expand > span:last-child{
     background-color: rgb(240,182,56);
     padding: 10px 0px;
     float: right;
@@ -525,16 +525,56 @@ main#view-doc div#details > span:last-child{
     cursor: pointer; 
 }
 
-main#view-doc div#details > span:last-child:hover{
+main#view-doc div.expand > span:last-child:hover{
     opacity: 0.8;
 }
 
-main#view-doc div#content{
+main#view-doc div.content{
     border: 1px solid gray;
     /*box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);*/
     padding:5px 40px;
     display: none;
 }
+
+/*-----------------Comentários----------------*/
+
+main#view-doc div#comments{
+    margin: 10px;
+}
+
+main#view-doc div#comments div#newComment{
+    background-color: lightgray;
+    padding: 20px 40px;
+
+}
+
+main#view-doc div#comments p{
+    display: flex;
+}
+main#view-doc div#comments p textarea{
+    width: 600px;
+}
+main#view-doc div#comments p#leftInput, main#view-doc div#comments p#rightInput{
+    flex-direction: column;
+    width: 48%;
+}
+
+input#name, input#email{
+    padding: 5px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+p#leftInput{
+    float:left;
+}
+p#rightInput{
+    float:right;
+}
+
+main#view-doc div#comments a#asd{
+       clear:both;
+}
+
 /*-----------------Validar utilizadores----------------*/
 
 .article{
@@ -555,7 +595,7 @@ main#view-doc div#content{
     color:white;
     display: inline-block;
     background-color: rgb(84,144,242);
-/*    text-align: center;*/
+    /*    text-align: center;*/
     width: 100%;
     font-size: 18px;
     padding: 8px 0px;

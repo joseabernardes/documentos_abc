@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . "DocumentManager.php";
+require_once Config::getApplicationManagerPath() . "CategoryManager.php";
+require_once Config::getApplicationManagerPath() . "HistoricManager.php";
 
 $doc_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $docManager = new DocumentManager();
@@ -62,33 +64,96 @@ $doc = $docManager->getDocumentByID($doc_id);
             }
 
             if ($permitions) {
+//                $doc = new DocumentModel();
+                $catMan = new CategoryManager();
+                $cat = $catMan->getCategoryByID($doc->getDocumentCategoryId());
+                $cat = reset($cat);
+                $tagsDump = $docManager->getTagsByDocumentID($doc_id);
+                $tags = '';
+                foreach ($tagsDump as $value) {
+                    $tags = $tags . ', ' . $value['TagName'];
+                }
+                $tags = substr($tags, 1);
                 ?>
 
 
 
                 <main id="view-doc">
-                    <div id="top">
-                        <div id="details" class="noselect"><span>Detalhes</span><span>+</span></div>
-                        <div id="content">
+                    <div class="top">
+                        <div id="details" class="expand noselect"><span>Detalhes</span><span>+</span></div>
+                        <div class="content">
                             <h3>Data de Criação</h3>
-                            <span>5 de Março de 2017</span>
+                            <span><?= $doc->getDocumentDATE() ?></span>
                             <h3>Categoria</h3>
-                            <span>Geografia</span> 
+                            <span><?= $cat->getCategoryNAME() ?></span> 
                             <h3>Palavras-Chave</h3>
-                            <span>eu, vi, um, sapo</span>
+                            <span><?= $tags ?> </span>
                             <h3>Resumo</h3>
-                            <span>A empresa “Documentos ABC” pretende dasd asd asd asd asd asd asd criar uma plataforma simples de gestão documental. Nesse sentido, uma das medidas definidas passa pelo desenvolvimento de um portal capaz de possibilitar a importação de documentos word e respetiva possibilidade de partilha pelos diferentes utilizadores da plataforma.
-                            </span>
+                            <span><?= $doc->getDocumentSUMMARY() ?></span>
+                            <?php if ($doc->getDocumentPATH()) { ?>
+                                <h3>Ficheiro Original</h3>
+                                <span><a href="<?= '..' . $doc->getDocumentPATH() ?>">Download</a></span> 
+                            <?php } ?>
+
                         </div>
                     </div>
-                    <p id="doc">Descrição do Trabalho 
-                        A empresa “Documentos ABC” pretende criar uma plataforma simples de gestão documental. Nesse sentido, uma das medidas definidas passa pelo desenvolvimento de um portal capaz de possibilitar a importação de documentos word e respetiva possibilidade de partilha pelos diferentes utilizadores da plataforma.
-                        Um documento é caracterizado, no mínimo, pelo seu título, autor, resumo, categoria (Livre, Gestão, entre outros) data de criação, conteúdo, palavras chave e um “atalho” para o ficheiro e respetivo tamanho do ficheiro. Alerta-se que o conteúdo do documento deve ser populado automaticamente, de acordo com o contéudo do ficheiro do documento. Importem apenas o texto, podendo ser ignorado os elementos de estilo. 
-                        Um documento pode ser privado (visível apenas para o utilizador que o importou), público (visível para todos os utilizadores da plataforma, inclusive utilizadores que não estejam registados na plataforma), ou partilhados apenas para alguns utilizadores da plataforma devidamente escolhidos pelo utilizador que criou o documento.
+                    <div class="top">
+                        <div id="details" class="expand noselect"><span>Historico</span><span>+</span></div>
+                        <div class="content">
 
-                        Um documento é inicialmente importado por um utilizador devidamente registado. Após a definição da estrutura do documento (o conteúdo é gerado automaticamente pelo sistema, baseado no conteúdo do documento), o dono do documento tem a possibilidade de partilhar o documento com outros utilizadores da plataforma. A partilha pode permitir ou bloquear a introdução de comentários ao documento de determinados utilizadores. A qualquer momento o “dono” pode editar o documento, sendo que é necessário justificar essa edição. O histórico de edição do documento deve ser visível para o dono ou utilizadores com o qual partilhou o documento. 
-                        O portal que deverá desenvolver contém três áreas principais: Pública (acesso geral), Privada (utilizadores registados) e Administrativa (administradores da plataforma). 
+                            <?php
+                            $hist = new HistoricManager();
+                            $histDump = $hist->getHistoricByDocumentID($doc_id);
+                            if (!empty($histDump)) {
+
+                                foreach ($histDump as $value) {
+                                    ?>
+                                    <h3>Data da Edição</h3>
+                                    <span><?= $value->getEditingDATE() ?></span>
+                                    <h3>Razões</h3>
+                                    <span><?= $value->getEditingReason() ?></span> 
+                                    <hr>
+
+
+                                    <?php
+                                }
+                            }
+                            ?>
+
+
+
+
+
+                        </div>
+                    </div>
+
+
+                    <p id="doc">
+                        <?= $doc->getDocumentCONTENT() ?> 
                     </p>
+
+                    <div id="comments">
+                        <h2>Comentários</h2>
+                        <div id="newComment">
+                            <label for="commentArea">Comentário:</label>
+                            <p><textarea title="Introduza o seu comentário" id="commentArea" rows="5"></textarea></p>
+                            <p id="leftInput"><label for="name">Nome:*</label>
+                                <input required id="name" type="text" maxlength="4"></p>
+                              <p id="rightInput"><label for="email">Email:*</label>
+                                  <input required id="email" type="email" maxlength="4"></p>
+                           
+                              <a id="asd">ddd</a>
+
+                            <!--                            d<br>
+                                                        d<br>
+                                                        d<br>
+                                                        d<br>
+                            -->
+                        </div>
+
+
+
+                    </div>
                 </main>
 
                 <?php

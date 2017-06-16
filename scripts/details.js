@@ -1,11 +1,12 @@
 
-function change() {
-    if ( $("main#view-doc div#content").css("display") === "none") {
-        $("main#view-doc div#content").css("display", "block");
-         $("main#view-doc div#details > span:last-child").text("-");
+function change(event) {
+    
+    if ( $(event.target).parent().siblings(".content").css("display") === "none") {
+       $(event.target).parent().siblings(".content").css("display", "block");
+        $(event.target).text("-");
     } else {
-        $("main#view-doc div#content").css("display", "none");
-         $("main#view-doc div#details > span:last-child").text("+");
+       $(event.target).parent().siblings(".content").css("display", "none");
+        $(event.target).text("+");
     }
 
 
@@ -13,6 +14,6 @@ function change() {
 
 
 $(document).ready(function () {
-    $("main#view-doc div#details > span:last-child").click(change);
+    $("main#view-doc div.expand > span:last-child").click(change);
 });
 

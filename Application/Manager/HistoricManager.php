@@ -29,7 +29,7 @@ class HistoricManager extends MyDataAccessPDO {
     }
 
     public function getHistoricByDocumentID($DocumentID) {
-        $where = array('DocumentoID' => $DocumentID);
+        $where = array('DocumentID' => $DocumentID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {
