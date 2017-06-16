@@ -538,41 +538,71 @@ main#view-doc div.content{
 
 /*-----------------Comentários----------------*/
 
-main#view-doc div#comments{
-    margin: 10px;
+main#view-doc div#commentsBox{
+    margin: 10px 40px;
+    
 }
 
-main#view-doc div#comments div#newComment{
+main#view-doc div#commentsBox div#newComment{
     background-color: lightgray;
     padding: 20px 40px;
 
 }
 
-main#view-doc div#comments p{
+main#view-doc div#commentsBox p{
     display: flex;
 }
-main#view-doc div#comments p textarea{
+main#view-doc div#commentsBox p textarea{
     width: 600px;
 }
-main#view-doc div#comments p#leftInput, main#view-doc div#comments p#rightInput{
+main#view-doc div#commentsBox p#leftInput, main#view-doc div#commentsBox p#rightInput{
     flex-direction: column;
     width: 48%;
 }
 
-input#name, input#email{
+main#view-doc div#commentsBox input#name, input#email{
     padding: 5px;
     box-sizing: border-box;
-    display: inline-block;
 }
-p#leftInput{
-    float:left;
-}
-p#rightInput{
-    float:right;
+main#view-doc div#commentsBox p#rightInput{
+    margin-left: auto;
 }
 
-main#view-doc div#comments a#asd{
-       clear:both;
+main#view-doc div#commentsBox div#inputcontainer{
+    display: flex;
+}
+
+main#view-doc div#commentsBox ol{
+    padding:0;
+}
+
+main#view-doc div#commentsBox li.comment{
+    background-color: rgba(240,182,56,0.7);
+    list-style:none;
+    padding:10px 40px;
+    /*margin-bottom: 15px;*/
+    margin: 0px 0px 15px 0px; 
+
+}
+main#view-doc div#commentsBox li.comment h3{
+    display: inline-block;
+    margin:0;
+}
+
+main#view-doc div#commentsBox li.comment span{
+    font-size: 12px;
+    color: white;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+main#view-doc div#commentsBox div#newComment input#send{
+    border:none;
+    background-color: rgb(84,144,242);
+    padding:5px;
+    width: 600px;
+    color:white;
+    
 }
 
 /*-----------------Validar utilizadores----------------*/
@@ -618,5 +648,5 @@ main#view-doc div#comments a#asd{
 
 .cate{
     list-style-type: none;
-    
+
 }
