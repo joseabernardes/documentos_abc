@@ -2,6 +2,7 @@
 
         const INPUT_CLASS_ERROR_NAME = 'input_erro';
         const SPAN_CLASS_ERROR_NAME = 'span_erro';
+        const P_CLASS_ERROR_NAME = 'final_erro';
 $inputType = INPUT_POST;
 $errors = array();
 
@@ -10,6 +11,7 @@ $input['title'] = $input['summary'] = $input['tags'] = $input['doc'] = $input['r
 $input['category'] = 1; //valores predefinidos
 $input['visibility'] = 2; //valores predefinidos
 $input['comment_public'] = 'on'; //valores predefinidos
+$added = false;
 if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST' && SessionManager::keyExists('authUsername')) {
     $rules = array(
         'title' => array('options' => array('regexp' => '/^[\p{L}\d ]{1,90}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP), //só carateres e numero entre 1 e 90
@@ -48,13 +50,13 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             $errors['sharedUsers'] = 'Parametro Invalido';
         }
     }
+    $input['sharedUsers'] = urlencode($input['sharedUsers']);
 
 
     /**
      * Validar Summary
      */
     $size = mb_strlen($input['summary'], "UTF-8");
-    echo $size;
     if ($size < 1 || $size > 200) {
         $errors['summary'] = 'Parametro Invalido';
     }
@@ -103,12 +105,12 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
      */
     if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
 
-        $file_path = __DIR__ . "/../../upload/" . basename($_FILES["file"]["name"]);
+        $file_path = __DIR__ . "/../../upload/docs/" . basename($_FILES["file"]["name"]);
         $fileName = basename($_FILES["file"]["name"]);
 
         //Verificar extenção do ficheiro
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
-        if ($extension != "doc" && $extension != "docx") {
+        if ($extension != "docx") { //$extension != "doc" && 
             $errors['file'] = 'Extensão não permitida';
         }
 
@@ -116,16 +118,14 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
         finfo_close($finfo);
-        echo $mime;
-        if ($mime != 'application/msword' && $mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        if ($mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') { //$mime != 'application/msword' && 
             $errors['file'] = 'Ficheiro não permitido';
-            echo $mime;
         }
 
         //Verificar se existe ficheiro igual, e acrescentar um numero antes
         while (file_exists($file_path)) {
             $fileName = uniqid() . '-' . $_FILES["file"]["name"];
-            $file_path = __DIR__ . "/../../upload/" . basename($fileName);
+            $file_path = __DIR__ . "/../../upload/docs/" . basename($fileName);
         }
 
         //Verificar tamanho do ficheiro
@@ -150,46 +150,114 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             unset($errors['reasons']);
         }
     }
-    print_r($input);
     if (count($errors) == 0) { //se nao tem erros
-        require_once Config::getApplicationManagerPath() . "DocumentManager.php";
-        require_once Config::getApplicationModelPath() . "DocumentModel.php";
-        $docManager = new DocumentManager();
-
-
-
         if ($input['type'] === 'edit') {
-
-            echo '<br>';
-            echo 'EDITAR';
+            $added = true;
+            try {
+                $document = $docManager->getDocumentByID($doc_id);
+                $document = reset($document);
+                $documentBackup = clone $document;
+                if ($document) {
+                    $document->setDocumentTITLE($input['title']);
+                    $document->setDocumentSUMMARY($input['summary']);
+                    $document->setDocumentCategoryId($input['category']);
+                    $document->setDocumentCONTENT($input['doc']);
+                    $document->setDocumentVisibilityId($input['visibility']);
+                    $document->setDocumentCOMMENTS($input['comment_public']);
+                    $docManager->deleteSharedUsers($doc_id);
+                    $docManager->deleteTagsDocument($doc_id);
+                    $documentid = $doc_id;
+                    $ret = $docManager->updateDocument($document);
+                    require_once Config::getApplicationManagerPath() . "HistoricManager.php";
+                    $hist = new HistoricManager();
+                    $hism = new HistoricModel('', $doc_id, $input['reasons'], date("Y-m-d H:i:s"));
+                    $hism->setEditingID($hist->add($hism));
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exceptions $ex) {
+                $added = false;
+            }
         } else if ($input['type'] === 'import') {
-            echo '<br>';
-            echo 'IMPORTAR';
-            if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
-                echo 'nao upload';
+            $added = true;
+            try {
+                /* Importar Documento */
+                if (!move_uploaded_file($_FILES["file"]["tmp_name"], $file_path)) {
+                    $errors['file'] = 'Falha ao fazer upload';
+                    throw new Exception();
+                }
+                require_once Config::getApplicationUtilsPath() . "ReadDocs.php";
+                $input['doc'] = ReadDocs::readDocx($file_path);
+                $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public'], "/upload/docs/" . basename($fileName));
+                $documentid = $docManager->add($document);
+                if ($documentid == -1) {
+                    throw new Exception();
+                }
+                $document->setDocumentID($documentid);
+            } catch (Exception $ex) {
+                $added = false;
             }
         } else if ($input['type'] === 'create') {
-            //criar documento
-
-            $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
-            $documentid = $docManager->add($document);
-            //criar tags
-            $tags = explode(',', $input['tags']);
-            foreach ($tags as $value) {
-                $docManager->addTagtoDocument($value, $documentid);
-            }
-
-            if ($input['visibility'] == '3') {
-
-                foreach ($sharedUsers as $value) {
-                    $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
+            $added = true;
+            /* Criar Documento */
+            try {
+                $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
+                $documentid = $docManager->add($document);
+                if ($documentid == -1) {
+                    throw new Exception();
                 }
+                $document->setDocumentID($documentid);
+            } catch (Exception $ex) {
+                $added = false;
             }
-            header("Location: view-document.php?id=" . $documentid);
         }
-//        , "upload/" . $fileName,
-    } else {
-        $input['sharedUsers'] = urlencode($input['sharedUsers']);
-        echo 'com erros';
+        if ($added) {
+            try {
+                try {
+                    /* Criar Tags */
+                    $tags = explode(',', $input['tags']);
+                    foreach ($tags as $value) {
+                        $docManager->addTagtoDocument($value, $documentid);
+                    }
+                } catch (Exception $ex) {
+                    $errors['tags'] = 'Falha ao inserir, possiveis tags iguais';
+                    throw $ex;
+                }
+                try {
+                    /* Shared Users */
+                    if ($input['visibility'] == '3') {
+                        foreach ($sharedUsers as $value) {
+                            $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
+                        }
+                    }
+                    if ($input['type'] === 'edit' && $input['visibility'] != '3') {
+                        /* Eliminar possiveis utilizadores partilhados* */
+                        try {
+                            $docManager->deleteSharedUsers($documentid);
+                        } catch (Exception $ex) {
+                        //caso não exista
+                        }
+                    }
+                } catch (Exception $ex) {
+                    $errors['sharedUsers'] = 'Falha ao associar os utilizadores';
+                }
+                //SUCESSO
+            } catch (Exception $ex) {
+                /* Reverter */
+                if ($input['type'] === 'edit') {
+                    $hist->deleteHistoric($hism);
+                    $docManager->updateDocument($documentBackup);
+                } else {
+                    $docManager->deleteDocument($document);
+                }
+                $docManager->deleteSharedUsers($documentid);
+                $docManager->deleteTagsDocument($documentid);
+
+
+                $added = false;
+            }
+        } else {
+            $errors['final'] = 'Falha ao submeter o documento!';
+        }
     }
-}    
+}

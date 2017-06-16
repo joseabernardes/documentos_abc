@@ -1,16 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once __DIR__ . '/../../Config.php';
+require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
+require_once Config::getApplicationModelPath() . 'DocumentModel.php';
 
-/**
- * Description of DocumentManager
- *
- * @author Pc
- */
 class DocumentManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'document';
@@ -29,10 +22,16 @@ class DocumentManager extends MyDataAccessPDO {
         $ins['DocumentPATH'] = $a->getDocumentPATH();
         $ins['DocumentVisibilityID'] = $a->getDocumentVisibilityId();
         $ins['DocumentCOMMENTS'] = $a->getDocumentCOMMENTS();
-        return $this->insert(self::TABLE_NAME, $ins);
+        try {
+            $docid = $this->insert(self::TABLE_NAME, $ins);
+        } catch (Exception $ex) {
+            $docid = -1;
+        }
+
+        return $docid;
     }
-    
-        public function updateDocument(DocumentModel $obj) {
+
+    public function updateDocument(DocumentModel $obj) {
         try {
             $this->update(self::TABLE_NAME, $obj->convertObjectToArray(), array('DocumentID' => $obj->getDocumentID()));
         } catch (Exception $e) {
@@ -105,12 +104,40 @@ class DocumentManager extends MyDataAccessPDO {
         $this->insert(self::TABLE_DOCUMENT_TAG, $ins);
     }
 
+    public function deleteTagsDocument($documentID) {
+        try {
+            $this->delete(self::TABLE_DOCUMENT_TAG, array('DocumentID' => $documentID));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function getTagsByDocumentID($documentID) {
+        $where = array('DocumentID' => $documentID);
+        $array = $this->getRecords(self::TABLE_DOCUMENT_TAG, $where);
+        return $array;
+    }
+
     public function addSharedUsers($documentID, $userID, $comments) {
         $ins = array();
         $ins['DocumentID'] = $documentID;
         $ins['UserID'] = $userID;
         $ins['DocumentUserCOMMENTS'] = $comments;
         $this->insert(self::TABLE_DOCUMENT_USER_SHARED, $ins);
+    }
+
+    public function deleteSharedUsers($documentID) {
+        try {
+            $this->delete(self::TABLE_DOCUMENT_USER_SHARED, array('DocumentID' => $documentID));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function getSharedUsersByDocumentID($documentID) {
+        $where = array('DocumentID' => $documentID);
+        $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
+        return $array;
     }
 
 }

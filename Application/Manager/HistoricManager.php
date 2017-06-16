@@ -1,19 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once __DIR__ . '/../../Config.php';
+require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
+require_once Config::getApplicationModelPath() . 'HistoricModel.php';
 
-/**
- * Description of HistoricManager
- *
- * @author Pc
- */
 class HistoricManager extends MyDataAccessPDO {
 
-    const TABLE_NAME = 'document_editing';
+    const TABLE_NAME = 'documentediting';
 
     public function add(HistoricModel $a) {
         $ins = array();
@@ -21,7 +14,7 @@ class HistoricManager extends MyDataAccessPDO {
         $ins['DocumentID'] = $a->getDocumentID();
         $ins['EditingReason'] = $a->getEditingReason();
         $ins['EditingDATE'] = $a->getEditingDATE();
-        $this->insert(self::TABLE_NAME, $ins);
+        return $this->insert(self::TABLE_NAME, $ins);
     }
 
     public function getHistoricByID($EditingID) {
@@ -43,6 +36,14 @@ class HistoricManager extends MyDataAccessPDO {
             $list[$rec['EditingID']] = HistoricModel::convertArrayToObject($rec);
         }
         return $list;
+    }
+
+    public function deleteHistoric(HistoricModel $obj) {
+        try {
+            $this->delete(self::TABLE_NAME, array('EditingID' => $obj->getEditingID()));
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
 }

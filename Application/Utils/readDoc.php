@@ -47,7 +47,7 @@ function readDoc($filename) {
 //        echo nl2br($extracted_plaintext);
 //        $extracted_plaintext = convert($extracted_plaintext);
 //        
-            $extracted_plaintext = iconv('', 'UTF-8//TRANSLIT//IGNORE', $extracted_plaintext);
+            $extracted_plaintext = iconv('', 'UTF-8//IGNORE', $extracted_plaintext);
             $extracted_plaintext = trim($extracted_plaintext);
 //            if (($fp = fopen("doc.txt", 'r+')) !== false) {
 //                echo 'write';
@@ -62,7 +62,7 @@ function readDoc($filename) {
 
  function read_doc2($filename) {
     $fileHandle = fopen($filename, "r");
-    $line = @fread($fileHandle, filesize($filename));   
+    $line = fread($fileHandle, filesize($filename));   
     $lines = explode(chr(0x0D),$line);
     $outtext = "";
     foreach($lines as $thisline)
@@ -71,10 +71,11 @@ function readDoc($filename) {
         if (($pos !== FALSE)||(strlen($thisline)==0))
           {
           } else {
-            $outtext .= $thisline." ";
+            $outtext .= $thisline."\r\n";
           }
       }
-     $outtext = preg_replace("/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/","",$outtext);
+        $outtext = iconv('', 'UTF-8//IGNORE', $outtext);
+//     $outtext = preg_replace("/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/","",$outtext);
     return $outtext;
 }
 
@@ -120,8 +121,8 @@ $filename = __DIR__ . '\..\..\upload\LEI2T3.doc';
     </head>
     <body>
         <div class='comment'>
-             <?= read_doc2($filename) ?> 
-           <textarea name="messege" id="messege"rows="30" ><?= readDoc($filename) ?> </textarea>
+             <?= read_doc2(__DIR__ . '/../../upload/docs/GPI.doc') ?> 
+           <textarea name="messege" id="messege"rows="30" ><?= read_doc2(__DIR__ . '/../../upload/docs/GPI.doc') ?> </textarea>
         </div>
         
     </body>

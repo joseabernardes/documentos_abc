@@ -85,7 +85,7 @@ class MyDataAccessPDO extends MyDataAcessPDOBase {
             throw $e;
         }
 
-        $q->setFetchMode(PDO::FETCH_BOTH);
+        $q->setFetchMode(PDO::FETCH_ASSOC);
         return $q->fetchAll();
     }
 

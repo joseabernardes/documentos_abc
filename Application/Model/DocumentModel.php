@@ -28,12 +28,12 @@ class DocumentModel {
         $this->DocumentID = $DocumentID;
         $this->DocumentTITLE = $DocumentTITLE;
         $this->DocumentSUMMARY = $DocumentSUMMARY;
-        $this->DocumentUserId = $DocumentUserId;
-        $this->DocumentCategoryId = $DocumentCategoryId;
+        $this->DocumentUserID = $DocumentUserId;
+        $this->DocumentCategoryID = $DocumentCategoryId;
         $this->DocumentDATE = $DocumentDATE;
         $this->DocumentCONTENT = $DocumentCONTENT;
         $this->DocumentPATH = $DocumentPATH;
-        $this->DocumentVisibilityId = $DocumentVisibilityId;
+        $this->DocumentVisibilityID = $DocumentVisibilityId;
         $this->DocumentCOMMENTS = $DocumentCOMMENTS;
     }
 
@@ -50,11 +50,11 @@ class DocumentModel {
     }
 
     function getDocumentUserId() {
-        return $this->DocumentUserId;
+        return $this->DocumentUserID;
     }
 
     function getDocumentCategoryId() {
-        return $this->DocumentCategoryId;
+        return $this->DocumentCategoryID;
     }
 
     function getDocumentDATE() {
@@ -70,7 +70,7 @@ class DocumentModel {
     }
 
     function getDocumentVisibilityId() {
-        return $this->DocumentVisibilityId;
+        return $this->DocumentVisibilityID;
     }
 
     function getDocumentCOMMENTS() {
@@ -90,11 +90,11 @@ class DocumentModel {
     }
 
     function setDocumentUserId($DocumentUserId) {
-        $this->DocumentUserId = $DocumentUserId;
+        $this->DocumentUserID = $DocumentUserId;
     }
 
     function setDocumentCategoryId($DocumentCategoryId) {
-        $this->DocumentCategoryId = $DocumentCategoryId;
+        $this->DocumentCategoryID = $DocumentCategoryId;
     }
 
     function setDocumentDATE($DocumentDATE) {
@@ -110,7 +110,7 @@ class DocumentModel {
     }
 
     function setDocumentVisibilityId($DocumentVisibilityId) {
-        $this->DocumentVisibilityId = $DocumentVisibilityId;
+        $this->DocumentVisibilityID = $DocumentVisibilityId;
     }
 
     function setDocumentCOMMENTS($DocumentCOMMENTS) {
@@ -122,9 +122,25 @@ class DocumentModel {
     }
 
     public static function createObject($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS) {
-        $document = new DocumentModel($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS);
+        $document = new DocumentModel($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentVisibilityId, $DocumentCOMMENTS, $DocumentPATH);
 
         return $document;
+    }
+
+    public function convertObjectToArray() {
+        $data = array(
+            'DocumentID' => $this->getDocumentID(),
+            'DocumentTITLE' => $this->getDocumentTITLE(),
+            'DocumentUserID' => $this->getDocumentUserId(),
+            'DocumentSUMMARY' => $this->getDocumentSUMMARY(),
+            'DocumentCategoryID' => $this->getDocumentCategoryId(),
+            'DocumentDATE' => $this->getDocumentDATE(),
+            'DocumentCONTENT' => $this->getDocumentCONTENT(),
+            'DocumentPATH' => $this->getDocumentPATH(),
+            'DocumentVisibilityID' => $this->getDocumentVisibilityId(),
+            'DocumentCOMMENTS' => $this->getDocumentCOMMENTS()
+        );
+        return $data;
     }
 
 }
