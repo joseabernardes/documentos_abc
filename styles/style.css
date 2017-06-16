@@ -535,31 +535,33 @@ main#view-doc div#content{
     padding:5px 40px;
     display: none;
 }
-/*-----------------Validar users----------------*/
+/*-----------------Validar utilizadores----------------*/
 
 .article{
     display: inline-block;
-    padding: 5px 5px 5px 5px;
-    margin: 20px 20px 20px 20px;
+    max-width: 300px;
+    margin: 60px auto 20px 50px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
+
+
+.check{
+    display: none;
+}
+
+.valid{
+    text-decoration:none;
+    color:white;
+    display: inline-block;
+    background-color: rgb(84,144,242);
+/*    text-align: center;*/
+    width: 100%;
+    font-size: 18px;
+    padding: 8px 0px;
+}
+
 
 #image{
-    width: 200px;
-    height: 200px;
-    border:2px solid rgba(84,144,242,1);
+    width: 100%;
 }
-
-
-.classe{
-    list-style-type: none;
-}
-
-.article li{
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.article label{
-    color:rgba(84,144,242,1);
-}
-

@@ -7,7 +7,6 @@ require_once Config::getApplicationModelPath() . 'AddressModel.php';
 $UserManager = new UserManager();
 $usersAuthLevel = $UserManager->getUserByAuthLevel('USERINACTIVE');
 $addressM = new AddressManager();
-
 ?>
 <!DOCTYPE html>
 <!--
@@ -20,27 +19,29 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title>Validar Utilizadores</title>
         <?php include_once '../partials/_head.php'; ?>
+        <script src="../scripts/validateusers.js" type="text/javascript"></script>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?> 
         <h1 id="main-title">Validar Utilizadores</h1>
 
         <section>
-            <?php foreach ($usersAuthLevel as $value) {
+            <?php
+            foreach ($usersAuthLevel as $value) {
                 $ad = $addressM->getAddressByID($value->getUserADDRESS());
-                $ad= reset($ad);
+                $ad = reset($ad);
                 ?>
-            <article class="article">
-                    <ul>
-                        <li class="classe"> <img id="image" src="..<?= $value->getUserPHOTO()?>" alt="ALT"></li>
-                        <li class="classe"> <label>Nome:</label> <?= $value->getUserNAME()?></li>
-                        <li class="classe"> <label>Telemóvel:</label> <?= $value->getUserPHONE()?></li>
-                        <li class="classe"> <label>Cidade:</label> <?= $ad->getAddressCITY()?></li>
-                        <li class="classe"><input type="checkbox"><label>Validar</label></li>
-                    </ul>           
-            </article>
+                <article class="article">
+                    <img id="image" src="..<?= $value->getUserPHOTO() ?>" alt="ALT">
+                    <p><?= $value->getUserNAME() ?></p>
+                    <p><?= $ad->getAddressCITY() ?></p>
+                    <p><?= $value->getUserPHONE() ?></p>
+
+                    <input class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid">Validar</label>
+
+                </article>
             <?php } ?>
         </section>
-    <?php include_once '../partials/_footer.php'; ?>
+        <?php include_once '../partials/_footer.php'; ?>
     </body>
 </html>
