@@ -153,7 +153,6 @@ function removeSugestionDOM() {
 function moveUserEVH() {
     var value = $(event.target).html();
     addUserInputDOM(value);
-
 }
 
 function addUserEVH() {
@@ -219,7 +218,7 @@ function restoreShared() {
             json = [];
         }
         for (var i = 0; i < json.length; i++) {
-            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments: json[i].allowComments};
+            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments:  parseInt(json[i].allowComments)};
             sharedUsers.push(newUser);
             addUserDOM(newUser);
         }
@@ -236,4 +235,6 @@ $(document).ready(function () {
     $("input#submit").click(submitFormEVH);
     restoreShared();
 });
+
+
 
