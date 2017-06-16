@@ -547,7 +547,7 @@ main#view-doc div#content{
 
 
 .check{
-    display: none;
+    /*display: none;*/
 }
 
 .valid{

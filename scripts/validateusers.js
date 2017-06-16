@@ -7,7 +7,7 @@
 function validateUsers(event) {
     event.preventDefault();
     var id = $(event.target).attr("for");
-//    console.log($('#4').prop("checked"));
+    console.log($('#12').prop("checked"));
 //    console.log(id);
     $.post('../Application/Services/validateUsers.php', {id: id, type: $('#' + id).prop("checked")}, function (data) {
         check(data, id);
