@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../partials/_init.php';
+require_once Config::getApplicationManagerPath() . 'CategoryManager.php';
+require_once Config::getApplicationModelPath() . 'CategoryModel.php';
 ?>
 <!DOCTYPE html>
 <!--
@@ -22,7 +24,16 @@ and open the template in the editor.
                 <input type="text" id="addUser"/>
                 <input type="button" id="addButton" value="+">
             </div>
-            <!--for botao elimmine -->
+            <ul id="ul">
+            <?php
+            $categMan = new CategoryManager();
+            $catArray = $categMan->getAllCategories();
+            
+            foreach ($catArray as $value) {
+                ?>
+                <li  class="cate"><input class="delete" type="button" value="-" id="<?php $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
+                <?php } ?>
+            </ul>    
         </div>    
 
         <?php include_once '../partials/_footer.php'; ?>

@@ -486,7 +486,7 @@ main#view-doc > p#doc  {
 
 }
 main#view-doc #content span  {
-display: block;
+    display: block;
     white-space: pre-line; 
     text-align: justify; 
     text-justify: inter-word;
@@ -547,7 +547,7 @@ main#view-doc div#content{
 
 
 .check{
-    /*display: none;*/
+    display: none;
 }
 
 .valid{
@@ -555,7 +555,7 @@ main#view-doc div#content{
     color:white;
     display: inline-block;
     background-color: rgb(84,144,242);
-/*    text-align: center;*/
+    /*    text-align: center;*/
     width: 100%;
     font-size: 18px;
     padding: 8px 0px;
@@ -564,4 +564,19 @@ main#view-doc div#content{
 
 #image{
     width: 100%;
+}
+/*--------------Categorias---------*/
+
+.delete{
+    background-color: rgb(255,50,30);
+    border:none;
+    width: 30px;
+    cursor: pointer;
+    margin: 10px 10px 0px 0px;
+
+}
+
+.cate{
+    list-style-type: none;
+    
 }
