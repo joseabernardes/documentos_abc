@@ -3,6 +3,8 @@ require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . "DocumentManager.php";
 require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 require_once Config::getApplicationManagerPath() . "HistoricManager.php";
+require_once Config::getApplicationManagerPath() . "UserManager.php";
+require_once Config::getApplicationManagerPath() . "CommentManager.php";
 
 $doc_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $docManager = new DocumentManager();
@@ -36,15 +38,8 @@ $doc = $docManager->getDocumentByID($doc_id);
                     if ($doc->getDocumentVisibilityId() == 2 && $userid == $doc->getDocumentUserId()) {
                         $permitions = true;
                     } else if ($doc->getDocumentVisibilityId() == 3) {
-                        $shared = $docManager->getSharedUsersByDocumentID($doc_id);
-                        $found = false;
-                        foreach ($shared as $value) {
-                            if ($userid == $value['UserID']) {
-                                $found = true;
-                                break;
-                            }
-                        }
-                        if ($found || $userid == $doc->getDocumentUserId()) {
+                        $shared = $docManager->getSharedUsersByUser_DocumentID($userid, $doc_id);
+                        if (!empty($shared) || $userid == $doc->getDocumentUserId()) {
                             $permitions = true;
                         } else {
                             $string = 'Não tem permissões para ver o documento';
@@ -64,7 +59,6 @@ $doc = $docManager->getDocumentByID($doc_id);
             }
 
             if ($permitions) {
-//                $doc = new DocumentModel();
                 $catMan = new CategoryManager();
                 $cat = $catMan->getCategoryByID($doc->getDocumentCategoryId());
                 $cat = reset($cat);
@@ -122,38 +116,82 @@ $doc = $docManager->getDocumentByID($doc_id);
                     <p id="doc">
                         <?= $doc->getDocumentCONTENT() ?>
                     </p>
+                    <?php
+                    $commentManager = new CommentManager();
+                    $comments = $commentManager->getCommentsByDocumentID($doc_id);
+                    ?>
+
 
                     <div id="commentsBox">
-                        <h2>3 Comentário(s)</h2>
+                        <h2><?= count($comments) ?> Comentário(s)</h2>
                         <ol>
-                            <li class="comment">
-                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
-                                <p>Este documento é muito bonito, adorei!</p>
-                            </li>
-                            <li class="comment">
-                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
-                                <p>Este documento é muito bonito, adorei!</p>
-                            </li>
-                            <li class="comment">
-                                <h3>José Bernardes</h3><span>◷ 2017-06-14 10:39:19</span>
-                                <p>Este documento é muito bonito, adorei!</p>
-                            </li>
+                            <?php
+                            foreach ($comments as $value) {
+                                if ($value->getCommentUserID() == null) {
+                                    $link = 'mailto' . $value->getCommentEMAIL();
+                                } else {
+                                    $link = 'profile-page.php?id=' . $value->getCommentUserID();
+                                }
+                                ?>
+                                <li class="comment">
+                                    <a href="<?= $link ?>"><h3><?= $value->getCommentNAME() ?></h3></a><span>◷ <?= $value->getCommentDATE() ?></span>
+                                    <p><?= $value->getCommentCONTENT() ?></p>
+                                </li>
+                                <?php
+                            }
+                            ?>
                         </ol>
+                        <?php
+                        $visibility = $doc->getDocumentVisibilityId();
+                        $bool = true;
+                        if ($visibility == 2 || ($visibility == 1 && !$doc->getDocumentCOMMENTS())) { //não pode comentar
+                            $bool = false;
+                        } else if ($visibility == 3) {
+                            $userid = SessionManager::getSessionValue('authUsername');
+                            $shared = $docManager->getSharedUsersByUser_DocumentID($userid, $doc_id);
 
-                        <div id="newComment">
-                            <label for="commentArea">Comentário:</label>
-                            <p><textarea title="Introduza o seu comentário" id="commentArea" rows="5"></textarea></p>
-                            <div id="inputcontainer">
-                                <p id="leftInput"><label for="name">Nome: *</label>
-                                    <input required id="name" type="text"></p>
-                                <p id="rightInput"><label for="email">Email: *</label>
-                                    <input required id="email" type="email"></p>
+                            $shared = reset($shared);
+                            if ($shared && !$shared['DocumentUserCOMMENTS']) {
+                                $bool = false;
+                            }
+                            if ($userid == $doc->getDocumentUserId()) { //ownet
+                                $bool = true;
+                            }
+                        }
+                        if ($bool) {
+                            ?>
+                            <div id="newComment">
+                                <label for="commentArea">Comentário:</label>
+                                <p><textarea title="Introduza o seu comentário" id="commentArea" rows="5"></textarea></p>
+                                <div id="inputcontainer">
+                                    <?php
+                                    if (SessionManager::keyExists('authUsername')) {
+                                        $userMan = new UserManager();
+                                        $user = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
+                                        $user = reset($user);
+                                        ?> 
+                                        <p>Enviar como: <?= $user->getUserNAME() ?></p>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <p id="leftInput"><label for="name">Nome: *</label>
+                                            <input required id="name" type="text"></p>
+                                        <p id="rightInput"><label for="email">Email: *</label>
+                                            <input required id="email" type="email"></p>
+                                    <?php } ?>
+                                </div>
+                                <p><input type="button" id="send" value="Publicar"></p>
+                                <input type="hidden" id="docid" value="<?= $doc_id ?>">
                             </div>
-                            <p><input type="button" id="send" value="Publicar"></p>
-                        </div>
+
+                        <?php } else { ?>
+
+                            <p id="noComments">Não pode fazer comentários</p>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </main>
-
                 <?php
             } else {
                 include_once __DIR__ . '/../partials/_error.php';
