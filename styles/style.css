@@ -350,6 +350,7 @@ form#document > div#sharedBox input[type=button]{
     border:none;
     width: 30px;
     cursor: pointer;
+    flex-shrink:0;
 }
 form#document > div#sharedBox input[type=button]:hover{
     opacity: 0.8;
@@ -362,6 +363,7 @@ form#document > div#sharedBox input[type=button]:focus{
 form#document > div#sharedBox input#addUser{
     width: 400px;
     border:none;
+    flex-shrink: 1;
 }
 
 form#document > div#sharedBox input#addUser:focus{
@@ -540,7 +542,7 @@ main#view-doc div.content{
 
 main#view-doc div#commentsBox{
     margin: 10px 40px;
-    
+
 }
 
 main#view-doc div#commentsBox div#newComment{
@@ -551,7 +553,7 @@ main#view-doc div#commentsBox div#newComment{
 
 main#view-doc div#commentsBox p{
     display: flex;
-         white-space: pre-line; 
+    white-space: pre-line; 
 }
 main#view-doc div#commentsBox p textarea{
     width: 600px;
@@ -608,7 +610,7 @@ main#view-doc div#commentsBox div#newComment input#send{
     padding:5px;
     width: 600px;
     color:white;
-    
+
 }
 
 main#view-doc div#commentsBox p#noComments{
@@ -652,15 +654,55 @@ main#view-doc div#commentsBox p#noComments{
 /*--------------Categorias---------*/
 
 .delete{
-    background-color: rgb(255,50,30);
+    background-color: rgb(210,68,58);
     border:none;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     cursor: pointer;
-    margin: 10px 10px 0px 0px;
+    color: white;
+    margin-right: 5px;
+
+}
+ul#manageCat{
+    padding:0;
+    max-width: 600px;
+    margin: auto;
+}
+
+ul#manageCat li.cate{
+    list-style-type: none;
+    background-color: lightgray;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+div#searchCategory {
+    margin: auto;
+    margin-bottom: 30px;
+    display: flex;
+    max-width: 600px;
 
 }
 
-.cate{
-    list-style-type: none;
+div#searchCategory > input#addCategory{
+    width: 560px;
+    height: 40px;
+    box-sizing: border-box;
+    margin:0;
+    flex-shrink: 1;
+    font-size: 16px;
+    
+}
 
+div#searchCategory > input#addButton{
+    width: 40px;
+    height: 40px;
+    margin:0;
+    border:none;
+    flex-shrink: 0;
+
+}
+
+div#searchCategory > input:focus{
+    outline: none;
 }

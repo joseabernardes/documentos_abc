@@ -1,7 +1,9 @@
 
-
+/*
+ * -------------------------------------- AJAX --------------------------------------
+ */
 function addCategories() {
-    var name = $("#addUser").val();
+    var name = $("#addCategory").val();
     $.post('../Application/Services/manageCategories.php', {name: name, type: 'add'}, function (data) {
         checkadd(data, name);
     }).fail(function () {
@@ -9,35 +11,6 @@ function addCategories() {
     });
 }
 
-function checkadd(data, name) {
-    if (data === 'false') {
-        $("#addUser").val($("#addUser").val());
-    } else {
-        $("#addUser").val('');
-        addCatDOM(data, name);
-
-    }
-}
-
-
-function addCatDOM(data, name) {
-    var button = $("<input></input>");
-    button.addClass("delete").attr("type", "button").attr("value", "-").attr("id", data).click(removeCatDOM);
-    var li = $("<li></li>");
-    li.addClass("cate").text(name);
-    li.prepend(button);
-    $("#ul").append(li);
-}
-
-function checkremove(data, event) {
-    if (data === 'true') {
-        removeCatDOM(event);
-    }
-}
-
-function removeCatDOM(event) {
-    $(event.target).parent().remove();
-}
 
 function removeCategories(event) {
     var id = $(event.target).attr("id");
@@ -47,7 +20,56 @@ function removeCategories(event) {
         }).fail(function () {
             alert("erro");
         });
+    }else{
+         checkremove('false', event);
     }
+}
+
+function checkadd(data, name) {
+    if (data === 'false') {
+        $("#addButton").css("box-shadow", "0px 0px 5px 1px red");
+        $("#addButton").css("color", "red");
+        setTimeout(function () {
+            $("#addButton").css("box-shadow", "none");
+            $("#addButton").css("color", "black");
+
+        }, 300);
+    } else {
+        $("#addCategory").val('');
+        addCatDOM(data, name);
+
+    }
+}
+function checkremove(data, event) {
+    if (data === 'false') {
+        $(event.target).css("box-shadow", "0px 0px 5px 1px red");
+        setTimeout(function () {
+             $(event.target).css("box-shadow", "none");
+
+        }, 300);
+    } else {
+        removeCatDOM(event);
+    }
+}
+
+/*
+ * --------------------------------- DOM ACCESS/CREATE ---------------------------------
+ */
+
+function addCatDOM(data, name) {
+    var button = $("<input></input>");
+    button.addClass("delete").attr("type", "button").attr("value", "-").attr("id", data).click(removeCategories);
+    var li = $("<li></li>");
+    li.addClass("cate").text(name);
+    li.prepend(button);
+    $("ul#manageCat").append(li);
+}
+/*
+ * --------------------------------- Event Handlers ---------------------------------
+ */
+
+function removeCatDOM(event) {
+    $(event.target).parent().remove();
 }
 
 

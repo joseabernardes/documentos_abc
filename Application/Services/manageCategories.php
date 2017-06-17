@@ -13,32 +13,29 @@ SessionManager::startSession();
 $type = filter_input(INPUT_POST, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $ma = new UserManager();
 $cateMan = new CategoryManager();
-
 if ($type === 'add') {
     $catName = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
+    $catName = trim($catName);
 
     if (!empty($catName) && SessionManager::keyExists('authUsername')) {
         try {
-
             $manag = $ma->getUserByID(SessionManager::getSessionValue('authUsername'));
             $us = reset($manag);
             if ($us->getUserAUTHLEVEL() === 'ADMIN') {
                 if (empty($cateMan->getCategoryByName($catName))) {
                     $cate = new CategoryModel('', $catName);
-                    $bool = $cateMan->add($cate);
-                    echo $bool;
+                    echo $cateMan->add($cate);
                 } else {
-                    echo $bool;
+                    echo 'false';
                 }
             } else {
-                echo $bool;
+                echo 'false';
             }
         } catch (Exception $exc) {
-            echo $bool;
+            echo 'false';
         }
     } else {
-        echo $bool;
+        echo 'false';
     }
 } else if ($type === 'remove') {
     $idCat = filter_input(INPUT_POST, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -48,15 +45,18 @@ if ($type === 'add') {
             $manag = $ma->getUserByID(SessionManager::getSessionValue('authUsername'));
             $us = reset($manag);
             if ($us->getUserAUTHLEVEL() === 'ADMIN') {
-
-                $docMa = new DocumentManager();
-                $arrayDocs = $docMa->getDocumentByCategory($idCat);
-                foreach ($arrayDocs as $value) {
-                    $value->setDocumentCategoryId(1);
-                    $docMa->updateDocument($value);
+                if ($idCat != 1) {
+                    $docMa = new DocumentManager();
+                    $arrayDocs = $docMa->getDocumentByCategory($idCat);
+                    foreach ($arrayDocs as $value) {
+                        $value->setDocumentCategoryId(1);
+                        $docMa->updateDocument($value);
+                    }
+                    $cateMan->deleteCategory($idCat);
+                    echo 'true';
+                } else {
+                    echo 'false';
                 }
-                $cateMan->deleteCategory($idCat);
-                echo 'true';
             } else {
                 echo 'false';
             }

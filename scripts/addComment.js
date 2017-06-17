@@ -1,12 +1,3 @@
-//
-//    var obj = {
-//        CommentID: null,
-//        CommentCONTENT: $("textarea#commentArea").val(),
-//        CommentDATE: null,
-//        CommentDocumentID: $("#docid").val(),
-//        CommentNAME: $("#name").val(),
-//        CommentEMAIL: $("#email").val(),
-//        CommentUserID: null};
 
 /*
  * -------------------------------------- AJAX --------------------------------------
