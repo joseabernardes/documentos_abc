@@ -29,24 +29,25 @@ function addCatDOM(data, name) {
     $("#ul").append(li);
 }
 
-function checkremove(data, id) {
+function checkremove(data, event) {
     if (data === 'true') {
-        removeCatDOM(id);
+        removeCatDOM(event);
     }
 }
 
 function removeCatDOM(event) {
     $(event.target).parent().remove();
-
 }
 
 function removeCategories(event) {
     var id = $(event.target).attr("id");
-    $.post('../Application/Services/manageCategories.php', {id: id, type: 'remove'}, function (data) {
-        checkremove(data, id);
-    }).fail(function () {
-        alert("erro");
-    });
+    if (parseInt(id) !== 1) {
+        $.post('../Application/Services/manageCategories.php', {id: id, type: 'remove'}, function (data) {
+            checkremove(data, event);
+        }).fail(function () {
+            alert("erro");
+        });
+    }
 }
 
 

@@ -10,12 +10,12 @@ require_once Config::getApplicationManagerPath() . 'DocumentManager.php';
 require_once Config::getApplicationModelPath() . 'DocumentModel.php';
 SessionManager::startSession();
 
-$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$type = filter_input(INPUT_POST, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $ma = new UserManager();
 $cateMan = new CategoryManager();
 
 if ($type === 'add') {
-    $catName = filter_input(INPUT_GET, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $catName = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
     if (!empty($catName) && SessionManager::keyExists('authUsername')) {
@@ -41,31 +41,30 @@ if ($type === 'add') {
         echo $bool;
     }
 } else if ($type === 'remove') {
-    $idCat = filter_input(INPUT_GET, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $bool = 'false';
+    $idCat = filter_input(INPUT_POST, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if (!empty($idCat) && SessionManager::keyExists('authUsername')) {
         try {
             $manag = $ma->getUserByID(SessionManager::getSessionValue('authUsername'));
             $us = reset($manag);
             if ($us->getUserAUTHLEVEL() === 'ADMIN') {
-                $cateMan->deleteCategory($idCat);
+
                 $docMa = new DocumentManager();
                 $arrayDocs = $docMa->getDocumentByCategory($idCat);
                 foreach ($arrayDocs as $value) {
                     $value->setDocumentCategoryId(1);
                     $docMa->updateDocument($value);
-                   
                 }
-                 echo 'true';
+                $cateMan->deleteCategory($idCat);
+                echo 'true';
             } else {
-                echo $bool;
+                echo 'false';
             }
         } catch (Exception $exc) {
-            echo $bool;
+            echo 'false';
         }
     } else {
-        echo $bool;
+        echo 'false';
     }
 }
 
