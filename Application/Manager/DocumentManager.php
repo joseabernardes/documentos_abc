@@ -140,4 +140,10 @@ class DocumentManager extends MyDataAccessPDO {
         return $array;
     }
 
+    public function getSharedUsersByUser_DocumentID($userID, $documentID) {
+        $where = array('DocumentID' => $documentID, 'UserID' => $userID);
+        $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
+        return $array;
+    }
+
 }

@@ -19,22 +19,21 @@ and open the template in the editor.
     <body>
         <?php include_once '../partials/_header.php'; ?> 
         <h1 id="main-title">Gerir Categorias</h1>
-        <div id="sharedBox">
-            <div id="searchBar">
-                <input type="text" id="addUser"/>
+
+            <div id="searchCategory">
+                <input type="text" id="addCategory"/>
                 <input type="button" id="addButton" value="+">
             </div>
-            <ul id="ul">
+            <ul id="manageCat">
             <?php
             $categMan = new CategoryManager();
             $catArray = $categMan->getAllCategories();
             
             foreach ($catArray as $value) {
                 ?>
-                <li  class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
+                <li class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
                 <?php } ?>
-            </ul>    
-        </div>    
+            </ul>       
 
         <?php include_once '../partials/_footer.php'; ?>
     </body>

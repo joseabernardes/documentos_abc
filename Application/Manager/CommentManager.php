@@ -21,7 +21,7 @@ class CommentManager extends MyDataAccessPDO {
         return $data;
     }
 
-    public function add(DocumentModel $a) {
+    public function add(CommentModel $a) {
         $ins = array(
             'CommentID' => $a->getCommentID(),
             'CommentCONTENT' => $a->getCommentCONTENT(),
@@ -53,10 +53,10 @@ class CommentManager extends MyDataAccessPDO {
         }
         return $list;
     }
-    
+     
         public function getCommentsByDocumentID($DocumentID) {
         $where = array('CommentDocumentID' => $DocumentID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $array = $this->getRecords(self::TABLE_NAME, $where,array('CommentDATE'));
         $list = array();
         foreach ($array AS $rec) {
             $list[$rec['CommentID']] = CommentModel::convertArrayToObject($rec);
