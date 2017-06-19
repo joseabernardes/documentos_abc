@@ -235,7 +235,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                         try {
                             $docManager->deleteSharedUsers($documentid);
                         } catch (Exception $ex) {
-                        //caso não exista
+                            //caso não exista
                         }
                     }
                 } catch (Exception $ex) {
