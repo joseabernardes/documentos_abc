@@ -127,6 +127,10 @@ header > nav a {
     font-size: 16px;
 }
 
+header > nav a.noclick{
+    min-width: 100px;
+}
+
 button {
     background: none;
     color: white;
@@ -142,7 +146,7 @@ button {
 header > nav li:hover{
     background: rgba(0,0,0, 0.5);
 }
-#nav_right{
+.nav_right{
     float:right;
 }
 /*-----SUB-MENU-----*/
@@ -164,7 +168,7 @@ header > nav > ul ul {
     header > nav li{
         margin-top: 1px;
     }
-    #nav_right{
+    .nav_right{
         float:none;
     }
     .drop:hover ul {
@@ -666,7 +670,8 @@ main#view-doc div#commentsBox p#noComments{
 ul#manageCat{
     padding:0;
     max-width: 600px;
-    margin: auto;
+    /*margin: auto;*/
+    margin-left: 30px;
 }
 
 ul#manageCat li.cate{
@@ -676,25 +681,26 @@ ul#manageCat li.cate{
     height: 40px;
 }
 
-div#searchCategory {
-    margin: auto;
+div#search {
+    margin-left: 10px;
+    /*margin: auto;*/
     margin-bottom: 30px;
     display: flex;
-    max-width: 600px;
+    max-width: 620px;
 
 }
 
-div#searchCategory > input#addCategory{
-    width: 560px;
+div#search > input#addCategory{
+    width: 580px;
     height: 40px;
     box-sizing: border-box;
     margin:0;
     flex-shrink: 1;
     font-size: 16px;
-    
+
 }
 
-div#searchCategory > input#addButton{
+div#search > input#addButton{
     width: 40px;
     height: 40px;
     margin:0;
@@ -703,6 +709,94 @@ div#searchCategory > input#addButton{
 
 }
 
-div#searchCategory > input:focus{
+div#search > input:focus{
     outline: none;
+}
+
+/*------------------------------INDEX------------------------------*/
+
+main#index{
+
+    /*max-width: 800px;*/
+    /*background-color: red;*/
+    /*display: flex;*/
+    margin: 0;
+
+
+}
+
+main#index div#search > input#addCategory{
+    border:none;
+
+}
+
+main#index div#search {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    background-color:  green;
+
+
+}
+
+main#index div#articles{
+    background-color: rgb(84,144,242);
+    display: inline-block;
+    min-width: 200px;
+    width: 600px;
+    height: 600px;
+    /*margin: 60px 0px 0px auto;*/
+    /*float: right;*/
+    /*flex-shrink: 1;*/
+    /*display: flex;*/
+
+}
+
+ul#searchResults{
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    list-style-type: none;
+    padding:0;
+}
+
+ul#searchResults li{
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+    /*border: 1px solid lightgray;*/
+    background-color: rgba(240,182,56,0.7);
+    min-height: 50px;
+    margin-bottom: 10px;
+    padding: 5px;
+
+}
+
+ul#searchResults > li > h3{
+    margin:0;
+    display: inline-block;
+
+}
+ul#searchResults > li > h4{
+    margin: 10px 0px 0px 0px;
+    /*margin:0;*/
+    /*display: inline-block;*/
+
+}
+
+ul#searchResults > li > span.date{
+    margin:0;
+    margin-left:auto;
+    text-align: right;
+    float: right;
+    /*display: block;*/
+
+}
+ul#searchResults > li > span.sum{
+    white-space: pre-line; 
+    text-align: justify; 
+    text-justify: inter-word;
+    display: block;
+}
+ul#searchResults > li > h4.tagsTitle{
+    display: inline-block;
+margin-right: 5px;
 }

@@ -7,10 +7,9 @@ function open() {
 $(document).ready(function () {
 
     $(".noclick").parent().focusout(function (event) {
-        $(event.target).siblings("ul").css("display", "none").css("box-shadow", "none");
-
-
-
+        setTimeout(function () {
+            $(event.target).siblings("ul").css("display", "none").css("box-shadow", "none");
+        }, 100);
     });
 
     $(".noclick").click(function (event) {

@@ -20,7 +20,7 @@ and open the template in the editor.
         <?php include_once '../partials/_header.php'; ?> 
         <h1 id="main-title">Gerir Categorias</h1>
 
-            <div id="searchCategory">
+            <div id="search">
                 <input type="text" id="addCategory"/>
                 <input type="button" id="addButton" value="+">
             </div>

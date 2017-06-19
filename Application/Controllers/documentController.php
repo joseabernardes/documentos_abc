@@ -103,7 +103,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
     /*
      * Validar file
      */
-    if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
+    if (!array_key_exists('type', $errors) && $input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
 
         $file_path = __DIR__ . "/../../upload/docs/" . basename($_FILES["file"]["name"]);
         $fileName = basename($_FILES["file"]["name"]);
