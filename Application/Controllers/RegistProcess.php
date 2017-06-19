@@ -10,7 +10,7 @@ $inputType = INPUT_POST;
 $input = array();
 $errors = array();
 $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
-
+$added = false;
 if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guardar') ) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $rules = array(
@@ -128,7 +128,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         if (count($errors) === 0 && move_uploaded_file($_FILES["file"]["tmp_name"], $file_path) === false) {
             $erros['file'] = 'Upload nao feito';
         }
-    } else if($input['type'] === 'registar'){
+    } else if ($input['type'] === 'registar') {
         $errors['file'] = 'Parametro não enviado';
     }
 
@@ -136,34 +136,52 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
     if (count($errors) == 0) {
 
         if ($input['type'] === 'registar') {
-            $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
-            $addressManager = new AddressManager();
-            $addressID = $addressManager->add($address);
-            $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
-            $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
-            $manager = new UserManager();
-            $manager->add($user);
-            $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+            $added = true;
+            try {
+                $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
+                $addressManager = new AddressManager();
+                $addressID = $addressManager->add($address);
+                $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
+                $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
+                $manager = new UserManager();
+                $manager->add($user);
+                $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+            } catch (Exception $ex) {
+                $added = false;
+            }
         }
 
         if ($input['type'] === 'change') {
-            $u2 = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
-            $u3 = reset($u2);
-            $addressManager = new AddressManager();
-            $a1 = $addressManager->getAddressByID($u3->getUserADDRESS());
-            $a2 = reset($a1);
-            $a2->setAddressADDRESS($input['addressR']);
-            $a2->setAddressCITY($input['CityR']);
-            $a2->setAddressCP1($input['Cp1R']);
-            $a2->setAddressCP2($input['Cp2R']);
-            $u3->setUserEMAIL($input['emailR']);
-            $u3->setUserNAME($input['NameR']);
-            $u3->setUserPHOTO('/upload/images/' . $fileName);
-            $u3->setUserPHONE($input['PhoneR']);
-
-            if ($checkbox === 'on') {
-                $u3->setUserPASS($input['PassRNOVA']);
+            $added = true;
+            try {
+                $u2 = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+                $u3 = reset($u2);
+                $addressManager = new AddressManager();
+                $a1 = $addressManager->getAddressByID($u3->getUserADDRESS());
+                $a2 = reset($a1);
+                $a2->setAddressADDRESS($input['addressR']);
+                $a2->setAddressCITY($input['CityR']);
+                $a2->setAddressCP1($input['Cp1R']);
+                $a2->setAddressCP2($input['Cp2R']);
+                $u3->setUserEMAIL($input['emailR']);
+                $u3->setUserNAME($input['NameR']);
+                if (is_uploaded_file($_FILES["file"]["tmp_name"])) {
+                    $u3->setUserPHOTO('/upload/images/' . $fileName);
+                }
+                $u3->setUserPHONE($input['PhoneR']);
+                if ($checkbox === 'on') {
+                    $password = password_hash($input['PassRNOVA'], PASSWORD_DEFAULT);
+                    $u3->setUserPASS($password);
+                }
+                $userManager->updateUser($u3);
+            } catch (Exception $ex) {
+                $added = false;
             }
+        }
+        if(!$added){
+             $errors['final'] = 'Falha ao atualizar utilizador';
+  
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
+$userManager = new UserManager();
 require_once Config::getApplicationControllersPath() . 'AuthProcess.php';
 require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
 
@@ -17,7 +18,7 @@ if (SessionManager::keyExists('authUsername')) {
 
         $tokenID = $tokens[0];
         $tokenVALUE = $tokens[1];
-        $userManager = new UserManager();
+
         $userDump = $userManager->getUserByTokenID($tokenID);
         $user = reset($userDump); //retorna o primeiro (e presumivelmente o UNICO) user
         if ($user) {
