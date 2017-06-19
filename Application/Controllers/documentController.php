@@ -103,7 +103,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
     /*
      * Validar file
      */
-    if ($input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
+    if (!array_key_exists('type', $errors) && $input['type'] === 'import' && is_uploaded_file($_FILES["file"]["tmp_name"])) {
 
         $file_path = __DIR__ . "/../../upload/docs/" . basename($_FILES["file"]["name"]);
         $fileName = basename($_FILES["file"]["name"]);
@@ -202,6 +202,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             /* Criar Documento */
             try {
                 $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
+               
                 $documentid = $docManager->add($document);
                 if ($documentid == -1) {
                     throw new Exception();
@@ -244,14 +245,15 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                 //SUCESSO
             } catch (Exception $ex) {
                 /* Reverter */
+                $docManager->deleteSharedUsers($documentid);
+                $docManager->deleteTagsDocument($documentid);
                 if ($input['type'] === 'edit') {
                     $hist->deleteHistoric($hism);
                     $docManager->updateDocument($documentBackup);
                 } else {
                     $docManager->deleteDocument($document);
                 }
-                $docManager->deleteSharedUsers($documentid);
-                $docManager->deleteTagsDocument($documentid);
+
 
 
                 $added = false;

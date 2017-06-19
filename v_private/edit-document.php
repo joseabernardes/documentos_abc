@@ -29,7 +29,6 @@ $doc = $docManager->getDocumentByID($doc_id);
 
                 include_once __DIR__ . '/../partials/_error.php';
             } else {
-                $doc = $docManager->getDocumentByID($doc_id);
                 $doc = reset($doc);
                 if (SessionManager::getSessionValue('authUsername') == $doc->getDocumentUserId()) {
                     if (!$added) {
