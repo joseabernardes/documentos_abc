@@ -68,18 +68,18 @@ if (!$loggedIn) {
                     <?php if (array_key_exists('emailR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['emailR'] ?></span> <?php } ?>
                     <div id="passCont">
                         <input  title="8 caracteres (1 Maiuscula, 1 Minuscula, 1 numero e um caracter especial[#?!@$%^&+*-])" pattern='(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}' class="<?= array_key_exists('PassR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR" type="password" placeholder="password" name="PassR" maxlength="50">
-                     <img id="pwd1" src="../images/password/hide.png" alt=""/>
+                        <img id="pwd1" src="../images/password/hide.png" alt=""/>
                     </div>
                     <?php if (array_key_exists('PassR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR'] ?></span> <?php } ?>
                     <div id="passCont">
                         <input class="<?= array_key_exists('PassR2', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PassR2" type="password" placeholder="Confirme Password" name="PassR2" maxlength="50">
-                      <img id="pwd2" src="../images/password/hide.png" alt=""/>
+                        <img id="pwd2" src="../images/password/hide.png" alt=""/>
                     </div>
                     <?php if (array_key_exists('PassR2', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PassR2'] ?></span> <?php } ?>                  
                     <input value="<?= $input['NameR'] ?>" class="<?= array_key_exists('NameR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="NameR" type="text" placeholder="Nome" name="NameR" maxlength="50">
                     <?php if (array_key_exists('NameR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['NameR'] ?></span> <?php } ?>
                     <label>Fotografia</label>
-                    <input  class="<?= array_key_exists('file', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required accept="image/*" id="file" type="file" name="file"/>
+                    <input  class="<?= array_key_exists('file', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" require accept="image/*" id="file" type="file" name="file"/>
                     <?php if (array_key_exists('file', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['file'] ?></span> <?php } ?>
                     <input value="<?= $input['PhoneR'] ?>" class="<?= array_key_exists('PhoneR', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required id="PhoneR" type="tel" placeholder="Telemovel" name="PhoneR" maxlength="50">
                     <?php if (array_key_exists('PhoneR', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['PhoneR'] ?></span> <?php } ?>
@@ -94,6 +94,7 @@ if (!$loggedIn) {
                         <?php if (array_key_exists('Cp1R', $errors)) { ?><span id="left" class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp1R'] ?></span> <?php } ?>
                         <?php if (array_key_exists('Cp2R', $errors)) { ?><span id="right" class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['Cp2R'] ?></span> <?php } ?>
                     </div>
+                    <input type="hidden" name="type" value="registar">
                     <input type="submit" value="Registar" name="registar">
                 </form>
             </main>

@@ -11,7 +11,7 @@ $input = array();
 $errors = array();
 $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
 
-if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guardar') ) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $rules = array(
         'emailR' => array('sanitize' => FILTER_SANITIZE_EMAIL, 'validate' => FILTER_VALIDATE_EMAIL),
@@ -22,7 +22,10 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         'addressR' => array('options' => array('regexp' => '/^.{1,100}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'CityR' => array('options' => array('regexp' => '/^[\p{L} ]{1,30}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'Cp1R' => array('options' => array('regexp' => '/^4\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'Cp2R' => array('options' => array('regexp' => '/^\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP)
+        'Cp2R' => array('options' => array('regexp' => '/^\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'PassRNOVA' => array('options' => array('regexp' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'PassRNOVA2' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
+        'type' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
     );
 
     foreach ($rules as $key => $value) {
@@ -34,22 +37,61 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         } else if (!filter_var($input[$key], $value['validate'], $value)) {
             $errors[$key] = 'Parametro Invalido';
         }
-        $input[$key] = trim($input[$key]); //trim tirar espaços fim e inicio da string
+        $input[$key] = trim($input[$key]); //trim tirar espaços fim e inicio da string      
     }
+    $input['type'] = filter_input($inputType, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    //----Verificar password-----
-
-    if ($input['PassR'] !== $input['PassR2']) {
-        $errors['PassR'] = 'Password não confirmada';
-        $errors['PassR2'] = 'Password não confirmada';
+    /* ----------Verificar type---------- */
+    if (!array_key_exists('type', $errors) && $input['type'] !== 'registar' && $input['type'] !== 'change') {
+        $errors['type'] = 'Parametro invalido';
     }
-
-    //------Verificar email igual----------
 
     $userManager = new UserManager();
 
-    if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
-        $errors['emailR'] = 'Este email ja existe';
+    if (!array_key_exists('type', $errors)) {
+        if ($input['type'] === 'change') {
+            $checkbox = filter_input($inputType, 'changepwd', FILTER_SANITIZE_SPECIAL_CHARS);
+            if ($checkbox !== 'on') {
+                unset($errors['PassR']);
+                unset($errors['PassRNOVA']);
+                unset($errors['PassRNOVA2']);
+            } else {
+                $userssArray = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+                $u1 = reset($userssArray);
+                if (password_verify($input['PassR'], $u1->getUserPASS())) {
+                    if ($input['PassRNOVA'] !== $input['PassRNOVA2']) {
+                        $errors['PassRNOVA'] = 'Password não confirmada';
+                        $errors['PassRNOVA2'] = 'Password não confirmada';
+                    }
+                } else {
+                    $errors['PassR'] = 'Password errada';
+                }
+            }
+            unset($errors['PassR2']);
+
+            $u5 = $userManager->getUserByEmail($input['emailR']);
+            $u6 = reset($u5);
+            if ($u6) {
+                if ($u6->getUserID() !== SessionManager::getSessionValue('authUsername')) {
+                    $errors['emailR'] = 'Email ja existe';
+                }
+            }
+            unset($errors['file']);
+        } else {
+
+            //------Verificar email igual----------
+
+            if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
+                $errors['emailR'] = 'Este email ja existe';
+            }
+
+            //----Verificar password-----
+
+            if ($input['PassR'] !== $input['PassR2']) {
+                $errors['PassR'] = 'Password não confirmada';
+                $errors['PassR2'] = 'Password não confirmada';
+            }
+        }
     }
 
 
@@ -86,21 +128,42 @@ if (filter_has_var($inputType, 'registar') && $_SERVER['REQUEST_METHOD'] === 'PO
         if (count($errors) === 0 && move_uploaded_file($_FILES["file"]["tmp_name"], $file_path) === false) {
             $erros['file'] = 'Upload nao feito';
         }
-    } else {
+    } else if($input['type'] === 'registar'){
         $errors['file'] = 'Parametro não enviado';
     }
 
+
     if (count($errors) == 0) {
 
-        $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
+        if ($input['type'] === 'registar') {
+            $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
+            $addressManager = new AddressManager();
+            $addressID = $addressManager->add($address);
+            $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
+            $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
+            $manager = new UserManager();
+            $manager->add($user);
+            $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+        }
 
-        $addressManager = new AddressManager();
-        $addressID = $addressManager->add($address);
-        $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
-        $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
-        $manager = new UserManager();
-        $manager->add($user);
-        $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+        if ($input['type'] === 'change') {
+            $u2 = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+            $u3 = reset($u2);
+            $addressManager = new AddressManager();
+            $a1 = $addressManager->getAddressByID($u3->getUserADDRESS());
+            $a2 = reset($a1);
+            $a2->setAddressADDRESS($input['addressR']);
+            $a2->setAddressCITY($input['CityR']);
+            $a2->setAddressCP1($input['Cp1R']);
+            $a2->setAddressCP2($input['Cp2R']);
+            $u3->setUserEMAIL($input['emailR']);
+            $u3->setUserNAME($input['NameR']);
+            $u3->setUserPHOTO('/upload/images/' . $fileName);
+            $u3->setUserPHONE($input['PhoneR']);
+
+            if ($checkbox === 'on') {
+                $u3->setUserPASS($input['PassRNOVA']);
+            }
+        }
     }
 }
-    
