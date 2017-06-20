@@ -93,6 +93,9 @@ $doc = $docManager->getDocumentByID($doc_id);
                 }
             }
         } else {
+            ?>
+                <h1 id="main-title">Editar Documento</h1>
+                <?php 
             $string = 'Necessário autenticação';
             $url = '../v_public/authentication.php';
             $text = 'Login';

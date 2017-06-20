@@ -49,6 +49,18 @@ class DocumentManager extends MyDataAccessPDO {
         return $list;
     }
 
+
+    
+    public function getDocumentByLimitOrdered($limit) {
+        $sql = "SELECT * FROM document ORDER BY DocumentDATE DESC LIMIT {$limit}";
+        $array = $this->getRecordsByUserQuery($sql);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
     public function getDocumentByUserID($DocumentUserID) {
         $where = array('DocumentUserID' => $DocumentUserID);
         $array = $this->getRecords(self::TABLE_NAME, $where);

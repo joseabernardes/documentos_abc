@@ -164,6 +164,8 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     $document->setDocumentCONTENT($input['doc']);
                     $document->setDocumentVisibilityId($input['visibility']);
                     $document->setDocumentCOMMENTS($input['comment_public']);
+                    $docManager = new DocumentManager();
+                    $oldShared = $docManager->getSharedUsersByDocumentID($doc_id);
                     $docManager->deleteSharedUsers($doc_id);
                     $docManager->deleteTagsDocument($doc_id);
                     $documentid = $doc_id;
@@ -202,7 +204,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
             /* Criar Documento */
             try {
                 $document = new DocumentModel('', $input['title'], $input['summary'], SessionManager::getSessionValue('authUsername'), $input['category'], date("Y-m-d H:i:s"), $input['doc'], $input['visibility'], $input['comment_public']);
-               
+
                 $documentid = $docManager->add($document);
                 if ($documentid == -1) {
                     throw new Exception();
@@ -228,6 +230,15 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     /* Shared Users */
                     if ($input['visibility'] == '3') {
                         foreach ($sharedUsers as $value) {
+                            if ($input['type'] === 'edit') {
+                                foreach ($oldShared as $value) {
+                                    if ($oldShared['UserID'] != $value->userID) {
+                                        $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
+                                    }
+                                }
+                            } else {
+                                
+                            }
                             $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
                         }
                     }
@@ -253,9 +264,6 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                 } else {
                     $docManager->deleteDocument($document);
                 }
-
-
-
                 $added = false;
             }
         } else {

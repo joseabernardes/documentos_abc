@@ -8,6 +8,7 @@ require_once Config::getApplicationManagerPath() . "CommentManager.php";
 
 $doc_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $docManager = new DocumentManager();
+$userMan = new UserManager();
 $doc = $docManager->getDocumentByID($doc_id);
 ?>
 <!DOCTYPE html>
@@ -63,11 +64,6 @@ $doc = $docManager->getDocumentByID($doc_id);
                 $cat = $catMan->getCategoryByID($doc->getDocumentCategoryId());
                 $cat = reset($cat);
                 $tagsDump = $docManager->getTagsByDocumentID($doc_id);
-                $tags = '';
-                foreach ($tagsDump as $value) {
-                    $tags = $tags . ', ' . $value['TagName'];
-                }
-                $tags = substr($tags, 1);
                 ?>
 
 
@@ -81,12 +77,27 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <h3>Categoria</h3>
                             <span><?= $cat->getCategoryNAME() ?></span> 
                             <h3>Palavras-Chave</h3>
-                            <span><?= $tags ?> </span>
+
+                            <?php
+                            foreach ($tagsDump as $value) {
+                                ?>
+                                <a href="<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
+                                <?php
+                            }
+                            ?>
+
                             <h3>Resumo</h3>
                             <span><?= $doc->getDocumentSUMMARY() ?></span>
+                            <h3>Autor</h3>
+
+                            <?php
+                            $user = $userMan->getUserByID($doc->getDocumentUserId());
+                            $user = reset($user);
+                            ?>
+                            <a href="profile-page.php?id=<?= $user->getUserID() ?>"><?= $user->getUserNAME() ?></a>
                             <?php if ($doc->getDocumentPATH()) { ?>
                                 <h3>Ficheiro Original</h3>
-                                <span><a href="<?= '..' . $doc->getDocumentPATH() ?>">Download</a></span> 
+                                <a href="<?= '..' . $doc->getDocumentPATH() ?>">Download</a> 
                             <?php } ?>
 
                         </div>
@@ -166,7 +177,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                                 <div id="inputcontainer">
                                     <?php
                                     if (SessionManager::keyExists('authUsername')) {
-                                        $userMan = new UserManager();
+
                                         $user = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
                                         $user = reset($user);
                                         ?> 

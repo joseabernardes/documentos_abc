@@ -186,6 +186,7 @@ function liveSearchEVH() {
 $(document).ready(function () {
 
     $("#inputS").keyup(liveSearchEVH);
+    $("input#addButton").click(liveSearchEVH);
 }
 );
 
