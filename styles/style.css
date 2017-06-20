@@ -635,9 +635,12 @@ main#view-doc div#commentsBox p#noComments{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-
 .check{
-    display: none;
+      display: none;
+}
+.check:checked + label{
+    background-color :black;
+  
 }
 
 .valid{
@@ -690,7 +693,7 @@ div#search {
 
 }
 
-div#search > input#addCategory{
+div#search > input#inputS{
     width: 580px;
     height: 40px;
     box-sizing: border-box;
@@ -706,6 +709,7 @@ div#search > input#addButton{
     margin:0;
     border:none;
     flex-shrink: 0;
+    font-size: 20px;
 
 }
 
@@ -725,31 +729,76 @@ main#index{
 
 }
 
-main#index div#search > input#addCategory{
+main#index div#search > input#inputS{
     border:none;
 
 }
 
 main#index div#search {
+    position:relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin: 20px auto;
-    background-color:  green;
+}
+main#index div#search ul{
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+    top: 26px;
+    width: 100%;
+    max-width: 505px;
+    display: none;
 
+    border-bottom: 1px solid;
+    border-color: grey;
 
 }
 
-main#index div#articles{
+main#index div#search ul li{
+    background-color: white; 
+    padding: 5px;
+    cursor: pointer;
+}
+
+main#index div#search ul li:hover{
+    background-color: lightgray; 
+}
+
+
+
+
+
+
+main#index div#search > div{
+
+    display: flex;
+    flex-direction: column;
+}
+main#index div#search input[type=radio]{
+    display: none;
+
+}
+
+
+
+main#index div#search input[type=radio]:checked + label {
+    background-color: rgba(240,182,56,0.7);
+}
+
+main#index div#search label{
     background-color: rgb(84,144,242);
-    display: inline-block;
-    min-width: 200px;
-    width: 600px;
-    height: 600px;
-    /*margin: 60px 0px 0px auto;*/
-    /*float: right;*/
-    /*flex-shrink: 1;*/
-    /*display: flex;*/
+    height: 15px;
+    padding: 2.5px 10px;
+    text-align: center;
+    color: white;
+    font-size: 13px;
+}
+
+main#index div#search label:hover{
+    background-color: rgba(84,144,242,0.8);
+
 
 }
+
 
 ul#searchResults{
     max-width: 620px;
@@ -798,5 +847,5 @@ ul#searchResults > li > span.sum{
 }
 ul#searchResults > li > h4.tagsTitle{
     display: inline-block;
-margin-right: 5px;
+    margin-right: 5px;
 }

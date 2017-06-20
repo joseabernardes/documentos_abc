@@ -3,7 +3,7 @@
  * -------------------------------------- AJAX --------------------------------------
  */
 function addCategories() {
-    var name = $("#addCategory").val();
+    var name = $("#inputS").val();
     $.post('../Application/Services/manageCategories.php', {name: name, type: 'add'}, function (data) {
         checkadd(data, name);
     }).fail(function () {
@@ -35,7 +35,7 @@ function checkadd(data, name) {
 
         }, 300);
     } else {
-        $("#addCategory").val('');
+        $("#inputS").val('');
         addCatDOM(data, name);
 
     }

@@ -28,7 +28,7 @@ function addCommentAJAXproce(data) {
             CommentDocumentID: parseInt(json.CommentDocumentID),
             CommentNAME: json.CommentNAME,
             CommentEMAIL: json.CommentEMAIL,
-            CommentUserID: parseInt(json.CommentUserID)};
+            CommentUserID:json.CommentUserID};
         addCommentDOM(newComment);
 
     }

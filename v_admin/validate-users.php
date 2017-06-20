@@ -37,7 +37,7 @@ and open the template in the editor.
                     <p><?= $ad->getAddressCITY() ?></p>
                     <p><?= $value->getUserPHONE() ?></p>
 
-                    <input class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid">Validar</label>
+                    <input checked class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid">Validar</label>
 
                 </article>
             <?php } ?>
