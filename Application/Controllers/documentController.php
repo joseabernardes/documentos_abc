@@ -226,19 +226,21 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     $errors['tags'] = 'Falha ao inserir, possiveis tags iguais';
                     throw $ex;
                 }
+                
                 try {
                     /* Shared Users */
                     if ($input['visibility'] == '3') {
-                        
+                        require_once Config::getApplicationManagerPath() . 'AlertManager.php';
+                        $alertManager = new AlertManager();
                         foreach ($sharedUsers as $value) {
                             if ($input['type'] === 'edit') {
                                 foreach ($oldShared as $value) {
                                     if ($oldShared['UserID'] != $value->userID) {
-                                        $alertManager->add(new AlertModel($value->userID, $documentid));
+                                        $alertManager->add(new AlertModel('', $value->userID, $documentid));
                                     }
                                 }
                             } else {
-                                
+                                $alertManager->add(new AlertModel('', $value->userID, $documentid));
                             }
                             $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
                         }
