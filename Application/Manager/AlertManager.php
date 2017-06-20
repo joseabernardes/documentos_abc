@@ -23,6 +23,7 @@ class AlertManager extends MyDataAccessPDO {
         $ins['AlertUserID'] = $a->getAlertUserID();
         $ins['AlertDocumentID'] = $a->getAlertDocumentID();
         $ins['AlertID'] = $a->getAlertID();
+        $ins['AlertDATE'] = $a->getAlertDATE();
         return $this->insert(self::TABLE_NAME, $ins);
     }
 
@@ -36,10 +37,20 @@ class AlertManager extends MyDataAccessPDO {
 
     public function getAlertsByUserID($AlterUserID) {
         $where = array('AlertUserID' => $AlterUserID);
+        $array = $this->getRecords(self::TABLE_NAME, $where,array('AlertDATE DESC'));
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getAlertsByAlertID($AlertID) {
+        $where = array('AlertID' => $AlertID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {
-            $list[$rec['AlertUserID']] = AlertModel::convertArrayToObject($rec);
+            $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);
         }
         return $list;
     }

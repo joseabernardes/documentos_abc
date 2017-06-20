@@ -44,7 +44,7 @@ and open the template in the editor.
                             <p><?= $ad1->getAddressCITY() ?></p>
                             <p><?= $value->getUserPHONE() ?></p>
 
-                            <input <?= ($value->getUserAUTHLEVEL() == 'USER') ? 'checked' : '' ?> class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid"><?= ($value->getUserAUTHLEVEL() == 'USER') ? 'Invalidar' : 'Validar' ?></label>
+                            <input <?= ($value->getUserAUTHLEVEL() == 'USER') ? 'checked' : '' ?> class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid noselect"><?= ($value->getUserAUTHLEVEL() == 'USER') ? 'Invalidar' : 'Validar' ?></label>
                         </article>
                     <?php } ?>
                 </section>

@@ -17,7 +17,8 @@ and open the template in the editor.
 <html>
     <head>
         <?php include_once __DIR__ . '/../partials/_head.php'; ?>
-        <title></title>
+        <script src="../scripts/markalerts.js" type="text/javascript"></script>
+        <title>Alertas</title>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?>
@@ -29,19 +30,21 @@ and open the template in the editor.
                 $alertUsers = new UserManager();
                 $alertDocs = new DocumentManager();
                 foreach ($arrayAlerts as $value) {
-                    /*user o qual foi partilhado*/
+                    /* user o qual foi partilhado */
                     $arrayAlertUsers = $alertUsers->getUserByID($value->getAlertUserID());
                     $userAlertAtual = reset($arrayAlertUsers);
-                    /*documento que foi partilhado*/
+                    /* documento que foi partilhado */
                     $arrayAlertDocs = $alertDocs->getDocumentByID($value->getAlertDocumentID());
                     $docAlertAtual = reset($arrayAlertDocs);
-                    /*user que partilhou*/
+                    /* user que partilhou */
                     $userpart = $alertUsers->getUserByID($docAlertAtual->getDocumentUserId());
                     $userpart = reset($userpart);
                     ?>
-                    <p>O<a href="profile-page.php?id=<?= $userpart->getUserID() ?>"><?= $userpart->getUserNAME()?></a> partilhou consigo o documento <a href="view-document.php?id<?=$docAlertAtual->getDocumentID()?>"><?= $docAlertAtual->getDocumentTITLE() ?></a></p>
+                    <div>
+                        <p>O<a href="profile-page.php?id=<?= $userpart->getUserID() ?>"><?= $userpart->getUserNAME() ?></a> partilhou consigo o documento <a href="view-document.php?id=<?= $docAlertAtual->getDocumentID() ?>"><?= $docAlertAtual->getDocumentTITLE() ?></a></p>
+                        <input id="<?= $value->getAlertID() ?>" type="button" value="Marcar visto" class="markAlert"/>
+                    </div>
                     <?php
-                    $alerts->deleteAlert($value);
                 }
             } else {
                 $string = 'Não existem alertas';

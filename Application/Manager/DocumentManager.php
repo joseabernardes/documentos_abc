@@ -49,8 +49,6 @@ class DocumentManager extends MyDataAccessPDO {
         return $list;
     }
 
-
-    
     public function getDocumentByLimitOrdered($limit) {
         $sql = "SELECT * FROM document ORDER BY DocumentDATE DESC LIMIT {$limit}";
         $array = $this->getRecordsByUserQuery($sql);
@@ -81,12 +79,13 @@ class DocumentManager extends MyDataAccessPDO {
         return $list;
     }
 
-    public function getDocumentByTagID($DocumentTagID) {
-        $where = array('DocumentTagID' => $DocumentTagID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
+    public function getDocumentByTag($tag) {
+        $where = array('TagName' => $tag);
+        $array = $this->getRecords(self::TABLE_DOCUMENT_TAG, $where);
         $list = array();
         foreach ($array AS $rec) {
-            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+            $aaa = $this->getDocumentByID($rec['DocumentID']);
+            $list[$rec['DocumentID']] = reset($aaa);
         }
         return $list;
     }

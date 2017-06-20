@@ -81,7 +81,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <?php
                             foreach ($tagsDump as $value) {
                                 ?>
-                                <a href="<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
+                                <a href="../v_public/view-docs.php?type=tag&id=<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
                                 <?php
                             }
                             ?>

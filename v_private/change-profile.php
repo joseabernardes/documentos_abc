@@ -14,11 +14,11 @@ require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
-        <title>Editar Perfil</title>
+        <title>Alterar Perfil</title>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?>
-        <h1 id="main-title">Editar Informação</h1>
+        <h1 id="main-title">Alterar Perfil</h1>
         <?php
         if (SessionManager::keyExists('authUsername')) {
             $mrdMan = new AddressManager();

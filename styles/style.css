@@ -318,6 +318,15 @@ form#change-profile input[type=submit], form#change-profile input[type=reset]{
 form#change-profile{
     margin:0px 10px;
 }
+
+form#change-profile label{
+    font-weight: normal;
+    font-size: 14px;
+}
+
+form#change-profile input#alpwd{
+    width: auto;
+}
 /*--------------------------------DOCUMENT--------------------------------*/
 
 
@@ -448,18 +457,18 @@ div#searchBar ul li:hover{
 
 /*-------------------------------------PERFIL*/
 
-.card {
+div.card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
+    width: 300px;
     margin: 60px auto;
     text-align: center;
 }
 
-.card a:hover{
+div.card a:hover{
     opacity: 0.8;
 }
 
-.card a{
+div.card a{
     text-decoration:none;
     color:white;
     display: inline-block;
@@ -470,6 +479,10 @@ div#searchBar ul li:hover{
     padding: 8px 0px;
 }
 
+div.card img{
+    width:300px;
+    height:300px;
+}
 
 /*------------------------------VIEW-DOCUMENT------------------------------*/
 
@@ -633,40 +646,35 @@ main#view-doc div#commentsBox p#noComments{
 
 /*-----------------Validar utilizadores----------------*/
 
-.article{
+article.article{
     display: inline-block;
-    max-width: 300px;
+    width: 200px;
     margin: 60px auto 20px 50px;
     text-align: center;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.check{
+input.check{
     display: none;
 }
-.check:checked + label{
-    background-color :black;
 
-}
-.check:checked + label{
-    background-color :black;
-
-}
-
-.valid{
-    text-decoration:none;
+article.article label.valid{
     color:white;
     display: inline-block;
     background-color: rgb(84,144,242);
-    /*    text-align: center;*/
+    cursor: pointer;
     width: 100%;
     font-size: 18px;
     padding: 8px 0px;
 }
 
+input.check:checked + label{
+    background-color :lightgray;
+}
 
-#image{
-    width: 100%;
+article.article img#image{
+    width: 200px;
+    height: 200px;
 }
 /*--------------Categorias---------*/
 
@@ -736,20 +744,11 @@ div#search > input:focus{
 /*------------------------------INDEX------------------------------*/
 
 main#index{
-
-    /*width: 620px;*/
     margin: auto;
-    /*background-color: red;*/
-    /*display: flex;*/
-    /*margin: 0;*/
-
-
 }
 
 main#index div#search > input#inputS{
     border:none;
-
-
 }
 
 main#index div#search {
@@ -765,7 +764,6 @@ main#index div#search ul{
     width: 100%;
     max-width: 505px;
     display: none;
-
     border-bottom: 1px solid;
     border-color: grey;
 
@@ -829,8 +827,6 @@ ul#searchResults{
 }
 
 ul#searchResults li{
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
-    /*border: 1px solid lightgray;*/
     background-color: rgba(240,182,56,0.7);
     min-height: 50px;
     margin-bottom: 10px;
@@ -887,96 +883,87 @@ main#index > h3{
     width: 620px;
 }
 main#index > h3#lastAdd{
-    /*margin:10px auto;*/
-    /*width: 620px;*/
     margin: 20px 50px;
 }
 
 /*-----------------------------N Documentos-------------------------*/
 
-main#index div#topIndex{
+div#topIndex{
     display: flex;
     margin: 50px auto;
     max-width: 1000px;
     border-top: 1px solid lightgray;
-
 }
 
-main#index div#topIndex > div {
+div#topIndex > div {
     margin: 10px auto;
     width: 300px;
+    padding:2px;
 
 }
-main#index div#topIndex > div > ul {
+div#topIndex > div > ul {
     list-style-type: none;
-    padding:2px;
+    padding:0;
 }
-main#index div#topIndex > div > ul > li{
+div#topIndex > div > ul > li{
     background-color: rgb(240,182,56);
-      padding:0;
-    /*max-width: 400px;*/
+    padding:0;
     margin:5px auto;
 }
 
-main#index div#topIndex > div > ul li a{
+div#topIndex > div > ul li a{
     color: white;
-
     display: block;
     text-decoration: none;
     padding: 10px;
     text-align: center;
-    /*font-weight: bold;*/
     font-size: 15px;
 }
-main#index div#topIndex > div > ul li a:hover{
+div#topIndex > div > ul li a:hover{
     background-color: lightgray;
 
 }
 
-main#index div#topIndex > div > ul li a span{
-display: block;
-font-weight: normal;
+div#topIndex > div > ul li a span{
+    display: block;
+    font-weight: normal;
     font-size: 12px;
 }
 
 /*--------------------Meus Docunmetos------------*/
 
-#all{
+
+div#mydocs h3, div#sharedDocs h3{
+    background-color:lightgray;
+    padding: 15px;
+
+}
+
+div#mydocs li.docs{
     display: flex;
 }
-
-.docs{
-    list-style-type: none;
-    border: 2px solid lightgray;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 3px;
+div#mydocs li.docs a{
+    text-align: left;
+    flex-grow: 1;
 }
 
-.docs a{
-    text-decoration: none;
-    color: black;
+div#mydocs li a:last-child{
+    margin-left: auto;
+    flex-grow: 0;
+    background-color: lightgray;
+ 
+}
+div#mydocs li a:last-child:hover{
+    background-color: grey;
+
 }
 
-#sharedDocs{
-    margin-left: 100px;
-}
-
-#mydocs h2{
-    background-color:lightgray;
-    padding: 15px;
-    color: black;
-}
-#sharedDocs h2{
-    background-color:lightgray;
-    padding: 15px;
-}
-.edit{
+/*.edit{
     text-decoration: none;
     color: black;
     text-align: right;
-}
+}*/
 
-.edit:hover{
+/*.edit:hover{
     opacity: 0.5;
-}
+}*/

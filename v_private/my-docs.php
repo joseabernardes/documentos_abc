@@ -26,14 +26,14 @@ and open the template in the editor.
             $arrayDocsAtual = $docs1->getDocumentByUserID(SessionManager::getSessionValue('authUsername'));
             $sharedDocs = $docs1->getSharedDocsByUserID(SessionManager::getSessionValue('authUsername'));
             ?>
-            <div id="all">
+            <div id="topIndex">
                 <div id="mydocs">
-                    <h2>Os Meus Documentos</h2>
+                    <h3>Os Meus Documentos</h3>
                     <ul>
                         <?php
                         foreach ($arrayDocsAtual as $value) {
                             ?>
-                            <li class="docs"><a href="view-document.php?id=<?= $value->getDocumentID() ?>"> <?= $value->getDocumentTITLE() ?></a> <a class="edit" href="view-document.php?id=<?= $value->getDocumentID() ?>">Editar</a></li>
+                            <li class="docs"><a href="view-document.php?id=<?= $value->getDocumentID() ?>"> <?= $value->getDocumentTITLE() ?></a><a href="edit-document.php?id=<?= $value->getDocumentID() ?>">Editar</a></li>
 
                             <?php
                         }
@@ -42,7 +42,7 @@ and open the template in the editor.
                 </div>
 
                 <div id="sharedDocs">
-                    <h2>Documentos Partilhados</h2>
+                    <h3>Documentos Partilhados</h3>
                     <ul>
                         <?php
                         foreach ($sharedDocs as $value) {

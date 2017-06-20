@@ -28,7 +28,7 @@ function addCommentAJAXproce(data) {
             CommentDocumentID: parseInt(json.CommentDocumentID),
             CommentNAME: json.CommentNAME,
             CommentEMAIL: json.CommentEMAIL,
-            CommentUserID:json.CommentUserID};
+            CommentUserID: json.CommentUserID};
         addCommentDOM(newComment);
 
     }
@@ -60,8 +60,8 @@ var ee = {
 
 function getCommentObjectDOM() {
     if ($("#name").length) { //não existe
-        var name = $("#name").val();
-        var email = $("#email").val();
+        var name = $("input#name").val();
+        var email = $("input#email").val();
     } else {
         var name = null;
         var email = null;
@@ -97,6 +97,8 @@ function addCommentDOM(obj) {
     li.append(a).append(span).append(p);
     $("#commentsBox ol").append(li);
     $("textarea#commentArea").val('');
+    $("input#name").val('')
+    $("input#email").val('');
 
 }
 
@@ -113,7 +115,7 @@ function addCommentEVH() {
 
 $(document).ready(function () {
     $("#send").click(addCommentEVH);
-    
+
 });
 
 

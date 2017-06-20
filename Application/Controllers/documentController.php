@@ -242,10 +242,10 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                                     }
                                 }
                                 if ($boolean) {
-                                    $alertManager->add(new AlertModel('', $value->userID, $documentid));
+                                    $alertManager->add(new AlertModel('', $value->userID, $documentid,date("Y-m-d H:i:s")));
                                 }
                             } else {
-                                $alertManager->add(new AlertModel('', $value->userID, $documentid));
+                                $alertManager->add(new AlertModel('', $value->userID, $documentid,date("Y-m-d H:i:s")));
                             }
                             $docManager->addSharedUsers($documentid, $value->userID, $value->allowComments);
                         }

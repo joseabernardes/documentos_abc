@@ -24,7 +24,7 @@ $user1 = reset($arrayUsers1);
             if ($user1) {
                 ?>    
                 <div class="card">
-                    <img src="..<?= $user1->getUserPHOTO() ?>" alt="COta" style="width:100%"/>
+                    <img src="..<?= $user1->getUserPHOTO() ?>" alt="imagem" />
                     <?php
                     $addressManagement = new AddressManager();
                     $addressQ = $addressManagement->getAddressByID($user1->getUserADDRESS());
@@ -33,17 +33,17 @@ $user1 = reset($arrayUsers1);
                     <p><?= $user1->getUserNAME(); ?></p>
                     <p><?= $addModel->getAddressCITY(); ?></p>
                     <?php $link = 'mailto:' . $user1->getUserEMAIL()?>
-                    <a href="<?= $link ?>">Contact</a>  
+                    <a href="<?= $link ?>">Contactar</a>  
                 </div>
                 <?php
             } else {
-                $string = 'Utilizador não Existe';
+                $string = 'Utilizador não existe';
                 $url = '../v_public/index.php';
                 $text = 'Sair';
                 include_once __DIR__ . '/../partials/_error.php';
             }
         } else {
-            $string = 'Necessário Login';
+            $string = 'Necessário autenticação';
             $url = '../v_public/authentication.php';
             $text = 'Login';
             include_once __DIR__ . '/../partials/_error.php';

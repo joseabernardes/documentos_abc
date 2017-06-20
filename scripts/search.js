@@ -103,7 +103,7 @@ function addSearchResultsDOM(data) {
 
         for (var j = 0; j < data[i].DocumentTags.length; j++) {
             var tempA = $("<a></a>");
-            tempA.attr('href', data[i].DocumentTags[j]);
+            tempA.attr('href','view-docs.php?type=tag&id=' +  data[i].DocumentTags[j]);
             tempA.html(data[i].DocumentTags[j]);
             tempA.addClass('user');
             if (j === 0) {

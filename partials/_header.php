@@ -32,8 +32,8 @@ try {
                 </ul>
             </li><!--
 
-            --><li><a href="../v_private/view-document.php">Ver</a></li><!--
-            --><li><a href="../v_private/edit-document.php">Editar</a></li><!--
+            --><li><a href="../v_private/my-docs.php">Meus Documentos</a></li><!--
+
             <?php
             if ($bool) {
                 ?>
