@@ -3,13 +3,13 @@ require_once Config::getApplicationManagerPath() . 'UserManager.php';
 require_once Config::getApplicationManagerPath() . 'AlertManager.php';
 $alertManager = new AlertManager();
 $userMan = new UserManager();
-
+$numberofAlerts = 0;
 try {
     $bool = TRUE;
 
     $userMana = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
     $userModel = reset($userMana);
-
+    $numberofAlerts = count($alertManager->getAlertsByUserID(SessionManager::getSessionValue('authUsername')));
     if (!$userModel) {
         throw new SessionException('User não existe');
     }
@@ -21,6 +21,13 @@ try {
 
 <header>
     <img src="../images/logo.png"  alt="Documentos ABC"/>
+    <?php
+    if ($numberofAlerts > 0) {
+        ?>
+        <a href="../v_private/alerts.php">Alertas</a>
+        <?php
+    }
+    ?>
     <nav>
         <ul>
             <li><a href="../v_public/index.php">Inicio</a></li><!--
