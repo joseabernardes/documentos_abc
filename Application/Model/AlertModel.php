@@ -21,6 +21,7 @@ class AlertModel {
         $this->AlertUserID = $AlertUserID;
         $this->AlertDocumentID = $AlertDocumentID;
         $this->$AlertID = $AlertID;
+        /**/
     }
     
     function getAlertID() {
