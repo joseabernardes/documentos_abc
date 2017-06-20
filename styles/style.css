@@ -639,6 +639,10 @@ main#view-doc div#commentsBox p#noComments{
 .check{
     display: none;
 }
+.check:checked + label{
+    background-color :black;
+
+}
 
 .valid{
     text-decoration:none;
@@ -798,5 +802,36 @@ ul#searchResults > li > span.sum{
 }
 ul#searchResults > li > h4.tagsTitle{
     display: inline-block;
-margin-right: 5px;
+    margin-right: 5px;
+}
+/*--------------------Meus Docunmetos------------*/
+
+#all{
+    display: flex;
+}
+
+.docs{
+    list-style-type: none;
+    border: 2px solid lightgray;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+
+.docs a{
+    text-decoration: none;
+    color: black;
+}
+
+#sharedDocs{
+    margin-left: 100px;
+}
+
+#mydocs h2{
+    background-color:lightgray;
+    padding: 15px;
+}
+#sharedDocs h2{
+    background-color:lightgray;
+    padding: 15px;
 }

@@ -16,11 +16,11 @@ function validateUsers(event) {
 
 function check(data, id) {
     if (data === 'true') {
-        $("[for=" + id + "]").css('background-color', 'rgb(12,14,22)');
+        $("[for=" + id + "]").css('background-color', 'rgb(12,14,22)').text("Invalidar");
         $("#" + id).prop('checked', true);
 
     } else if (data === 'false') {
-        $("[for=" + id + "]").css('background-color', 'rgb(84,144,242)');
+        $("[for=" + id + "]").css('background-color', 'rgb(84,144,242)').text("Validar");
         $("#" + id).prop('checked', false);
 
     }

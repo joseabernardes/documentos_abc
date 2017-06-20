@@ -2,10 +2,11 @@
 require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
 require_once Config::getApplicationManagerPath() . 'AddressManager.php';
-require_once Config::getApplicationModelPath() . 'UserModel.php';
-require_once Config::getApplicationModelPath() . 'AddressModel.php';
+
 $UserManager = new UserManager();
-$usersAuthLevel = $UserManager->getUserByAuthLevel('USERINACTIVE');
+$usersAuthLevel = $UserManager->getUserByAuthLevel('USER');
+$usersAuthLevel1 = $UserManager->getUserByAuthLevel('USERINACTIVE');
+$arrayAuthlevel2 = array_merge($usersAuthLevel, $usersAuthLevel1);
 $addressM = new AddressManager();
 ?>
 <!DOCTYPE html>
@@ -24,24 +25,43 @@ and open the template in the editor.
     <body>
         <?php include_once '../partials/_header.php'; ?> 
         <h1 id="main-title">Validar Utilizadores</h1>
-
-        <section>
-            <?php
-            foreach ($usersAuthLevel as $value) {
-                $ad = $addressM->getAddressByID($value->getUserADDRESS());
-                $ad = reset($ad);
+        <?php
+        if (SessionManager::keyExists('authUsername')) {
+            $um = new UserManager();
+            $mu = $um->getUserByID(SessionManager::getSessionValue('authUsername'));
+            $u = reset($mu);
+            if ($u->getUserAUTHLEVEL() === 'ADMIN') {
                 ?>
-                <article class="article">
-                    <img id="image" src="..<?= $value->getUserPHOTO() ?>" alt="ALT">
-                    <p><?= $value->getUserNAME() ?></p>
-                    <p><?= $ad->getAddressCITY() ?></p>
-                    <p><?= $value->getUserPHONE() ?></p>
+                <section>
+                    <?php
+                    foreach ($arrayAuthlevel2 as $value) {
+                        $ad = $addressM->getAddressByID($value->getUserADDRESS());
+                        $ad1 = reset($ad);
+                        ?>
+                        <article class="article">
+                            <img id="image" src="..<?= $value->getUserPHOTO() ?>" alt="ALT">
+                            <p><?= $value->getUserNAME() ?></p>
+                            <p><?= $ad1->getAddressCITY() ?></p>
+                            <p><?= $value->getUserPHONE() ?></p>
 
-                    <input class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid">Validar</label>
-
-                </article>
-            <?php } ?>
-        </section>
+                            <input <?= ($value->getUserAUTHLEVEL() == 'USER') ? 'checked' : '' ?> class="check" id="<?= $value->getUserID() ?>"type="checkbox"><label for="<?= $value->getUserID() ?>" class="valid"><?= ($value->getUserAUTHLEVEL() == 'USER') ? 'Invalidar' : 'Validar' ?></label>
+                        </article>
+                    <?php } ?>
+                </section>
+                <?php
+            } else {
+                $string = 'Não tens permissões para tal!';
+                $url = '../v_public/authentication.php';
+                $text = 'Login';
+                include_once __DIR__ . '/../partials/_error.php';
+            }
+        } else {
+            $string = 'Necessário autenticação';
+            $url = '../v_public/authentication.php';
+            $text = 'Login';
+            include_once __DIR__ . '/../partials/_error.php';
+        }
+        ?>
         <?php include_once '../partials/_footer.php'; ?>
     </body>
 </html>

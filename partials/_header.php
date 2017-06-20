@@ -51,7 +51,7 @@ try {
                 --><li class="drop nav_right">
                     <a  class="noclick" href="#"> <?= $userModel->getUserNAME() ?></a>
                     <ul>
-                        <li><a href="../v_private/profile-page.php">Ver Perfil</a></li>
+                        <li><a href="../v_private/profile-page.php?id=<?=SessionManager::getSessionValue('authUsername')?>">Ver Perfil</a></li>
                         <li><a href="../v_private/change-profile.php">Alterar Perfil</a></li>
                         <li><a href="../logout.php">Sair</a></li>
                     </ul>
