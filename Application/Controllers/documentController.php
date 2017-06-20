@@ -226,7 +226,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     $errors['tags'] = 'Falha ao inserir, possiveis tags iguais';
                     throw $ex;
                 }
-                
+
                 try {
                     /* Shared Users */
                     if ($input['visibility'] == '3') {
@@ -234,10 +234,15 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                         $alertManager = new AlertManager();
                         foreach ($sharedUsers as $value) {
                             if ($input['type'] === 'edit') {
-                                foreach ($oldShared as $value) {
-                                    if ($oldShared['UserID'] != $value->userID) {
-                                        $alertManager->add(new AlertModel('', $value->userID, $documentid));
+                                $boolean = true;
+                                foreach ($oldShared as $old) { //ver se os utilizadores partilhados são os mesmo que estavam, se sim, nao manda alerta!
+                                    if ($old['UserID'] == $value->userID) {
+                                        $boolean = false;
+                                        break;
                                     }
+                                }
+                                if ($boolean) {
+                                    $alertManager->add(new AlertModel('', $value->userID, $documentid));
                                 }
                             } else {
                                 $alertManager->add(new AlertModel('', $value->userID, $documentid));

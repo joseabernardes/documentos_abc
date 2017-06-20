@@ -20,7 +20,7 @@ class AlertModel {
     function __construct($AlertID,$AlertUserID, $AlertDocumentID) {
         $this->AlertUserID = $AlertUserID;
         $this->AlertDocumentID = $AlertDocumentID;
-        $this->$AlertID = $AlertID;
+        $this->AlertID = $AlertID;
     }
     
     function getAlertID() {

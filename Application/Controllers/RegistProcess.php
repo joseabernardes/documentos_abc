@@ -11,8 +11,7 @@ $input = array();
 $errors = array();
 $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
 $added = false;
-if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guardar') ) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-
+if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guardar')) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = array(
         'emailR' => array('sanitize' => FILTER_SANITIZE_EMAIL, 'validate' => FILTER_VALIDATE_EMAIL),
         'PassR' => array('options' => array('regexp' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
@@ -78,7 +77,8 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
             }
             unset($errors['file']);
         } else {
-
+                unset($errors['PassRNOVA']);
+                unset($errors['PassRNOVA2']);
             //------Verificar email igual----------
 
             if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
@@ -133,8 +133,6 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         $uploadImage = false;
         $errors['file'] = 'Parametro não enviado';
     }
-
-
     if (count($errors) == 0) {
 
         if ($input['type'] === 'registar') {
@@ -180,6 +178,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
                 $added = false;
             }
         }
+  
         if(!$added){
              $errors['final'] = 'Falha ao atualizar utilizador';
   
