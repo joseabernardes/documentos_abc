@@ -12,7 +12,7 @@
  * @author Pc
  */
 class AlertModel {
-
+    
     private $AlertUserID;
     private $AlertDocumentID;
 

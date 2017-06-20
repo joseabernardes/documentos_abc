@@ -40,8 +40,9 @@ and open the template in the editor.
                     $userpart = reset($userpart);
                     ?>
                     <p>O<a href="profile-page.php?id=<?= $userpart->getUserID() ?>"><?= $userpart->getUserNAME()?></a> partilhou consigo o documento <a href="view-document.php?id<?=$docAlertAtual->getDocumentID()?>"><?= $docAlertAtual->getDocumentTITLE() ?></a></p>
-                    <?php
-                    $alerts->deleteAlert($value);
+                    <input id="" type="button" value="Marcar visto"/>
+                        <?php
+//                    $alerts->deleteAlert($value);
                 }
             } else {
                 $string = 'Não existem alertas';
