@@ -636,11 +636,11 @@ main#view-doc div#commentsBox p#noComments{
 }
 
 .check{
-      display: none;
+    display: none;
 }
 .check:checked + label{
     background-color :black;
-  
+
 }
 .check:checked + label{
     background-color :black;
@@ -699,7 +699,7 @@ div#search {
 
 div#search > input#inputS{
     width: 580px;
-    height: 40px;
+    padding:5px;
     box-sizing: border-box;
     margin:0;
     flex-shrink: 1;
@@ -725,16 +725,18 @@ div#search > input:focus{
 
 main#index{
 
-    /*max-width: 800px;*/
+    width: 620px;
+    margin: auto;
     /*background-color: red;*/
     /*display: flex;*/
-    margin: 0;
+    /*margin: 0;*/
 
 
 }
 
 main#index div#search > input#inputS{
     border:none;
+    
 
 }
 
@@ -785,11 +787,12 @@ main#index div#search input[type=radio]{
 
 
 main#index div#search input[type=radio]:checked + label {
-    background-color: rgba(240,182,56,0.7);
+    background-color: rgba(84,144,242,0.8);
 }
 
 main#index div#search label{
-    background-color: rgb(84,144,242);
+    /*background-color: rgb(84,144,242);*/
+    background-color: lightgray;
     height: 15px;
     padding: 2.5px 10px;
     text-align: center;
@@ -823,10 +826,22 @@ ul#searchResults li{
 
 }
 
-ul#searchResults > li > h3{
+ul#searchResults > li > a > h3{
     margin:0;
     display: inline-block;
 
+}
+ul#searchResults > li > a:hover,ul#searchResults > li > a h3:hover {
+    text-decoration: underline;
+}
+ul#searchResults > li a.user{
+    font-style: italic;
+  
+}
+
+ul#searchResults > li > a{
+    color:black;
+    text-decoration: none;
 }
 ul#searchResults > li > h4{
     margin: 10px 0px 0px 0px;
@@ -851,7 +866,12 @@ ul#searchResults > li > span.sum{
 }
 ul#searchResults > li > h4.tagsTitle{
     display: inline-block;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
+}
+
+
+main#index > h3{
+    margin:10px auto;
 }
 /*--------------------Meus Docunmetos------------*/
 

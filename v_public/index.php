@@ -18,9 +18,9 @@ and open the template in the editor.
     <body>
         <?php include_once '../partials/_header.php'; ?>
         <main id="index">
+         
             <div id="search">
-                <input type="text" id="inputS"/>
-                <input type="button" id="addButton" value="⌕">
+                <input placeholder="Pesquise aqui os documentos" type="text" id="inputS"/>
                 <div>
                     <input type="radio" id="radioUser" name="type" value="user"><label for="radioUser">Utilizador</label>
                     <input type="radio" checked id="radioTitle" name="type" value="title"><label for="radioTitle">Titulo</label>
@@ -34,22 +34,11 @@ and open the template in the editor.
 
 
             </div>
+            <h3><span>0</span> Documento(s) Encontrado(s)</h3>
             <ul id="searchResults">
-                <li>
-                    <h3>#331 Enunciado PAW</h3><span class="date">2017-06-14 10:39:19</span>
-                    <h4>Resumo:</h4><span class="sum">O que é um projeto:
-                        É um empreendimento temporário que tem por finalidade criar uma obra única. Temporário porque tem início, meio e fim limitados e definidos. Obra única por resultar na criação de um produto ou serviço ou mesmo resultado que não ocorreu antes nas mesmas circunstancias.
-                    </span>
-                    <h4 class="tagsTitle">Tags:</h4><span>ola, bom, dia</span>
-
-                </li>
-
-
+                <!--resultados-->
             </ul>
 
-            <!--            <div id="articles">dd
-                        </div>
-                        <div style="clear: right;"></div>-->
         </main>
         <?php include_once '../partials/_footer.php'; ?>
     </body>

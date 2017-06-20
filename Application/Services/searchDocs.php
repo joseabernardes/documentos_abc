@@ -9,8 +9,8 @@ SessionManager::startSession();
 
 $type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $input = filter_input(INPUT_GET, "input", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-
+$docManager = new DocumentManager();
+$userM = new UserManager();
 
 
 if (!empty($type) && !empty($input)) {
@@ -19,26 +19,92 @@ if (!empty($type) && !empty($input)) {
 
 
     if ($type === 'user') {
-        $userM = new UserManager();
+
         $user = $userM->getUserByEmail($input);
         $user = reset($user);
 
         if ($user) {
-            $user = new UserModel();
-            $docManager = new DocumentManager();
+//            $user = new UserModel();
+
             $docs = $docManager->getDocumentByUserID($user->getUserID());
-            if (!empty($doc)) {
+            if (!empty($docs)) {
                 $tempArray = array();
-                foreach ($array as $value) {
-                    $value = new DocumentModel();
+                if (SessionManager::keyExists('authUsername')) {
+                    $userID = SessionManager::getSessionValue('authUsername');
+                }
+                foreach ($docs as $value) {
+//                    $value = new DocumentModel();
+
+
                     $visibility = $value->getDocumentVisibilityId();
                     if ($visibility == 2) {
-                        if (SessionManager::keyExists('authUsername') && SessionManager::getSessionValue('authUsername') == $value->getDocumentUserId()) {
-                            $tempArray[] = $value;
-                        } else {
-                            echo 'false';
+                        if (SessionManager::keyExists('authUsername') && $userID == $value->getDocumentUserId()) {
+                            $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                            $tag = array();
+                            if (!empty($tags)) {
+                                foreach ($tags as $ta) {
+                                    $tag[] = $ta['TagName'];
+                                }
+                            }
+                            $temp = array(
+                                'DocumentID' => $value->getDocumentID(),
+                                'DocumentTITLE' => $value->getDocumentTITLE(),
+                                'DocumentUserID' => $value->getDocumentUserId(),
+                                'DocumentUserNAME' => $user->getUserNAME(),
+                                'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                                'DocumentDATE' => $value->getDocumentDATE(),
+                                'DocumentTags' => $tag
+                            );
+                            array_push($tempArray, $temp);
                         }
+                    } else if ($visibility == 3) {
+                        if (SessionManager::keyExists('authUsername')) {
+                            $shared = $docManager->getSharedUsersByUser_DocumentID($userID, $value->getDocumentID()); //ver se o documento foi partilhado com este utilizador
+                            $shared = reset($shared);
+                            if ($shared || $userID == $value->getDocumentUserId()) {
+                                $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                                $tag = array();
+                                if (!empty($tags)) {
+                                    foreach ($tags as $ta) {
+                                        $tag[] = $ta['TagName'];
+                                    }
+                                }
+                                $temp = array(
+                                    'DocumentID' => $value->getDocumentID(),
+                                    'DocumentTITLE' => $value->getDocumentTITLE(),
+                                    'DocumentUserID' => $value->getDocumentUserId(),
+                                    'DocumentUserNAME' => $user->getUserNAME(),
+                                    'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                                    'DocumentDATE' => $value->getDocumentDATE(),
+                                    'DocumentTags' => $tag
+                                );
+                                array_push($tempArray, $temp);
+                            }
+                        }
+                    } else if ($visibility == 1) {
+                        $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                        $tag = array();
+                        if (!empty($tags)) {
+                            foreach ($tags as $ta) {
+                                $tag[] = $ta['TagName'];
+                            }
+                        }
+                        $temp = array(
+                            'DocumentID' => $value->getDocumentID(),
+                            'DocumentTITLE' => $value->getDocumentTITLE(),
+                            'DocumentUserID' => $value->getDocumentUserId(),
+                            'DocumentUserNAME' => $user->getUserNAME(),
+                            'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                            'DocumentDATE' => $value->getDocumentDATE(),
+                            'DocumentTags' => $tag
+                        );
+                        array_push($tempArray, $temp);
                     }
+                }
+                if (!empty($tempArray)) {
+                    echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
+                } else {
+                    echo 'false';
                 }
             } else {
                 echo 'false';
@@ -47,103 +113,102 @@ if (!empty($type) && !empty($input)) {
             echo 'false';
         }
     } else if ($type === 'title') {
-        
-    } else {
-        echo 'false';
-    }
-} else {
 
-    echo 'false';
-}
+        $docs = $docManager->getDocumentbyTitleStarts($input);
 
-$docManager = new DocumentManager();
 
-$doc = $docManager->getDocumentByID($CommentDocumentID);
-if (!empty($doc)) {
-    $doc = reset($doc);
-    $visibility = $doc->getDocumentVisibilityId();
-    if ($visibility == 2) {
-        echo 'false';
-    } else if ($visibility == 3) {
-        if (SessionManager::keyExists('authUsername')) {
-            $userID = SessionManager::getSessionValue('authUsername');
-            $shared = $docManager->getSharedUsersByUser_DocumentID($userID, $CommentDocumentID);
-            $shared = reset($shared);
-            if ($shared && $shared['DocumentUserCOMMENTS']) {
-                if (!empty($CommentCONTENT)) {
-                    try {
-                        $userMan = new UserManager();
-                        $user = $userMan->getUserByID($userID);
-                        $user = reset($user);
-                        if ($user) {
-                            $commentManager = new CommentManager();
-                            $comment = new CommentModel('', $CommentCONTENT, date("Y-m-d H:i:s"), $CommentDocumentID, null, null, $userID);
-                            $comment->setCommentNAME($user->getUserNAME());
-                            $comment->setCommentID($commentManager->add($comment));
-
-                            echo json_encode($comment->convertObjectToArray(), JSON_UNESCAPED_UNICODE);
-                        } else {
-                            echo 'false';
-                        }
-                    } catch (Exception $ex) {
-                        echo 'false';
-                    }
-                } else {
-                    echo 'false';
-                }
-            } else {
-                echo 'false';
-            }
-        } else {
-            echo 'false';
-        }
-    } else if ($visibility == 1) {
-        if ($doc->getDocumentCOMMENTS()) { //se permite comentários publicos
+        if (!empty($docs)) {
+            $tempArray = array();
             if (SessionManager::keyExists('authUsername')) {
                 $userID = SessionManager::getSessionValue('authUsername');
-                if (!empty($CommentCONTENT)) {
-                    try {
-                        $userMan = new UserManager();
-                        $user = $userMan->getUserByID($userID);
-                        $user = reset($user);
-                        if ($user) {
-                            $commentManager = new CommentManager();
-                            $comment = new CommentModel('', $CommentCONTENT, date("Y-m-d H:i:s"), $CommentDocumentID, null, null, $userID);
-                            $comment->setCommentNAME($user->getUserNAME());
-                            $comment->setCommentID($commentManager->add($comment));
-
-                            echo json_encode($comment->convertObjectToArray(), JSON_UNESCAPED_UNICODE);
-                        } else {
-                            echo 'false';
-                        }
-                    } catch (Exception $ex) {
-                        echo 'false';
-                    }
-                } else {
-                    echo 'false';
-                }
-            } else {
-                if (!empty($CommentCONTENT) && !empty($CommentNAME) && !empty($CommentEMAIL)) {
-                    try {
-                        $commentManager = new CommentManager();
-                        $comment = new CommentModel('', $CommentCONTENT, date("Y-m-d H:i:s"), $CommentDocumentID, $CommentNAME, $CommentEMAIL);
-                        $comment->setCommentID($commentManager->add($comment));
-
-                        echo json_encode($comment->convertObjectToArray(), JSON_UNESCAPED_UNICODE);
-                    } catch (Exception $ex) {
-                        echo 'false';
-                    }
-                } else {
-
-                    echo 'false';
-                }
             }
+            foreach ($docs as $value) {
+                //                    $value = new DocumentModel();
+                $user = $userM->getUserByID($value->getDocumentUserId());
+                $user = reset($user);
+                $visibility = $value->getDocumentVisibilityId();
+                if ($visibility == 2) {
+                    if (SessionManager::keyExists('authUsername') && $userID == $value->getDocumentUserId()) {
+                        $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                        $tag = array();
+                        if (!empty($tags)) {
+                            foreach ($tags as $ta) {
+                                $tag[] = $ta['TagName'];
+                            }
+                        }
+                        $temp = array(
+                            'DocumentID' => $value->getDocumentID(),
+                            'DocumentTITLE' => $value->getDocumentTITLE(),
+                            'DocumentUserID' => $value->getDocumentUserId(),
+                            'DocumentUserNAME' => $user->getUserNAME(),
+                            'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                            'DocumentDATE' => $value->getDocumentDATE(),
+                            'DocumentTags' => $tag
+                        );
+                        array_push($tempArray, $temp);
+                    }
+                } else if ($visibility == 3) {
+                    if (SessionManager::keyExists('authUsername')) {
+                        $shared = $docManager->getSharedUsersByUser_DocumentID($userID, $value->getDocumentID()); //ver se o documento foi partilhado com este utilizador
+                        $shared = reset($shared);
+                        if ($shared || $userID == $value->getDocumentUserId()) {
+                            $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                            $tag = array();
+                            if (!empty($tags)) {
+                                foreach ($tags as $ta) {
+                                    $tag[] = $ta['TagName'];
+                                }
+                            }
+
+                            $temp = array(
+                                'DocumentID' => $value->getDocumentID(),
+                                'DocumentTITLE' => $value->getDocumentTITLE(),
+                                'DocumentUserID' => $value->getDocumentUserId(),
+                                'DocumentUserNAME' => $user->getUserNAME(),
+                                'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                                'DocumentDATE' => $value->getDocumentDATE(),
+                                'DocumentTags' => $tag
+                            );
+                            array_push($tempArray, $temp);
+                        }
+                    }
+                } else if ($visibility == 1) {
+                    $tags = $docManager->getTagsByDocumentID($value->getDocumentID());
+                    $tag = array();
+                    if (!empty($tags)) {
+                        foreach ($tags as $ta) {
+                            $tag[] = $ta['TagName'];
+                        }
+                    }
+                    $temp = array(
+                        'DocumentID' => $value->getDocumentID(),
+                        'DocumentTITLE' => $value->getDocumentTITLE(),
+                        'DocumentUserID' => $value->getDocumentUserId(),
+                        'DocumentUserNAME' => $user->getUserNAME(),
+                        'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
+                        'DocumentDATE' => $value->getDocumentDATE(),
+                        'DocumentTags' => $tag
+                    );
+                    array_push($tempArray, $temp);
+                }
+
+
+           
+            }
+                 if (!empty($tempArray)) {
+                    echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
+                } else {
+
+                    echo 'false';
+                }
         } else {
+
             echo 'false';
         }
     } else {
         echo 'false';
     }
 } else {
+
     echo 'false';
 }

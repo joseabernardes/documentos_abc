@@ -89,6 +89,17 @@ class DocumentManager extends MyDataAccessPDO {
         return $list;
     }
 
+    public function getDocumentbyTitleStarts($string) {
+        $string = $this->getConnection()->quote($string . '%');
+        $sql = "SELECT * FROM document WHERE DocumentTITLE LIKE {$string}";
+        $array = $this->getRecordsByUserQuery($sql);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
     public function deleteDocument(DocumentModel $obj) {
         try {
             $this->delete(self::TABLE_NAME, array('DocumentID' => $obj->getDocumentID()));
@@ -145,12 +156,11 @@ class DocumentManager extends MyDataAccessPDO {
         $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
         return $array;
     }
-    
-    public function getSharedDocsByUserID($userID){
+
+    public function getSharedDocsByUserID($userID) {
         $where = array('UserID' => $userID);
         $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
         return $array;
     }
-    
 
 }
