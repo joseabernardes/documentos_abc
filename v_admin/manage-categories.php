@@ -21,7 +21,7 @@ and open the template in the editor.
         <h1 id="main-title">Gerir Categorias</h1>
 
             <div id="search">
-                <input type="text" id="addCategory"/>
+                <input type="text" id="inputS"/>
                 <input type="button" id="addButton" value="+">
             </div>
             <ul id="manageCat">

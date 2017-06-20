@@ -31,6 +31,21 @@ if (!empty($input) && SessionManager::keyExists('authUsername')) {
         } else {
             echo 'false';
         }
+    } else if ($type == 'searchAll') {
+
+        $ret = $userM->getUsersEmailStarts($input);
+
+        if (count($ret) > 0) {
+
+            $tempArray = array();
+
+            foreach ($ret as $value) {
+                array_push($tempArray, $value->getUserEMAIL());
+            }
+            echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
+        } else {
+            echo 'false';
+        }
     } else if ($type == 'add') {
         $ret = $userM->getUserByEmail($input);
         $ret = reset($ret);

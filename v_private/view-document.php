@@ -128,7 +128,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <?php
                             foreach ($comments as $value) {
                                 if ($value->getCommentUserID() == null) {
-                                    $link = 'mailto' . $value->getCommentEMAIL();
+                                    $link = 'mailto:' . $value->getCommentEMAIL();
                                 } else {
                                     $link = 'profile-page.php?id=' . $value->getCommentUserID();
                                 }

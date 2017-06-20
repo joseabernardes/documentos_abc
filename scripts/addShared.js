@@ -132,17 +132,20 @@ function addUserDOM(user) {
     label.addClass("commentLabel").attr("for", commentid).text("Comentar");
     p.append(button).append(span).append(checkbox).append(label);
     $("#sharedBox").append(p);
-    removeSugestionDOM();
+    removeSugestionDOM(true);
 }
 
 function hideSearchDOM() {
     $("div#searchBar ul").css('display', 'none');
 }
 
-function removeSugestionDOM() {
+function removeSugestionDOM(bool) {
     $("div#searchBar ul li").remove();
     $("div#searchBar ul").css('display', 'none');
-    addUserInputDOM('');
+    if(bool){
+         addUserInputDOM('');
+    }
+   
 }
 
 
@@ -153,6 +156,7 @@ function removeSugestionDOM() {
 function moveUserEVH() {
     var value = $(event.target).html();
     addUserInputDOM(value);
+    removeSugestionDOM(false);
 }
 
 function addUserEVH() {
@@ -173,7 +177,7 @@ function liveSearchEVH(event) {
     if (getUserDOM().length > 0) {
         searchUserAJAX(getUserDOM());
     } else {
-        removeSugestionDOM();
+        removeSugestionDOM(true);
     }
 }
 
@@ -218,7 +222,7 @@ function restoreShared() {
             json = [];
         }
         for (var i = 0; i < json.length; i++) {
-            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments:  parseInt(json[i].allowComments)};
+            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments: parseInt(json[i].allowComments)};
             sharedUsers.push(newUser);
             addUserDOM(newUser);
         }
@@ -235,6 +239,5 @@ $(document).ready(function () {
     $("input#submit").click(submitFormEVH);
     restoreShared();
 });
-
 
 

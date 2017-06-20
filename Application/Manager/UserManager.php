@@ -70,7 +70,7 @@ class UserManager extends MyDataAccessPDO {
         }
         return $list;
     }
-
+   
     public function getUserByEmail($UserEMAIL) {
         $where = array('UserEMAIL' => $UserEMAIL);
         $array = $this->getRecords(self::TABLE_NAME, $where);

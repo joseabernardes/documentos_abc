@@ -11,6 +11,7 @@ and open the template in the editor.
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
+        <script src="../scripts/search.js" type="text/javascript"></script>
         <title>Main</title>
 
     </head>
@@ -18,8 +19,20 @@ and open the template in the editor.
         <?php include_once '../partials/_header.php'; ?>
         <main id="index">
             <div id="search">
-                <input type="text" id="addCategory"/>
-                <input type="button" id="addButton" value="+">
+                <input type="text" id="inputS"/>
+                <input type="button" id="addButton" value="⌕">
+                <div>
+                    <input type="radio" id="radioUser" name="type" value="user"><label for="radioUser">Utilizador</label>
+                    <input type="radio" checked id="radioTitle" name="type" value="title"><label for="radioTitle">Titulo</label>
+                </div>
+                <ul>
+<!--                    <li>sdasdasdasdsffs</li>
+                    <li>sdasdasdasdsffs</li>
+                    <li>sdasdasdasdsffs</li>-->
+
+                </ul>
+
+
             </div>
             <ul id="searchResults">
                 <li>

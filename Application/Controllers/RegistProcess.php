@@ -99,6 +99,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
      * Validar file
      */
     if (is_uploaded_file($_FILES["file"]["tmp_name"])) {
+        $uploadImage = true;
 
         $file_path = __DIR__ . "/../../upload/images/" . basename($_FILES["file"]["name"]);
         $fileName = basename($_FILES["file"]["name"]);
@@ -126,9 +127,10 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         }
 
         if (count($errors) === 0 && move_uploaded_file($_FILES["file"]["tmp_name"], $file_path) === false) {
-            $erros['file'] = 'Upload nao feito';
+            $errors['file'] = 'Upload nao feito';
         }
     } else if ($input['type'] === 'registar') {
+        $uploadImage = false;
         $errors['file'] = 'Parametro não enviado';
     }
 
@@ -165,7 +167,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
                 $a2->setAddressCP2($input['Cp2R']);
                 $u3->setUserEMAIL($input['emailR']);
                 $u3->setUserNAME($input['NameR']);
-                if (is_uploaded_file($_FILES["file"]["tmp_name"])) {
+                if ($uploadImage) {
                     $u3->setUserPHOTO('/upload/images/' . $fileName);
                 }
                 $u3->setUserPHONE($input['PhoneR']);
