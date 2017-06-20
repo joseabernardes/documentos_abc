@@ -51,8 +51,8 @@ and open the template in the editor.
                 <?php
             } else {
                 $string = 'Não tens permissões para tal!';
-                $url = '../v_public/authentication.php';
-                $text = 'Login';
+                $url = '../v_public/index.php';
+                $text = 'Sair';
                 include_once __DIR__ . '/../partials/_error.php';
             }
         } else {

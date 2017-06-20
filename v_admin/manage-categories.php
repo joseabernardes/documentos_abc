@@ -19,22 +19,42 @@ and open the template in the editor.
     <body>
         <?php include_once '../partials/_header.php'; ?> 
         <h1 id="main-title">Gerir Categorias</h1>
+        <?php
+        if (SessionManager::keyExists('authUsername')) {
 
-            <div id="search">
-                <input type="text" id="inputS"/>
-                <input type="button" id="addButton" value="+">
-            </div>
-            <ul id="manageCat">
-            <?php
-            $categMan = new CategoryManager();
-            $catArray = $categMan->getAllCategories();
-            
-            foreach ($catArray as $value) {
+            $umng1 = new UserManager();
+            $mu1 = $umng1->getUserByID(SessionManager::getSessionValue('authUsername'));
+            $us1 = reset($mu1);
+            if ($us1->getUserAUTHLEVEL() === 'ADMIN') {
                 ?>
-                <li class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
-                <?php } ?>
-            </ul>       
+                <div id="search">
+                    <input type="text" id="inputS"/>
+                    <input type="button" id="addButton" value="+">
+                </div>
+                <ul id="manageCat">
+                    <?php
+                    $categMan = new CategoryManager();
+                    $catArray = $categMan->getAllCategories();
 
+                    foreach ($catArray as $value) {
+                        ?>
+                        <li class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
+                        <?php } ?>
+                </ul>       
+                <?php
+            } else {
+                $string = 'Não tens permissões para tal!';
+                $url = '../v_public/index.php';
+                $text = 'Sair';
+                include_once __DIR__ . '/../partials/_error.php';
+            }
+        } else {
+            $string = 'Necessário autenticação';
+            $url = '../v_public/authentication.php';
+            $text = 'Login';
+            include_once __DIR__ . '/../partials/_error.php';
+        }
+        ?>
         <?php include_once '../partials/_footer.php'; ?>
     </body>
 </html>

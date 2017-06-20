@@ -148,6 +148,7 @@ header > nav li:hover{
 }
 .nav_right{
     float:right;
+    text-align: center;
 }
 /*-----SUB-MENU-----*/
 .drop:hover ul {
@@ -636,11 +637,11 @@ main#view-doc div#commentsBox p#noComments{
 }
 
 .check{
-      display: none;
+    display: none;
 }
 .check:checked + label{
     background-color :black;
-  
+
 }
 .check:checked + label{
     background-color :black;
@@ -879,8 +880,18 @@ ul#searchResults > li > h4.tagsTitle{
 #mydocs h2{
     background-color:lightgray;
     padding: 15px;
+    color: black;
 }
 #sharedDocs h2{
     background-color:lightgray;
     padding: 15px;
+}
+.edit{
+    text-decoration: none;
+    color: black;
+    text-align: right;
+}
+
+.edit:hover{
+    opacity: 0.5;
 }
