@@ -148,6 +148,7 @@ header > nav li:hover{
 }
 .nav_right{
     float:right;
+    text-align: center;
 }
 /*-----SUB-MENU-----*/
 .drop:hover ul {
@@ -964,8 +965,18 @@ font-weight: normal;
 #mydocs h2{
     background-color:lightgray;
     padding: 15px;
+    color: black;
 }
 #sharedDocs h2{
     background-color:lightgray;
     padding: 15px;
+}
+.edit{
+    text-decoration: none;
+    color: black;
+    text-align: right;
+}
+
+.edit:hover{
+    opacity: 0.5;
 }

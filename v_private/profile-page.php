@@ -32,7 +32,8 @@ $user1 = reset($arrayUsers1);
                     ?>
                     <p><?= $user1->getUserNAME(); ?></p>
                     <p><?= $addModel->getAddressCITY(); ?></p>
-                    <a>Contact</a>
+                    <?php $link = 'mailto:' . $user1->getUserEMAIL()?>
+                    <a href="<?= $link ?>">Contact</a>  
                 </div>
                 <?php
             } else {
