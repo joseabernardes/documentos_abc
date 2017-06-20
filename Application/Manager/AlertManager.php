@@ -22,12 +22,13 @@ class AlertManager extends MyDataAccessPDO {
         $ins = array();
         $ins['AlertUserID'] = $a->getAlertUserID();
         $ins['AlertDocumentID'] = $a->getAlertDocumentID();
-        $this->insert(self::TABLE_NAME, $ins);
+        $ins['AlertID'] = $a->getAlertID();
+        return $this->insert(self::TABLE_NAME, $ins);
     }
 
     public function deleteAlert(AlertModel $obj) {
         try {
-            $this->delete(self::TABLE_NAME, array('AlertDocumentID' => $obj->getAlertDocumentID(), 'AlertUserID' => $obj->getAlertUserID()));
+            $this->delete(self::TABLE_NAME, array('AlertID' => $obj->getAlertID()));
         } catch (Exception $e) {
             throw $e;
         }

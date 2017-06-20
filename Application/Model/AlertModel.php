@@ -15,12 +15,23 @@ class AlertModel {
     
     private $AlertUserID;
     private $AlertDocumentID;
+    private $AlertID;
 
-    function __construct($AlertUserID, $AlertDocumentID) {
+    function __construct($AlertID,$AlertUserID, $AlertDocumentID) {
         $this->AlertUserID = $AlertUserID;
         $this->AlertDocumentID = $AlertDocumentID;
+        $this->$AlertID = $AlertID;
+    }
+    
+    function getAlertID() {
+        return $this->AlertID;
     }
 
+    function setAlertID($AlertID) {
+        $this->AlertID = $AlertID;
+    }
+
+    
     function getAlertUserID() {
         return $this->AlertUserID;
     }
@@ -38,11 +49,11 @@ class AlertModel {
     }
 
     public static function convertArrayToObject(Array &$data) {
-        return self::createObject($data['AlertUserID'], $data['AlertDocumentID']);
+        return self::createObject($data['AlertID'],$data['AlertUserID'], $data['AlertDocumentID']);
     }
 
-    public static function createObject($AlertUserID, $ALertDocumentID) {
-        $alert = new ALertModel($AlertUserID, $ALertDocumentID);
+    public static function createObject($AlertID,$AlertUserID, $ALertDocumentID) {
+        $alert = new ALertModel($AlertID,$AlertUserID, $ALertDocumentID);
 
         return $alert;
     }

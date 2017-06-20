@@ -49,6 +49,18 @@ class DocumentManager extends MyDataAccessPDO {
         return $list;
     }
 
+
+    
+    public function getDocumentByLimitOrdered($limit) {
+        $sql = "SELECT * FROM document ORDER BY DocumentDATE DESC LIMIT {$limit}";
+        $array = $this->getRecordsByUserQuery($sql);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
     public function getDocumentByUserID($DocumentUserID) {
         $where = array('DocumentUserID' => $DocumentUserID);
         $array = $this->getRecords(self::TABLE_NAME, $where);
@@ -82,6 +94,17 @@ class DocumentManager extends MyDataAccessPDO {
     public function getDocumentPublics() {
         $where = array('DocumentVisibilityID' => '1');
         $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getDocumentbyTitleStarts($string) {
+        $string = $this->getConnection()->quote($string . '%');
+        $sql = "SELECT * FROM document WHERE DocumentTITLE LIKE {$string}";
+        $array = $this->getRecordsByUserQuery($sql);
         $list = array();
         foreach ($array AS $rec) {
             $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
@@ -145,12 +168,11 @@ class DocumentManager extends MyDataAccessPDO {
         $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
         return $array;
     }
-    
-    public function getSharedDocsByUserID($userID){
+
+    public function getSharedDocsByUserID($userID) {
         $where = array('UserID' => $userID);
         $array = $this->getRecords(self::TABLE_DOCUMENT_USER_SHARED, $where);
         return $array;
     }
-    
 
 }

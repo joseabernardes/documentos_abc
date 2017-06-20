@@ -25,7 +25,7 @@ if (!empty($doc)) {
             $userID = SessionManager::getSessionValue('authUsername');
             $shared = $docManager->getSharedUsersByUser_DocumentID($userID, $CommentDocumentID);
             $shared = reset($shared);
-            if ($shared && $shared['DocumentUserCOMMENTS']) {
+            if (($shared && $shared['DocumentUserCOMMENTS']) ||  $userID == $doc->getDocumentUserId()) {
                 if (!empty($CommentCONTENT)) {
                     try {
                         $userMan = new UserManager();

@@ -500,6 +500,11 @@ main#view-doc .content span  {
     line-height: 1.5;
 }
 
+main#view-doc .content a{
+    color: black;
+    font-style: italic;
+}
+
 
 main#view-doc > div.top h3{
     margin: 10px 0px 0px 0px;
@@ -700,7 +705,7 @@ div#search {
 
 div#search > input#inputS{
     width: 580px;
-    height: 40px;
+    padding:5px;
     box-sizing: border-box;
     margin:0;
     flex-shrink: 1;
@@ -714,7 +719,13 @@ div#search > input#addButton{
     margin:0;
     border:none;
     flex-shrink: 0;
+
     font-size: 20px;
+
+}
+div#search > input#addButton:hover{
+    background-color: grey;
+    cursor: pointer;
 
 }
 
@@ -726,16 +737,18 @@ div#search > input:focus{
 
 main#index{
 
-    /*max-width: 800px;*/
+    /*width: 620px;*/
+    margin: auto;
     /*background-color: red;*/
     /*display: flex;*/
-    margin: 0;
+    /*margin: 0;*/
 
 
 }
 
 main#index div#search > input#inputS{
     border:none;
+
 
 }
 
@@ -786,11 +799,12 @@ main#index div#search input[type=radio]{
 
 
 main#index div#search input[type=radio]:checked + label {
-    background-color: rgba(240,182,56,0.7);
+    background-color: rgba(84,144,242,0.8);
 }
 
 main#index div#search label{
-    background-color: rgb(84,144,242);
+    /*background-color: rgb(84,144,242);*/
+    background-color: lightgray;
     height: 15px;
     padding: 2.5px 10px;
     text-align: center;
@@ -800,7 +814,7 @@ main#index div#search label{
 
 main#index div#search label:hover{
     background-color: rgba(84,144,242,0.8);
-
+    cursor: pointer;
 
 }
 
@@ -824,10 +838,22 @@ ul#searchResults li{
 
 }
 
-ul#searchResults > li > h3{
+ul#searchResults > li > a > h3{
     margin:0;
     display: inline-block;
 
+}
+ul#searchResults > li > a:hover,ul#searchResults > li > a h3:hover {
+    text-decoration: underline;
+}
+ul#searchResults > li a.user{
+    font-style: italic;
+
+}
+
+ul#searchResults > li > a{
+    color:black;
+    text-decoration: none;
 }
 ul#searchResults > li > h4{
     margin: 10px 0px 0px 0px;
@@ -852,8 +878,67 @@ ul#searchResults > li > span.sum{
 }
 ul#searchResults > li > h4.tagsTitle{
     display: inline-block;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
 }
+
+
+main#index > h3{
+    margin:10px auto;
+    width: 620px;
+}
+main#index > h3#lastAdd{
+    /*margin:10px auto;*/
+    /*width: 620px;*/
+    margin: 20px 50px;
+}
+
+/*-----------------------------N Documentos-------------------------*/
+
+main#index div#topIndex{
+    display: flex;
+    margin: 50px auto;
+    max-width: 1000px;
+    border-top: 1px solid lightgray;
+
+}
+
+main#index div#topIndex > div {
+    margin: 10px auto;
+    width: 300px;
+
+}
+main#index div#topIndex > div > ul {
+    list-style-type: none;
+    padding:2px;
+}
+main#index div#topIndex > div > ul > li{
+    background-color: rgb(240,182,56);
+      padding:0;
+    /*max-width: 400px;*/
+    margin:5px auto;
+}
+
+main#index div#topIndex > div > ul li a{
+    color: white;
+
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    /*font-weight: bold;*/
+    font-size: 15px;
+}
+main#index div#topIndex > div > ul li a:hover{
+    background-color: lightgray;
+
+}
+
+main#index div#topIndex > div > ul li a span{
+display: block;
+font-weight: normal;
+    font-size: 12px;
+}
+
 /*--------------------Meus Docunmetos------------*/
 
 #all{

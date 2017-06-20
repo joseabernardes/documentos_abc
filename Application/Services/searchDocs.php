@@ -191,13 +191,16 @@ if (!empty($type) && !empty($input)) {
                     );
                     array_push($tempArray, $temp);
                 }
-            }
-            if (!empty($tempArray)) {
-                echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
-            } else {
 
-                echo 'false';
+
+           
             }
+                 if (!empty($tempArray)) {
+                    echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
+                } else {
+
+                    echo 'false';
+                }
         } else {
 
             echo 'false';

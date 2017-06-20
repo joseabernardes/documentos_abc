@@ -1,11 +1,12 @@
 <?php
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
-require_once Config::getApplicationModelPath() . 'UserModel.php';
-
+require_once Config::getApplicationManagerPath() . 'AlertManager.php';
+$alertManager = new AlertManager();
+$userMan = new UserManager();
 
 try {
     $bool = TRUE;
-    $userMan = new UserManager();
+
     $userMana = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
     $userModel = reset($userMana);
 
