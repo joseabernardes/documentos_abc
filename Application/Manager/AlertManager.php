@@ -28,7 +28,7 @@ class AlertManager extends MyDataAccessPDO {
 
     public function deleteAlert(AlertModel $obj) {
         try {
-            $this->delete(self::TABLE_NAME, array('AlertID' => $obj->getAlertID()));
+            $this->delete(self::TABLE_NAME, array('AlertID' =>$obj->getAlertID()));
         } catch (Exception $e) {
             throw $e;
         }
@@ -39,7 +39,17 @@ class AlertManager extends MyDataAccessPDO {
         $array = $this->getRecords(self::TABLE_NAME, $where);
         $list = array();
         foreach ($array AS $rec) {
-            $list[$rec['AlertUserID']] = AlertModel::convertArrayToObject($rec);
+            $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);
+        }
+        return $list;
+    }
+
+    public function getAlertsByAlertID($AlertID) {
+        $where = array('AlertID' => $AlertID);
+        $array = $this->getRecords(self::TABLE_NAME, $where);
+        $list = array();
+        foreach ($array AS $rec) {
+            $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);
         }
         return $list;
     }

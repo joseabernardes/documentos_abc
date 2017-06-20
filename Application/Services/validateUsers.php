@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationManagerPath() . 'SessionManager.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
-require_once Config::getApplicationModelPath() . 'UserModel.php';
 SessionManager::startSession();
 
 $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
