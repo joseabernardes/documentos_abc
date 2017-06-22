@@ -17,6 +17,7 @@ body{
     /*background-color: red;*/
 }
 
+
 @media screen and (max-width:800px) {
     body{
         margin: 30px 10px;
