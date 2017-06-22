@@ -1,8 +1,10 @@
 
-
-function open() {
-    $(".drop > ul").css("display", "block").css("box-shadow", "0px 8px 8px 0px rgba(0,0,0,0.5)");
+function open(event) {
+    $(event.target).siblings("ul").css("display", "block").css("box-shadow", "0px 8px 8px 0px rgba(0,0,0,0.5)");
+    event.preventDefault();
 }
+;
+
 
 $(document).ready(function () {
 
@@ -12,9 +14,6 @@ $(document).ready(function () {
         }, 100);
     });
 
-    $(".noclick").click(function (event) {
-        $(event.target).siblings("ul").css("display", "block").css("box-shadow", "0px 8px 8px 0px rgba(0,0,0,0.5)");
-        event.preventDefault();
-//        open();
-    });
+    $(".noclick").click(open);
+
 });

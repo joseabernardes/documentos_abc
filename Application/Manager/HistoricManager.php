@@ -46,4 +46,12 @@ class HistoricManager extends MyDataAccessPDO {
         }
     }
 
+    public function deleteHistoricByDocument($DocumentID) {
+        try {
+            $this->delete(self::TABLE_NAME, array('DocumentID' => $DocumentID));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
 }

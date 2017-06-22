@@ -73,6 +73,8 @@ if (SessionManager::keyExists('authUsername')) {
                         <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
 
                         <input type="submit" value="Login" name="login">
+                         <?php if (array_key_exists('permition', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['permition'] ?></span> <?php } ?>
+                          
                     </form>
                     <!--<hr>-->
                     <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data">

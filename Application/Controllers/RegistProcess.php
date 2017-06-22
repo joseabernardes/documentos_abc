@@ -77,8 +77,8 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
             }
             unset($errors['file']);
         } else {
-                unset($errors['PassRNOVA']);
-                unset($errors['PassRNOVA2']);
+            unset($errors['PassRNOVA']);
+            unset($errors['PassRNOVA2']);
             //------Verificar email igual----------
 
             if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
@@ -98,6 +98,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
     /*
      * Validar file
      */
+    $uploadImage = false;
     if (is_uploaded_file($_FILES["file"]["tmp_name"])) {
         $uploadImage = true;
 
@@ -163,6 +164,9 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
                 $a2->setAddressCITY($input['CityR']);
                 $a2->setAddressCP1($input['Cp1R']);
                 $a2->setAddressCP2($input['Cp2R']);
+
+                $addressManager->updateAdress($a2);
+
                 $u3->setUserEMAIL($input['emailR']);
                 $u3->setUserNAME($input['NameR']);
                 if ($uploadImage) {
@@ -178,11 +182,9 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
                 $added = false;
             }
         }
-  
-        if(!$added){
-             $errors['final'] = 'Falha ao atualizar utilizador';
-  
-            
+
+        if (!$added) {
+            $errors['final'] = 'Falha ao atualizar utilizador';
         }
     }
 }

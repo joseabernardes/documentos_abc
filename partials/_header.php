@@ -24,7 +24,7 @@ try {
     <?php
     if ($numberofAlerts > 0) {
         ?>
-        <a href="../v_private/alerts.php">Alertas</a>
+    <a id="alert" href="../v_private/alerts.php"><?= $numberofAlerts ?> Alerta(s)</a>
         <?php
     }
     ?>

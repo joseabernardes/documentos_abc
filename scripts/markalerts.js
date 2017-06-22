@@ -23,3 +23,5 @@ function check(data, id) {
 $(document).ready(function () {
     $(".markAlert").click(markAlerts);
 });
+
+

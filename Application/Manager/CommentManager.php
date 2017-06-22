@@ -71,5 +71,13 @@ class CommentManager extends MyDataAccessPDO {
             throw $e;
         }
     }
+    
+        public function deleteCommentbyDocument($DocumentID) {
+        try {
+            $this->delete(self::TABLE_NAME, array('CommentDocumentID' => $DocumentID));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
 }

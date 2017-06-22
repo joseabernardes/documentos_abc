@@ -14,6 +14,7 @@ body{
     font-family: Roboto;
     font-size: 14px;
     margin: 30px 50px;
+    /*background-color: red;*/
 }
 
 @media screen and (max-width:800px) {
@@ -162,23 +163,23 @@ header > nav > ul ul {
     z-index: 99;
 }
 
+
+
+a#alert{
+    padding:15px;
+    background-color: rgba(210,68,58,0.8);
+    float:right;
+    text-decoration: none;
+    color:white;
+}
+
+a#alert:hover{
+    background-color: rgb(210,68,58);
+}
+
 @media screen and (max-width:800px) {
-    header > nav > ul > li{
-        display: block;
-    }
-    header > nav li{
-        margin-top: 1px;
-    }
-    .nav_right{
-        float:none;
-    }
-    .drop:hover ul {
-        display: block;
-        /*box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.5);*/
-    }
-    header > nav > ul li{ /*todas as li's'*/
-        text-align: center;
-    }
+
+
 }
 
 /*---------------------------------FOOTER---------------------------------*/
@@ -892,7 +893,6 @@ div#topIndex{
     display: flex;
     margin: 50px auto;
     max-width: 1000px;
-    border-top: 1px solid lightgray;
 }
 
 div#topIndex > div {
@@ -930,7 +930,7 @@ div#topIndex > div > ul li a span{
     font-size: 12px;
 }
 
-/*--------------------Meus Docunmetos------------*/
+/*--------------------Meus Docunmetos-----------------*/
 
 
 div#mydocs h3, div#sharedDocs h3{
@@ -947,23 +947,78 @@ div#mydocs li.docs a{
     flex-grow: 1;
 }
 
-div#mydocs li a:last-child{
+div#mydocs li a.edit,div#mydocs li a:last-child{
     margin-left: auto;
     flex-grow: 0;
+
+
+}
+
+div#mydocs li a.edit{
     background-color: lightgray;
- 
 }
-div#mydocs li a:last-child:hover{
+div#mydocs li a:last-child{
+    background-color: rgba(210,68,58,0.8);
+}
+
+div#mydocs li a.edit:hover{
     background-color: grey;
+}
+
+div#mydocs li a:last-child:hover{
+    background-color: rgb(210,68,58);
+}
+
+
+/*--------------------Meus Docunmetos-----------------*/
+
+
+ul#alertas{
+    list-style-type: none;
+    padding:0;
+    display: flex;
 
 }
 
-/*.edit{
-    text-decoration: none;
-    color: black;
-    text-align: right;
-}*/
+ul#alertas li{
+    padding:5px;
+    background-color: rgb(240,182,56);
+    width: 400px;
+    margin: auto;
 
-/*.edit:hover{
-    opacity: 0.5;
-}*/
+}
+
+ul#alertas li input{
+    border: none;
+    margin:0;
+    float: bottom;
+    padding:5px;
+    width: 100%;
+
+}
+ul#alertas li a.link{
+    color:white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+ul#alertas li a{
+    text-decoration: none;
+    color:black;
+    font-style: italic;
+}
+ul#alertas li span{
+    color:white;
+    text-align: center;
+    display: block;
+    font-size: 12px;
+    float: right;
+}
+ul#alertas li a:hover{
+    text-decoration: underline;
+}
+ul#alertas li input:hover{
+    background-color: rgb(84,144,242);
+    color:white;
+
+}

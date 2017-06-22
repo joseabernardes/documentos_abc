@@ -3,7 +3,6 @@ require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . "DocumentManager.php";
 require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 ?>
-
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -45,11 +44,11 @@ and open the template in the editor.
 
                         <?php
                         $docManager = new DocumentManager();
-                        $docs = $docManager->getDocumentByLimitOrdered(15);
+                        $docs = $docManager->getDocumentByLimitOrdered(10);
 
                         foreach ($docs as $value) {
                             ?>
-                        <li><a href="../v_private/view-document.php?id=<?= $value->getDocumentID() ?>"><?= $value->getDocumentTITLE() ?><span>(<?= $value->getDocumentDATE() ?>)</span></a></li>
+                            <li><a href="../v_private/view-document.php?id=<?= $value->getDocumentID() ?>"><?= $value->getDocumentTITLE() ?><span>(<?= $value->getDocumentDATE() ?>)</span></a></li>
 
                         <?php } ?>
                     </ul>
@@ -65,7 +64,7 @@ and open the template in the editor.
                             ?>
                             <li><a href="view-docs.php?type=category&id=<?= $value->getCategoryID() ?>"><?= $value->getCategoryNAME() ?></a></li>
 
-                            <?php 
+                            <?php
                         }
                         ?>
                     </ul>

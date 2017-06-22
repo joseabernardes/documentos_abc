@@ -40,10 +40,18 @@ and open the template in the editor.
                     $userpart = $alertUsers->getUserByID($docAlertAtual->getDocumentUserId());
                     $userpart = reset($userpart);
                     ?>
-                    <div>
-                        <p>O<a href="profile-page.php?id=<?= $userpart->getUserID() ?>"><?= $userpart->getUserNAME() ?></a> partilhou consigo o documento <a href="view-document.php?id=<?= $docAlertAtual->getDocumentID() ?>"><?= $docAlertAtual->getDocumentTITLE() ?></a></p>
-                        <input id="<?= $value->getAlertID() ?>" type="button" value="Marcar visto" class="markAlert"/>
-                    </div>
+                    <ul id="alertas">
+                        <li>
+                            <span>◷ <?= $value->getAlertDATE() ?></span>
+                            <a class="link" href="view-document.php?id=<?= $docAlertAtual->getDocumentID() ?>"><?= $docAlertAtual->getDocumentTITLE() ?></a>
+                            <p>O utilizador <a href="profile-page.php?id=<?= $userpart->getUserID() ?>"><?= $userpart->getUserNAME() ?></a> partilhou consigo o documento <?= $docAlertAtual->getDocumentTITLE() ?></p>
+
+                            <input id="<?= $value->getAlertID() ?>" type="button" value="Marcar visto" class="markAlert"/>
+
+
+
+                        </li>
+                    </ul>
                     <?php
                 }
             } else {

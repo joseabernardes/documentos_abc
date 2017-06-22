@@ -35,9 +35,17 @@ class AlertManager extends MyDataAccessPDO {
         }
     }
 
+    public function deleteAlertByDocument($DocumentID) {
+        try {
+            $this->delete(self::TABLE_NAME, array('AlertDocumentID' => $DocumentID));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
     public function getAlertsByUserID($AlterUserID) {
         $where = array('AlertUserID' => $AlterUserID);
-        $array = $this->getRecords(self::TABLE_NAME, $where,array('AlertDATE DESC'));
+        $array = $this->getRecords(self::TABLE_NAME, $where, array('AlertDATE DESC'));
         $list = array();
         foreach ($array AS $rec) {
             $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);

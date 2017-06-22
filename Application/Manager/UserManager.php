@@ -62,7 +62,7 @@ class UserManager extends MyDataAccessPDO {
 
     public function getUsersEmailStarts($email) {
         $email = $this->getConnection()->quote($email . '%');
-        $sql = "SELECT * FROM user WHERE UserEMAIL LIKE {$email}";
+        $sql = "SELECT * FROM user WHERE UserEMAIL LIKE {$email} AND UserAUTHLEVEL != 'USERINACTIVE' ";
         $array = $this->getRecordsByUserQuery($sql);
         $list = array();
         foreach ($array AS $rec) {

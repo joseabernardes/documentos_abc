@@ -33,7 +33,7 @@ and open the template in the editor.
                         <?php
                         foreach ($arrayDocsAtual as $value) {
                             ?>
-                            <li class="docs"><a href="view-document.php?id=<?= $value->getDocumentID() ?>"> <?= $value->getDocumentTITLE() ?></a><a href="edit-document.php?id=<?= $value->getDocumentID() ?>">Editar</a></li>
+                        <li class="docs"><a href="view-document.php?id=<?= $value->getDocumentID() ?>"><?= $value->getDocumentTITLE() ?></a><a class="edit" href="edit-document.php?id=<?= $value->getDocumentID() ?>">Editar</a><a href="delete-document.php?id=<?= $value->getDocumentID() ?>">Eliminar</a></li>
 
                             <?php
                         }

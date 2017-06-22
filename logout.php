@@ -15,7 +15,7 @@ if (array_key_exists('authUsername', $_SESSION)) {
         }
     }
     SessionManager::destroySession('authUsername');
-    header('Location:v_public/index.php');
+    header('Location: v_public/index.php');
 }
 
 

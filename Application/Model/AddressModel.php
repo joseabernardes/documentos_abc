@@ -77,4 +77,16 @@ class AddressModel {
         return $address;
     }
 
+    public function convertObjectToArray() {
+        $data = array(
+            'AddressID' => $this->getAddressID(),
+            'AddressADDRESS' => $this->getAddressADDRESS(),
+            'AddressCITY' => $this->getAddressCITY(),
+            'AddressCP1' => $this->getAddressCP1(),
+            'AddressCP2' => $this->getAddressCP2()
+
+        );
+        return $data;
+    }
+    
 }

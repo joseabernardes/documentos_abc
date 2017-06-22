@@ -1,0 +1,40 @@
+header > nav > ul > li{
+    display: block;
+}
+header > nav li{
+    margin-top: 1px;
+}
+.nav_right{
+    float:none;
+}
+.drop:hover ul {
+    display: block;
+    /*box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.5);*/
+}
+header > nav > ul li{ /*todas as li's'*/
+    text-align: center;
+}
+
+a#alert{
+    float:none;
+    display: block;
+    text-align: center;
+}
+
+form#login, form#registar{
+    display: block;
+    margin:auto;
+}
+form#login input, form#registar input{
+    width: 100%;
+}
+
+form#registar{
+    border:none;
+}
+
+form#registar input#Cp1R ,form#registar input#Cp2R{
+      /*min-width: 83.5px;*/
+    width: 48.5%;
+    /*display: inline-block;*/
+}

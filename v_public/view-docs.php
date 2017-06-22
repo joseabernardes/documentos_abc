@@ -86,6 +86,59 @@ and open the template in the editor.
                             }
                         }
                     }
+                    ?>
+
+
+                    <?php
+                    if (!empty($tempArrayDocs)) {
+                        $ManagerUsers = new UserManager();
+                        ?>   
+                        <ul id="searchResults">
+                            <?php
+                            foreach ($tempArrayDocs as $value) {
+                                $arrayUserDocsAtual = $ManagerUsers->getUserByID($value->getDocumentUserId());
+                                $userDocAtual = reset($arrayUserDocsAtual);
+                                ?>
+                                <li>
+                                    <a href="../v_private/view-document.php?id=<?= $value->getDocumentID() ?>">
+                                        <h3><?= $value->getDocumentTITLE() ?></h3>
+                                    </a>
+                                    por 
+                                    <a class="user" href="../v_private/profile-page.php?id=<?= $value->getDocumentUserId() ?>"><?= $userDocAtual->getUserNAME() ?></a>
+                                    <span class="date"><?= $value->getDocumentDATE() ?></span>
+                                    <h4>Resumo:</h4>
+                                    <span class="sum"><?= $value->getDocumentSUMMARY() ?></span>
+                                    <h4 class="tagsTitle">Tags:</h4>
+                                    <?php
+                                    $tagsDump = $manDocs->getTagsByDocumentID($value->getDocumentID());
+                                    foreach ($tagsDump as $value) {
+                                        ?>
+                                        <a href="view-docs.php?type=tag&id=<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
+                                        <?php
+                                    }
+                                    ?>
+
+
+                                </li>
+                            <?php } ?>
+                        </ul>
+                        <?php
+                    } else {
+
+
+                        if ($type === 'category') {
+                            $string = 'Não tem permissões para ver nenhum documento desta categoria';
+                        } else if ($type === 'tag') {
+                            $string = 'Não tem permissões para ver nenhum documento desta categoria';
+                        }
+
+                        $url = "index.php";
+                        $text = 'Sair';
+                        include_once __DIR__ . '/../partials/_error.php';
+                    }
+                    ?>             
+
+                    <?php
                 }
             } else {
                 ?>
@@ -106,41 +159,7 @@ and open the template in the editor.
             include_once __DIR__ . '/../partials/_error.php';
         }
         ?>
-        <ul id="searchResults">
-            <?php
-            if (!empty($tempArrayDocs)) {
-                $ManagerUsers = new UserManager();
 
-                foreach ($tempArrayDocs as $value) {
-                    $arrayUserDocsAtual = $ManagerUsers->getUserByID($value->getDocumentUserId());
-                    $userDocAtual = reset($arrayUserDocsAtual);
-                    ?>
-                    <li>
-                        <a href="../v_private/view-document.php?id=<?= $value->getDocumentID() ?>">
-                            <h3><?= $value->getDocumentTITLE() ?></h3>
-                        </a>
-                        por 
-                        <a class="user" href="../v_private/profile-page.php?id=<?= $value->getDocumentUserId() ?>"><?= $userDocAtual->getUserNAME() ?></a>
-                        <span class="date"><?= $value->getDocumentDATE() ?></span>
-                        <h4>Resumo:</h4>
-                        <span class="sum"><?= $value->getDocumentSUMMARY() ?></span>
-                        <h4 class="tagsTitle">Tags:</h4>
-                        <?php
-                        $tagsDump = $manDocs->getTagsByDocumentID($value->getDocumentID());
-                        foreach ($tagsDump as $value) {
-                            ?>
-                            <a href="view-docs.php?type=tag&id=<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
-                            <?php
-                        }
-                        ?>
-
-
-                    </li>
-                    <?php
-                }
-            }
-            ?>             
-        </ul>
 
 
         <?php include_once '../partials/_footer.php'; ?>

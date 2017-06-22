@@ -38,4 +38,12 @@ class AddressManager extends MyDataAccessPDO {
         return $list;
     }
 
+    public function updateAdress(AddressModel $a) {
+        try {
+            $this->update(self::TABLE_NAME, $a->convertObjectToArray(), array('AddressID' => $a->getAddressID()));
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
 }
