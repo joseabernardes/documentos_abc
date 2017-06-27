@@ -10,19 +10,11 @@ and open the template in the editor.
 
 /*---------------------------------GENERAL---------------------------------*/
 body{
-    /*font-family: 'Segoe UI',Arial,sans-serif;*/
     font-family: Roboto;
     font-size: 14px;
     margin: 30px 50px;
-    /*background-color: red;*/
 }
 
-
-@media screen and (max-width:800px) {
-    body{
-        margin: 30px 10px;
-    }
-}
 h1#main-title{
     margin:0px 0px 10px 0px;
     padding:20px 12px;
@@ -57,7 +49,6 @@ h1#main-title{
     color:red;
     text-align: center;
     display: block;
-
 }
 
 #warningpage{
@@ -87,14 +78,13 @@ h1#main-title{
     width: 100px;
     display: block;
     margin:auto;
-
-
 }
 #errorpage a:hover #warningpage a:hover{
     background-color: gray;
-
 }
-
+input[type=radio]{
+    display: none;
+}
 
 /*---------------------------------HEADER---------------------------------*/
 
@@ -342,9 +332,7 @@ form#document{
     margin-right: auto;
     padding: 10px;
 }
-form#document input[type=radio]{
-    display: none;
-}
+
 form#document .visibility{
     background-color: rgba(240,182,56,0.6);
     padding: 5px 15px;
@@ -705,21 +693,20 @@ ul#manageCat li.cate{
 }
 
 div#search {
-    margin-left: 10px;
-    /*margin: auto;*/
-    margin-bottom: 30px;
+    margin: 0 0 30px 10px;
     display: flex;
     max-width: 620px;
 
 }
 
 div#search > input#inputS{
-    width: 580px;
+    /*width: 580px;*/
     padding:5px;
     box-sizing: border-box;
     margin:0;
-    flex-shrink: 1;
+    /*flex-shrink: 1;*/
     font-size: 16px;
+    flex: 1;
 
 }
 
@@ -745,65 +732,76 @@ div#search > input:focus{
 
 /*------------------------------INDEX------------------------------*/
 
+
+
 main#index{
-    margin: auto;
+    display: flex;
+
 }
 
-main#index div#search > input#inputS{
+main#index > div#searchMain{
+    order:2;
+    flex: 3;
+    margin-top: 52px;
+    padding: 0 10px;
+}
+
+main#index div.topIndex{
+    flex: 1;
+    max-width: 300px;
+    margin: 20px 0;
+
+}
+main#index div.leftNav{
+    order:1;
+}
+main#index div.rightNav{
+    order:3;
+}
+
+
+main#index > div#searchMain > div#search > input#inputS{
     border:none;
 }
 
-main#index div#search {
+main#index > div#searchMain > div#search {
     position:relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    margin: 20px auto;
+    max-width: 800px;
+    margin: 0 auto;
 }
-main#index div#search ul{
+
+main#index > div#searchMain > h3{
+    margin:10px auto;
+    max-width: 800px;
+}
+
+main#index > div#searchMain > div#search > ul{
     position: absolute;
     list-style-type: none;
     padding: 0;
     top: 26px;
     width: 100%;
-    max-width: 505px;
     display: none;
-    border-bottom: 1px solid;
-    border-color: grey;
-
+    border-bottom: 1px solid grey;
 }
 
-main#index div#search ul li{
+main#index > div#searchMain > div#search > ul > li{
     background-color: white; 
     padding: 5px;
     cursor: pointer;
 }
 
-main#index div#search ul li:hover{
+main#index > div#searchMain > div#search > ul > li:hover{
     background-color: lightgray; 
 }
 
-
-
-
-
-
-main#index div#search > div{
-
+main#index > div#searchMain > div#search > div{ 
     display: flex;
     flex-direction: column;
 }
-main#index div#search input[type=radio]{
-    display: none;
 
-}
-
-
-
-main#index div#search input[type=radio]:checked + label {
-    background-color: rgba(84,144,242,0.8);
-}
-
-main#index div#search label{
-    /*background-color: rgb(84,144,242);*/
+main#index > div#searchMain > div#search > div >  label{
     background-color: lightgray;
     height: 15px;
     padding: 2.5px 10px;
@@ -812,15 +810,24 @@ main#index div#search label{
     font-size: 13px;
 }
 
-main#index div#search label:hover{
+main#index > div#searchMain > div#search > div > input[type=radio]:checked + label {
     background-color: rgba(84,144,242,0.8);
+}
+main#index > div#searchMain > div#search > div > label:hover{
+    background-color: rgba(84,144,242,0.5);
     cursor: pointer;
+}
+
+main#index > div.resizeDiv{
+    display: flex;
+    flex-wrap:wrap;
 
 }
 
+/*---------- RESULTS ----------*/
 
 ul#searchResults{
-    max-width: 620px;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -828,25 +835,22 @@ ul#searchResults{
     padding:0;
 }
 
-ul#searchResults li{
+ul#searchResults > li{
     background-color: rgba(240,182,56,0.7);
     min-height: 50px;
     margin-bottom: 10px;
     padding: 5px;
-
 }
 
 ul#searchResults > li > a > h3{
     margin:0;
     display: inline-block;
-
 }
-ul#searchResults > li > a:hover,ul#searchResults > li > a h3:hover {
+ul#searchResults > li > a:hover,main#index > div#searchMain > ul#searchResults > li > a h3:hover {
     text-decoration: underline;
 }
 ul#searchResults > li a.user{
     font-style: italic;
-
 }
 
 ul#searchResults > li > a{
@@ -855,17 +859,10 @@ ul#searchResults > li > a{
 }
 ul#searchResults > li > h4{
     margin: 10px 0px 0px 0px;
-    /*margin:0;*/
-    /*display: inline-block;*/
-
 }
 
 ul#searchResults > li > span.date{
-    margin:0;
-    margin-left:auto;
-    text-align: right;
     float: right;
-    /*display: block;*/
 
 }
 ul#searchResults > li > span.sum{
@@ -876,59 +873,50 @@ ul#searchResults > li > span.sum{
 }
 ul#searchResults > li > h4.tagsTitle{
     display: inline-block;
-    /*margin-right: 5px;*/
 }
 
-
-main#index > h3{
-    margin:10px auto;
-    width: 620px;
-}
-main#index > h3#lastAdd{
-    margin: 20px 50px;
+main#index h3#lastAdd{
+    margin:auto;
 }
 
-/*-----------------------------N Documentos-------------------------*/
+/*---------- NAV's ----------*/
 
-div#topIndex{
-    display: flex;
-    margin: 50px auto;
-    max-width: 1000px;
-}
-
-div#topIndex > div {
-    margin: 10px auto;
-    width: 300px;
-    padding:2px;
-
-}
-div#topIndex > div > ul {
+div.topIndex > div > ul {
     list-style-type: none;
     padding:0;
 }
-div#topIndex > div > ul > li{
+div.topIndex > div > ul > li{
     background-color: rgb(240,182,56);
     padding:0;
     margin:5px auto;
-}
-
-div#topIndex > div > ul li a{
+}div.topIndex > div > ul li a{
     color: white;
     display: block;
     text-decoration: none;
     padding: 10px;
     text-align: center;
     font-size: 15px;
-}
-div#topIndex > div > ul li a:hover{
+}div.topIndex > div > ul li a:hover{
     background-color: lightgray;
 
-}
-
-div#topIndex > div > ul li a span{
+}div.topIndex > div > ul li a span{
     display: block;
     font-weight: normal;
     font-size: 12px;
+}
+
+@media screen and (max-width:1000px) {
+
+    main#index{
+        display: block;
+    }
+
+    main#index  div.topIndex{
+        margin:0 auto;
+        min-width: 300px;
+        flex: 0;
+    }
+
 }
 
 /*--------------------Meus Docunmetos-----------------*/

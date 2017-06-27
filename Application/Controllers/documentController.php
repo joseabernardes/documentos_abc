@@ -33,9 +33,8 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         } else if (!filter_var($input[$key], $value['validate'], $value)) {
             $errors[$key] = 'Parametro Invalido';
         }
-        $input[$key] = trim($input[$key]);
+        $input[$key] = trim($input[$key]);  //erraddooo
     }
-
     /*
      * Validar e Sanitizar utilizadores partilhados
      */
@@ -72,6 +71,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
         foreach ($catDump as $value) {
             if (!$flag && $input['category'] == $value->getCategoryID()) {
                 $flag = true;
+//                RETURN;
             }
         }
         if (!$flag) {
@@ -97,7 +97,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
      * Validar type
      */
     if (!array_key_exists('type', $errors) && $input['type'] !== 'edit' && $input['type'] !== 'import' && $input['type'] !== 'create') {
-        $errors['type'] = 'Parametro Invalido';
+        $errors['type'] = 'Parametro Invalido'; // NÃO USO
     }
 
     /*
@@ -169,7 +169,7 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     $docManager->deleteSharedUsers($doc_id);
                     $docManager->deleteTagsDocument($doc_id);
                     $documentid = $doc_id;
-                    $ret = $docManager->updateDocument($document);
+                    $docManager->updateDocument($document);
                     require_once Config::getApplicationManagerPath() . "HistoricManager.php";
                     $hist = new HistoricManager();
                     $hism = new HistoricModel('', $doc_id, $input['reasons'], date("Y-m-d H:i:s"));
@@ -260,11 +260,13 @@ if (filter_has_var($inputType, 'submit') && $_SERVER['REQUEST_METHOD'] === 'POST
                     }
                 } catch (Exception $ex) {
                     $errors['sharedUsers'] = 'Falha ao associar os utilizadores';
+                    throw $ex;
                 }
                 //SUCESSO
             } catch (Exception $ex) {
                 /* Reverter */
                 $docManager->deleteSharedUsers($documentid);
+             
                 $docManager->deleteTagsDocument($documentid);
                 if ($input['type'] === 'edit') {
                     $hist->deleteHistoric($hism);

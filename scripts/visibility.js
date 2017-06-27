@@ -38,9 +38,23 @@ function closeAll() {
     closeShared();
     closePublic();
 }
+
+function restore() {
+    if ($("#partilhado").prop('checked')) {
+        openShared();
+    } else if ($("#publico").prop('checked')) {
+        openPublic();
+    } else {
+        closeAll();
+    }
+
+
+}
 $(document).ready(function () {
     $("#partilhado").click(openShared);
     $("#publico").click(openPublic);
     $("#privado").click(closeAll);
+    restore();
 });
+
 

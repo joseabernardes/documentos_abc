@@ -2,13 +2,7 @@
  * --------------------------------- ARRAYS ---------------------------------
  */
 
-var sharedUsers = [
-//    {userID: 1, userEMAIL: "José Bernardes", allowComments: 1},
-//    {userID: 2, userEMAIL: "Joel Pereira", allowComments: 1},
-//    {userID: 3, userEMAIL: "Sir Alberto Chia", allowComments: 1},
-//    {userID: 4, userEMAIL: "Don Carlos Covas", allowComments: 1}
-
-];
+var sharedUsers = [];
 
 function removeUserfromArray(user, array) {
     var i = array.indexOf(user);
@@ -29,7 +23,6 @@ function containsID(element, array) {
 /*
  * --------------------------------- AJAX ---------------------------------
  */
-
 
 function searchUserAJAXproce(data) {
     try {
@@ -109,11 +102,8 @@ function addUserInputDOM(value) {
 
 function addSearchDOM(data) {
     for (var i = 0; i < data.length; i++) {
-        window.console.log(i);
         var li = $("<li></li>");
-        li.addClass('.noselect');
-        li.click(moveUserEVH);
-        li.html(data[i]);
+        li.addClass('.noselect').click(moveUserEVH).html(data[i]);
         $("div#searchBar ul").append(li);
     }
 }
@@ -142,10 +132,10 @@ function hideSearchDOM() {
 function removeSugestionDOM(bool) {
     $("div#searchBar ul li").remove();
     $("div#searchBar ul").css('display', 'none');
-    if(bool){
-         addUserInputDOM('');
+    if (bool) {
+        addUserInputDOM('');
     }
-   
+
 }
 
 
@@ -168,7 +158,7 @@ function removeUserEVH(event) {
     var user = containsID(parseInt(id), sharedUsers);
     if (user !== false) {
         var newUser = {userID: user.userID, userEMAIL: user.userEMAIL, allowComments: user.allowComments};
-        removeUserfromArray(user, sharedUsers);
+        removeUserfromArray(newUser, sharedUsers);
         removeUserDOM(user.userID);
     }
 }
@@ -186,6 +176,7 @@ function allowCommentsSharedEVH(event) {
     var user = containsID(parseInt(id), sharedUsers);
     if (user !== false) {
         user.allowComments = this.checked;
+        window.console.log(this.checked);
     }
 }
 
@@ -222,7 +213,7 @@ function restoreShared() {
             json = [];
         }
         for (var i = 0; i < json.length; i++) {
-            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments: parseInt(json[i].allowComments)};
+            var newUser = {userID: parseInt(json[i].userID), userEMAIL: json[i].userEMAIL, allowComments: json[i].allowComments};
             sharedUsers.push(newUser);
             addUserDOM(newUser);
         }
@@ -239,5 +230,3 @@ $(document).ready(function () {
     $("input#submit").click(submitFormEVH);
     restoreShared();
 });
-
-

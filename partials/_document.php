@@ -18,9 +18,9 @@
 <?php if (array_key_exists('category', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['category'] ?></span> <?php } ?>
 <label class="<?= array_key_exists('visibility', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>">Visibilidade</label>
 <p>
-    <input <?php echo ($input['visibility'] == 1 ? 'checked' : '' ) ?> id="publico" type="radio" name="visibility" value="1"><label  class="visibility noselect <?= array_key_exists('comment_public', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" for="publico">Público</label>
-    <input <?php echo ($input['visibility'] == 3 ? 'checked' : '' ) ?> id="partilhado" type="radio" name="visibility" value="3"><label class="visibility noselect <?= array_key_exists('sharedUsers', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" for="partilhado">Partilhado</label>                
-    <input <?php echo ($input['visibility'] == 2 ? 'checked' : '' ) ?> id="privado" type="radio" name="visibility"  value="2"><label class="visibility noselect"  for="privado">Privado</label>
+    <input <?= ($input['visibility'] == 1 ? 'checked' : '' ) ?> id="publico" type="radio" name="visibility" value="1"><label class="visibility noselect <?= array_key_exists('comment_public', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" for="publico">Público</label>
+    <input <?= ($input['visibility'] == 3 ? 'checked' : '' ) ?> id="partilhado" type="radio" name="visibility" value="3"><label class="visibility noselect <?= array_key_exists('sharedUsers', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" for="partilhado">Partilhado</label>                
+    <input <?= ($input['visibility'] == 2 ? 'checked' : '' ) ?> id="privado" type="radio" name="visibility"  value="2"><label class="visibility noselect"  for="privado">Privado</label>
 </p>
 <div id="sharedBox">
     <div id="searchBar">

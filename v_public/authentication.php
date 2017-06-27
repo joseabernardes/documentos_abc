@@ -1,13 +1,10 @@
 <?php
 require_once __DIR__ . '/../partials/_init.php';
-require_once Config::getApplicationManagerPath() . 'UserManager.php';
-$userManager = new UserManager();
 require_once Config::getApplicationControllersPath() . 'AuthProcess.php';
 require_once Config::getApplicationControllersPath() . 'RegistProcess.php';
+const INPUT_CLASS_ERROR_NAME = 'input_erro';
+const SPAN_CLASS_ERROR_NAME = 'span_erro';
 
-
-        const INPUT_CLASS_ERROR_NAME = 'input_erro';
-        const SPAN_CLASS_ERROR_NAME = 'span_erro';
 $loggedIn = false;
 if (SessionManager::keyExists('authUsername')) {
     $loggedIn = true;
@@ -32,7 +29,9 @@ if (SessionManager::keyExists('authUsername')) {
         }
     }
 }
+print_r($loginErrors);
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -73,8 +72,8 @@ if (SessionManager::keyExists('authUsername')) {
                         <input type="checkbox" id="remember" name="remember" <?php echo ($remember == 'on' ? 'checked' : '' ) ?> ><label for="remember">Remember Me</label>
 
                         <input type="submit" value="Login" name="login">
-                         <?php if (array_key_exists('permition', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['permition'] ?></span> <?php } ?>
-                          
+                        <?php if (array_key_exists('permition', $loginErrors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $loginErrors['permition'] ?></span> <?php } ?>
+
                     </form>
                     <!--<hr>-->
                     <form id="registar" class="auth-form" method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data">
