@@ -7,12 +7,12 @@ SessionManager::startSession();
 
 if (array_key_exists('authUsername', $_SESSION)) {
     if (filter_input(INPUT_COOKIE, 'rememberme')) {
-        $users = new UserManager();
-        $userDump = $users->getUserById(SessionManager::getSessionValue('authUsername'));
-        $user = reset($userDump);
-        if ($user) {
-            $users->deleteToken($user);
+        $userManager = new UserManager();
+        try {
+            $user = $userManager->getUserById(SessionManager::getSessionValue('authUsername'));
+            $userManager->deleteToken($user);
             setcookie('rememberme', "", time() - 60, "/");
+        } catch (Exception $ex) { 
         }
     }
     SessionManager::destroySession('authUsername');

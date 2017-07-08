@@ -52,6 +52,7 @@ class CategoryManager extends MyDataAccessPDO {
             $this->delete(self::TABLE_NAME, array('CategoryID' => $id));
         } catch (Exception $e) {
             throw $e;
+            
         }
     }
 

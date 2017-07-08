@@ -4,64 +4,40 @@ require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationManagerPath() . 'SessionManager.php';
 SessionManager::startSession();
 
-$input = filter_input(INPUT_POST, "input", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-if (!empty($input) && SessionManager::keyExists('authUsername')) {
-
-    $type = filter_input(INPUT_POST, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$inputType = INPUT_POST;
+$input = filter_input($inputType, "input", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$return = false;
+if (!empty($input)) {
+    $type = filter_input($inputType, "type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     require_once Config::getApplicationManagerPath() . 'UserManager.php';
-    $userM = new UserManager();
+    $userManager = new UserManager();
 
+    if ($type == 'emailShare' || $type == 'emailSearch') {
 
-    //PARTILHAR COMIGO PROPRIO!!
-
-    if ($type == 'search') {
-
-        $ret = $userM->getUsersEmailStarts($input);
-
-        if (count($ret) > 0) {
-
+        if ($type == 'emailShare' && SessionManager::keyExists('authUsername')) {
+            $userID = SessionManager::getSessionValue('authUsername');
+        } else {
+            $userID = -1; // vai ser sempre diferente no if do for
+        }
+        $ret = $userManager->getUsersEmailStarts($input);
+        if (!empty($ret)) {
             $tempArray = array();
-
             foreach ($ret as $value) {
-                if ($value->getUserID() != SessionManager::getSessionValue('authUsername')) {
-                    array_push($tempArray, $value->getUserEMAIL());
+                if ($value->getUserID() != $userID) {
+                    $tempArray[] = $value->getUserEMAIL();
                 }
             }
-            echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
-        } else {
-            echo 'false';
+            $return = $tempArray;
         }
-    } else if ($type == 'searchAll') {
-
-        $ret = $userM->getUsersEmailStarts($input);
-
-        if (count($ret) > 0) {
-
-            $tempArray = array();
-
-            foreach ($ret as $value) {
-                array_push($tempArray, $value->getUserEMAIL());
-            }
-            echo json_encode($tempArray, JSON_UNESCAPED_UNICODE);
-        } else {
-            echo 'false';
-        }
-    } else if ($type == 'add') {
-        $ret = $userM->getUserByEmail($input);
-        $ret = reset($ret);
-
-        if ($ret && $ret->getUserID() != SessionManager::getSessionValue('authUsername')) {
-            $temp = array(
+    } else if ($type == 'emailShareFull' && SessionManager::keyExists('authUsername')) {
+        $ret = $userManager->getUserByEmail($input);
+        if ($ret != false && $ret->getUserID() != SessionManager::getSessionValue('authUsername')) {
+            $tempArray = array(
                 'userID' => $ret->getUserID(),
                 'userEMAIL' => $ret->getUserEMAIL()
             );
-            echo json_encode($temp, JSON_UNESCAPED_UNICODE);
-        } else {
-            echo 'false';
+            $return = $tempArray;
         }
-    } else {
-        echo 'false';
     }
-} else {
-    echo 'false';
 }
+echo json_encode($return, JSON_UNESCAPED_UNICODE);

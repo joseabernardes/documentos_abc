@@ -5,21 +5,27 @@ require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 require_once Config::getApplicationManagerPath() . "DocumentManager.php";
 $docManager = new DocumentManager();
 require_once Config::getApplicationControllersPath() . "documentController.php";
-$doc = $docManager->getDocumentByID($doc_id);
+
+try {
+    $doc = $docManager->getDocumentByID($doc_id);
+} catch (DocumentException $ex) {
+    $doc = false;
+    $doc_id = '#####';
+}
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php include_once __DIR__ . '/../partials/_head.php'; ?>
         <script src="../scripts/visibility.js" type="text/javascript"></script>
-        <script src="../scripts/addShared.js" type="text/javascript"></script>
-        <title>Editar Documento #<?= empty($doc) ? '#####' : $doc_id ?></title>
+        <script src="../scripts/shareDocument.js" type="text/javascript"></script>
+        <title>Editar Documento #<?= $doc_id ?></title>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?>
         <?php
         if (SessionManager::keyExists('authUsername')) {
-            if (empty($doc)) {
+            if (!$doc) {
                 ?>
                 <h1 id="main-title">Editar Documento ######</h1>
                 <?php
@@ -29,10 +35,10 @@ $doc = $docManager->getDocumentByID($doc_id);
 
                 include_once __DIR__ . '/../partials/_error.php';
             } else {
-                $doc = reset($doc);
                 if (SessionManager::getSessionValue('authUsername') == $doc->getDocumentUserId()) {
                     if (!$added) {
                         if (count($errors) == 0) {
+                            $userManager = new UserManager();
                             $input['title'] = $doc->getDocumentTITLE();
                             $input['summary'] = $doc->getDocumentSUMMARY();
                             $tags = $docManager->getTagsByDocumentID($doc_id);
@@ -50,8 +56,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             $shared = $docManager->getSharedUsersByDocumentID($doc_id);
                             $rett = array();
                             foreach ($shared as $value) {
-                                $userD = $userMan->getUserByID($value['UserID']);
-                                $userD = reset($userD);
+                                $userD = $userManager->getUserByID($value['UserID']);
                                 $rett[] = array(
                                     'userID' => $value['UserID'],
                                     'userEMAIL' => $userD->getUserEMAIL(),
@@ -70,17 +75,17 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <p><textarea required name="doc"  class="<?= array_key_exists('doc', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>"  id="doc" rows="15"><?= $input['doc'] ?></textarea></p>
                             <?php if (array_key_exists('doc', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['doc'] ?></span> <?php } ?>
                             <label for="reasons">Razões da edição</label>
-                            <p><textarea required name="reasons" class="<?= array_key_exists('reasons', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="reasons" rows="5"><?= $input['reasons'] ?></textarea></p>
+                            <p><textarea title="Maximo 200 carateres" required name="reasons" maxlength="200" class="<?= array_key_exists('reasons', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" id="reasons" rows="5"><?= $input['reasons'] ?></textarea></p>
                             <?php if (array_key_exists('reasons', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['reasons'] ?></span> <?php } ?>
                             <input type="hidden" name="type" value="edit">
                             <p><input type="submit"  id="submit" value="Guardar" name="submit"></p>
-            <?php if (array_key_exists('final', $errors)) { ?><p class="<?= P_CLASS_ERROR_NAME ?>"> <?= $errors['final'] ?></p> <?php } ?>
+                            <?php if (array_key_exists('final', $errors)) { ?><p class="<?= P_CLASS_ERROR_NAME ?>"> <?= $errors['final'] ?></p> <?php } ?>
 
                         </form>
                         <?php
                     } else {
                         $string = 'Documento guardado com sucesso';
-                        $url = "../v_private/view-document.php?id=" . $doc_id;
+                        $url = "../v_public/view-document.php?id=" . $doc_id;
                         $text = 'Ver Documento';
                         $warning = true;
                         include_once __DIR__ . '/../partials/_error.php';
@@ -94,8 +99,8 @@ $doc = $docManager->getDocumentByID($doc_id);
             }
         } else {
             ?>
-                <h1 id="main-title">Editar Documento</h1>
-                <?php 
+            <h1 id="main-title">Editar Documento</h1>
+            <?php
             $string = 'Necessário autenticação';
             $url = '../v_public/authentication.php';
             $text = 'Login';

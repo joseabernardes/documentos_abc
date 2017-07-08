@@ -5,69 +5,51 @@ require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 require_once Config::getApplicationManagerPath() . "HistoricManager.php";
 require_once Config::getApplicationManagerPath() . "UserManager.php";
 require_once Config::getApplicationManagerPath() . "CommentManager.php";
+require_once Config::getApplicationUtilsPath() . 'Permissions.php';
 
 $doc_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $docManager = new DocumentManager();
-$userMan = new UserManager();
-$doc = $docManager->getDocumentByID($doc_id);
+$userManager = new UserManager();
+
+
+try {
+    $doc = $docManager->getDocumentByID($doc_id);
+} catch (DocumentException $ex) {
+    $doc = false;
+}
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php include_once '../partials/_head.php'; ?>
         <script src="../scripts/details.js" type="text/javascript"></script>
-        <script src="../scripts/addComment.js" type="text/javascript"></script>
-        <title><?= empty($doc) ? 'Documento não existe' : reset($doc)->getDocumentTITLE() ?></title>
+        <script src="../scripts/comments.js" type="text/javascript"></script>
+        <script src="../scripts/sideNotes.js" type="text/javascript"></script>
+        <title><?= (!$doc) ? 'Documento não existe' : $doc->getDocumentTITLE() ?></title>
     </head>
-    <body>
+    <body id="<?= $doc_id ?> ">
         <?php include_once '../partials/_header.php'; ?>
-        <h1 id="main-title"><?= empty($doc) ? '#####' : reset($doc)->getDocumentTITLE() ?></h1>
+        <h1 id="main-title"><?= (!$doc) ? '######' : $doc->getDocumentTITLE() ?></h1>
         <?php
-        if (empty($doc)) {
+        if (!$doc) {
             $string = 'Documento não existe';
             $url = '../v_public/index.php';
             $text = 'Sair';
             include_once __DIR__ . '/../partials/_error.php';
         } else {
-            $doc = reset($doc);
-            $permitions = false;
-            if ($doc->getDocumentVisibilityId() == 1) {
-                $permitions = true;
-            } else {
-                if (SessionManager::keyExists('authUsername')) {
-                    $userid = SessionManager::getSessionValue('authUsername');
-                    if ($doc->getDocumentVisibilityId() == 2 && $userid == $doc->getDocumentUserId()) {
-                        $permitions = true;
-                    } else if ($doc->getDocumentVisibilityId() == 3) {
-                        $shared = $docManager->getSharedUsersByUser_DocumentID($userid, $doc_id);
-                        if (!empty($shared) || $userid == $doc->getDocumentUserId()) {
-                            $permitions = true;
-                        } else {
-                            $string = 'Não tem permissões para ver o documento';
-                            $url = '../v_public/index.php';
-                            $text = 'Sair';
-                        }
-                    } else {
-                        $string = 'Não tem permissões para ver o documento';
-                        $url = '../v_public/index.php';
-                        $text = 'Sair';
-                    }
-                } else {
-                    $string = 'Este documento não é publico';
-                    $url = '../v_public/authentication.php';
-                    $text = 'Login';
-                }
-            }
-
-            if ($permitions) {
-                $catMan = new CategoryManager();
-                $cat = $catMan->getCategoryByID($doc->getDocumentCategoryId());
+            $userID = (SessionManager::keyExists('authUsername')) ? SessionManager::getSessionValue('authUsername') : null;
+            if (Permissions::checkViewPermitions($doc, $userID)) {
+                $categoryManager = new CategoryManager();
+                $cat = $categoryManager->getCategoryByID($doc->getDocumentCategoryId());
                 $cat = reset($cat);
                 $tagsDump = $docManager->getTagsByDocumentID($doc_id);
                 ?>
-
-
-
+        <input id="show" type="button" value="Observações"/>
+                <div id="notes">
+                  
+                    <input id="add" type="button" value="+"/>
+                    
+                </div>
                 <main id="view-doc">
                     <div class="top">
                         <div id="details" class="expand noselect"><span>Detalhes</span><span>+</span></div>
@@ -81,7 +63,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <?php
                             foreach ($tagsDump as $value) {
                                 ?>
-                                <a href="../v_public/view-docs.php?type=tag&id=<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
+                                <a href="../v_public/view-docs-by.php?type=tag&id=<?= $value['TagName'] ?>"><?= $value['TagName'] ?></a>
                                 <?php
                             }
                             ?>
@@ -91,8 +73,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <h3>Autor</h3>
 
                             <?php
-                            $user = $userMan->getUserByID($doc->getDocumentUserId());
-                            $user = reset($user);
+                            $user = $userManager->getUserByID($doc->getDocumentUserId());
                             ?>
                             <a href="profile-page.php?id=<?= $user->getUserID() ?>"><?= $user->getUserNAME() ?></a>
                             <?php if ($doc->getDocumentPATH()) { ?>
@@ -109,17 +90,14 @@ $doc = $docManager->getDocumentByID($doc_id);
                             <?php
                             $hist = new HistoricManager();
                             $histDump = $hist->getHistoricByDocumentID($doc_id);
-                            if (!empty($histDump)) {
-
-                                foreach ($histDump as $value) {
-                                    ?>
-                                    <h3>Data da Edição</h3>
-                                    <span><?= $value->getEditingDATE() ?></span>
-                                    <h3>Razões</h3>
-                                    <span><?= $value->getEditingReason() ?></span> 
-                                    <hr>
-                                    <?php
-                                }
+                            foreach ($histDump as $value) {
+                                ?>
+                                <h3>Data da Edição</h3>
+                                <span><?= $value->getEditingDATE() ?></span>
+                                <h3>Razões</h3>
+                                <span><?= $value->getEditingReason() ?></span> 
+                                <hr>
+                                <?php
                             }
                             ?>
                         </div>
@@ -134,18 +112,18 @@ $doc = $docManager->getDocumentByID($doc_id);
 
 
                     <div id="commentsBox">
-                        <h2><?= count($comments) ?> Comentário(s)</h2>
+                        <h2><span><?= count($comments) ?></span> Comentário(s)</h2>
                         <ol>
                             <?php
                             foreach ($comments as $value) {
-                                if ($value->getCommentUserID() == null) {
+                                if ($value->getCommentUserID() == null) { //comentário feito sem login
                                     $link = 'mailto:' . $value->getCommentEMAIL();
                                 } else {
-                                    $link = 'profile-page.php?id=' . $value->getCommentUserID();
+                                    $link = '../v_private/profile-page.php?id=' . $value->getCommentUserID();
                                 }
                                 ?>
-                                <li class="comment">
-                                    <a href="<?= $link ?>"><h3><?= $value->getCommentNAME() ?></h3></a><span>◷ <?= $value->getCommentDATE() ?></span>
+                                <li class="comment" id="c-<?= $value->getCommentID() ?>"> 
+                                    <a href="<?= $link ?>"><h3><?= $value->getCommentNAME() ?></h3></a><a class="time" href="#c-<?= $value->getCommentID() ?>">◷ <?= $value->getCommentDATE() ?></a>
                                     <p><?= $value->getCommentCONTENT() ?></p>
                                 </li>
                                 <?php
@@ -153,23 +131,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                             ?>
                         </ol>
                         <?php
-                        $visibility = $doc->getDocumentVisibilityId();
-                        $bool = true;
-                        if ($visibility == 2 || ($visibility == 1 && !$doc->getDocumentCOMMENTS())) { //não pode comentar
-                            $bool = false;
-                        } else if ($visibility == 3) {
-                            $userid = SessionManager::getSessionValue('authUsername');
-                            $shared = $docManager->getSharedUsersByUser_DocumentID($userid, $doc_id);
-
-                            $shared = reset($shared);
-                            if ($shared && !$shared['DocumentUserCOMMENTS']) {
-                                $bool = false;
-                            }
-                            if ($userid == $doc->getDocumentUserId()) { //ownet
-                                $bool = true;
-                            }
-                        }
-                        if ($bool) {
+                        if (Permissions::checkCommentPermitions($doc, $userID)) {
                             ?>
                             <div id="newComment">
                                 <label for="commentArea">Comentário:</label>
@@ -178,8 +140,7 @@ $doc = $docManager->getDocumentByID($doc_id);
                                     <?php
                                     if (SessionManager::keyExists('authUsername')) {
 
-                                        $user = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
-                                        $user = reset($user);
+                                        $user = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
                                         ?> 
                                         <p>Enviar como: <?= $user->getUserNAME() ?></p>
                                         <?php
@@ -205,6 +166,9 @@ $doc = $docManager->getDocumentByID($doc_id);
                 </main>
                 <?php
             } else {
+                $string = 'Não tem permissões para ver o documento';
+                $url = '../v_public/index.php';
+                $text = 'Sair';
                 include_once __DIR__ . '/../partials/_error.php';
             }
         }

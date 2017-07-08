@@ -121,6 +121,14 @@ class DocumentModel {
         return self::createObject($data['DocumentID'], $data['DocumentTITLE'], $data['DocumentSUMMARY'], $data['DocumentUserID'], $data['DocumentCategoryID'], $data['DocumentDATE'], $data['DocumentCONTENT'], $data['DocumentPATH'], $data['DocumentVisibilityID'], $data['DocumentCOMMENTS']);
     }
 
+    public static function convertTagsToArray(Array &$tags) {
+        $return = array();
+        foreach ($tags as $tag) {
+            $return[] = $tag['TagName'];
+        }
+        return $return;
+    }
+
     public static function createObject($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentPATH, $DocumentVisibilityId, $DocumentCOMMENTS) {
         $document = new DocumentModel($DocumentID, $DocumentTITLE, $DocumentSUMMARY, $DocumentUserId, $DocumentCategoryId, $DocumentDATE, $DocumentCONTENT, $DocumentVisibilityId, $DocumentCOMMENTS, $DocumentPATH);
 

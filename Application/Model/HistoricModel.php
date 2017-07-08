@@ -67,4 +67,14 @@ class HistoricModel {
         return $historic;
     }
 
+    public function convertObjectToArray() {
+        $data = array(
+            'EditingID' => $this->getEditingID(),
+            'DocumentID' => $this->getDocumentID(),
+            'EditingReason' => $this->getEditingReason(),
+            'EditingDATE' => $this->getEditingDATE()
+        );
+        return $data;
+    }
+
 }

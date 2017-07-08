@@ -2,19 +2,17 @@
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
 require_once Config::getApplicationManagerPath() . 'AlertManager.php';
 $alertManager = new AlertManager();
-$userMan = new UserManager();
+$userManager = new UserManager();
 $numberofAlerts = 0;
 try {
-    $bool = TRUE;
-
-    $userMana = $userMan->getUserByID(SessionManager::getSessionValue('authUsername'));
-    $userModel = reset($userMana);
-    $numberofAlerts = count($alertManager->getAlertsByUserID(SessionManager::getSessionValue('authUsername')));
-    if (!$userModel) {
-        throw new SessionException('User não existe');
-    }
+    $bool = true;
+    $sessionUserID = SessionManager::getSessionValue('authUsername');
+    $userModel = $userManager->getUserByID($sessionUserID);
+    $numberofAlerts = count($alertManager->getAlertsByUserID($sessionUserID));
+} catch (UserException $exc) {
+    $bool = false;
 } catch (SessionException $exc) {
-    $bool = FALSE;
+    $bool = false;
 }
 ?>
 
@@ -24,7 +22,7 @@ try {
     <?php
     if ($numberofAlerts > 0) {
         ?>
-    <a id="alert" href="../v_private/alerts.php"><?= $numberofAlerts ?> Alerta(s)</a>
+        <a id="alert" href="../v_private/alerts.php"><?= $numberofAlerts ?> Alerta(s)</a>
         <?php
     }
     ?>
@@ -47,7 +45,7 @@ try {
                 --><li class="drop nav_right">
                     <a  class="noclick" href="#"><?= $userModel->getUserNAME() ?></a>
                     <ul>
-                        <li><a href="../v_private/profile-page.php?id=<?= SessionManager::getSessionValue('authUsername') ?>">Ver Perfil</a></li>
+                        <li><a href="../v_private/profile-page.php?id=<?= $sessionUserID ?>">Ver Perfil</a></li>
                         <li><a href="../v_private/change-profile.php">Alterar Perfil</a></li>
                         <?php if ($userModel->getUserAUTHLEVEL() === 'ADMIN') { ?>
                             <li><a href = "../v_admin/validate-users.php">Validar Utilizadores</a></li>

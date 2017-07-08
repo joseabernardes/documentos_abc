@@ -44,7 +44,7 @@ require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 
                         foreach ($cate as $value) {
                             ?>
-                            <li><a href="view-docs.php?type=category&id=<?= $value->getCategoryID() ?>"><?= $value->getCategoryNAME() ?></a></li>
+                            <li><a href="view-docs-by.php?type=category&id=<?= $value->getCategoryID() ?>"><?= $value->getCategoryNAME() ?></a></li>
 
                             <?php
                         }
@@ -64,7 +64,7 @@ require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 
                         foreach ($docs as $value) {
                             ?>
-                            <li><a href="../v_private/view-document.php?id=<?= $value->getDocumentID() ?>"><?= $value->getDocumentTITLE() ?><span>(<?= $value->getDocumentDATE() ?>)</span></a></li>
+                            <li><a href="view-document.php?id=<?= $value->getDocumentID() ?>"><?= $value->getDocumentTITLE() ?><span>(<?= $value->getDocumentDATE() ?>)</span></a></li>
 
                         <?php } ?>
                     </ul>
@@ -78,7 +78,7 @@ require_once Config::getApplicationManagerPath() . "CategoryManager.php";
 
                         foreach ($cate as $value) {
                             ?>
-                            <li><a href="view-docs.php?type=category&id=<?= $value->getCategoryID() ?>"><?= $value->getCategoryNAME() ?></a></li>
+                            <li><a href="view-docs-by.php?type=category&id=<?= $value->getCategoryID() ?>"><?= $value->getCategoryNAME() ?></a></li>
 
                             <?php
                         }

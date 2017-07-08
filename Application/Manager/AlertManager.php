@@ -1,13 +1,7 @@
 <?php
-
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'AlertModel.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * Description of AlertManager
@@ -19,12 +13,7 @@ class AlertManager extends MyDataAccessPDO {
     const TABLE_NAME = 'alert';
 
     public function add(AlertModel $a) {
-        $ins = array();
-        $ins['AlertUserID'] = $a->getAlertUserID();
-        $ins['AlertDocumentID'] = $a->getAlertDocumentID();
-        $ins['AlertID'] = $a->getAlertID();
-        $ins['AlertDATE'] = $a->getAlertDATE();
-        return $this->insert(self::TABLE_NAME, $ins);
+        return $this->insert(self::TABLE_NAME, $a->convertObjectToArray());
     }
 
     public function deleteAlert(AlertModel $obj) {
@@ -54,13 +43,12 @@ class AlertManager extends MyDataAccessPDO {
     }
 
     public function getAlertsByAlertID($AlertID) {
-        $where = array('AlertID' => $AlertID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['AlertID']] = AlertModel::convertArrayToObject($rec);
+        $array = $this->getRecords(self::TABLE_NAME, array('AlertID' => $AlertID));
+        if (count($array) == 1) {
+            $rec = reset($array);
+            return AlertModel::convertArrayToObject($rec);
+        } else {
+            throw new Exception();
         }
-        return $list;
     }
-
 }

@@ -1,15 +1,14 @@
 <?php
 
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
-require_once Config::getApplicationModelPath() . 'UserModel.php';
 require_once Config::getApplicationManagerPath() . 'AddressManager.php';
-require_once Config::getApplicationModelPath() . 'AddressModel.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
+
 $inputType = INPUT_POST;
 
 $input = array();
 $errors = array();
-$input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+$input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['countryR'] = $input['CityR'] = '';
 $added = false;
 if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guardar')) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = array(
@@ -18,15 +17,12 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         'PassR2' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'NameR' => array('options' => array('regexp' => '/^[\p{L} ]{1,100}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'PhoneR' => array('options' => array('regexp' => '/^[9]{1}\d{8}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'addressR' => array('options' => array('regexp' => '/^.{1,100}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
+        'countryR' => array('options' => array('regexp' => '/^.{1,30}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'CityR' => array('options' => array('regexp' => '/^[\p{L} ]{1,30}$/u'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'Cp1R' => array('options' => array('regexp' => '/^4\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
-        'Cp2R' => array('options' => array('regexp' => '/^\d{3}/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'PassRNOVA' => array('options' => array('regexp' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&+*-])[0-9a-zA-Z#?!@$%^&+*-]{8,}$/'), 'sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_VALIDATE_REGEXP),
         'PassRNOVA2' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT),
         'type' => array('sanitize' => FILTER_SANITIZE_SPECIAL_CHARS, 'validate' => FILTER_DEFAULT)
     );
-
     foreach ($rules as $key => $value) {
         $input[$key] = filter_input($inputType, $key, $value['sanitize']);
         if (!isset($input[$key])) {
@@ -39,6 +35,12 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         $input[$key] = trim($input[$key]); //trim tirar espaços fim e inicio da string      
     }
     $input['type'] = filter_input($inputType, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+
+
+
+
 
     /* ----------Verificar type---------- */
     if (!array_key_exists('type', $errors) && $input['type'] !== 'registar' && $input['type'] !== 'change') {
@@ -55,22 +57,24 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
                 unset($errors['PassRNOVA']);
                 unset($errors['PassRNOVA2']);
             } else {
-                $userssArray = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
-                $u1 = reset($userssArray);
-                if (password_verify($input['PassR'], $u1->getUserPASS())) {
-                    if ($input['PassRNOVA'] !== $input['PassRNOVA2']) {
-                        $errors['PassRNOVA'] = 'Password não confirmada';
-                        $errors['PassRNOVA2'] = 'Password não confirmada';
+                try {
+                    $u1 = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+                    if (password_verify($input['PassR'], $u1->getUserPASS())) {
+                        if ($input['PassRNOVA'] !== $input['PassRNOVA2']) {
+                            $errors['PassRNOVA'] = 'Password não confirmada';
+                            $errors['PassRNOVA2'] = 'Password não confirmada';
+                        }
+                    } else {
+                        $errors['PassR'] = 'Password errada';
                     }
-                } else {
-                    $errors['PassR'] = 'Password errada';
+                } catch (Exception $ex) {
+                    $errors['final'] = 'Falha ao identificar utilizador logado';
                 }
             }
             unset($errors['PassR2']);
 
-            $u5 = $userManager->getUserByEmail($input['emailR']);
-            $u6 = reset($u5);
-            if ($u6) {
+            $u6 = $userManager->getUserByEmail($input['emailR']);
+            if ($u6 != false) {
                 if ($u6->getUserID() !== SessionManager::getSessionValue('authUsername')) {
                     $errors['emailR'] = 'Email ja existe';
                 }
@@ -81,7 +85,7 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
             unset($errors['PassRNOVA2']);
             //------Verificar email igual----------
 
-            if (count($userManager->getUserByEmail($input['emailR'])) > 0) {
+            if ($userManager->getUserByEmail($input['emailR']) != false) {
                 $errors['emailR'] = 'Este email ja existe';
             }
 
@@ -135,56 +139,56 @@ if ((filter_has_var($inputType, 'registar') || filter_has_var($inputType, 'guard
         $errors['file'] = 'Parametro não enviado';
     }
     if (count($errors) == 0) {
-
+        $addressManager = new AddressManager();
+        $added = true;
         if ($input['type'] === 'registar') {
-            $added = true;
             try {
-                $address = new AddressModel('', $input['addressR'], $input['CityR'], $input['Cp1R'], $input['Cp2R']);
-                $addressManager = new AddressManager();
-                $addressID = $addressManager->add($address);
+                $addressID = $addressManager->add(new AddressModel('', $input['countryR'], $input['CityR']));
                 $password = password_hash($input['PassR'], PASSWORD_DEFAULT);
-                $user = new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null);
-                $manager = new UserManager();
-                $manager->add($user);
-                $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['addressR'] = $input['CityR'] = $input['Cp1R'] = $input['Cp2R'] = '';
+                $userManager->add(new UserModel('', $password, $input['emailR'], $input['NameR'], '/upload/images/' . $fileName, $input['PhoneR'], 'USERINACTIVE', $addressID, null));
+                $input['emailR'] = $input['PassR'] = $input['PassR2'] = $input['NameR'] = $input['PhoneR'] = $input['countryR'] = $input['CityR'] = '';
+            } catch (UserException $ex) {
+                $added = false;
+                $addressManager->deleteAddress($addressID); //rollback
+            } catch (AddressException $ex) {
+                $added = false;
             } catch (Exception $ex) {
                 $added = false;
             }
-        }
-
-        if ($input['type'] === 'change') {
-            $added = true;
+        } else if ($input['type'] === 'change') {
             try {
-                $u2 = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
-                $u3 = reset($u2);
-                $addressManager = new AddressManager();
-                $a1 = $addressManager->getAddressByID($u3->getUserADDRESS());
-                $a2 = reset($a1);
-                $a2->setAddressADDRESS($input['addressR']);
-                $a2->setAddressCITY($input['CityR']);
-                $a2->setAddressCP1($input['Cp1R']);
-                $a2->setAddressCP2($input['Cp2R']);
-
-                $addressManager->updateAdress($a2);
-
-                $u3->setUserEMAIL($input['emailR']);
-                $u3->setUserNAME($input['NameR']);
+                $user = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+                $address = $addressManager->getAddressByID($user->getUserADDRESS());
+                $addressBackup = clone $address;
+//                $address = new AddressModel();
+                $address->setAddressCOUNTRY($input['countryR']);
+                $address->setAddressCITY($input['CityR']);
+                $addressManager->updateAdress($address);
+                $user->setUserEMAIL($input['emailR']);
+                $user->setUserNAME($input['NameR']);
                 if ($uploadImage) {
-                    $u3->setUserPHOTO('/upload/images/' . $fileName);
+                    $user->setUserPHOTO('/upload/images/' . $fileName);
                 }
-                $u3->setUserPHONE($input['PhoneR']);
+                $user->setUserPHONE($input['PhoneR']);
                 if ($checkbox === 'on') {
                     $password = password_hash($input['PassRNOVA'], PASSWORD_DEFAULT);
-                    $u3->setUserPASS($password);
+                    $user->setUserPASS($password);
                 }
-                $userManager->updateUser($u3);
+                $userManager->updateUser($user);
+            } catch (UserException $ex) {
+                $added = false;
+                if ($ex->getCode() == Config::CUD_EXCEPTION) {
+                    $addressManager->updateAdress($addressBackup); //rollback
+                }
+            } catch (AddressException $ex) {
+                $added = false;
             } catch (Exception $ex) {
                 $added = false;
             }
         }
 
         if (!$added) {
-            $errors['final'] = 'Falha ao atualizar utilizador';
+            $errors['final'] = 'Falha ao inserir na base de dados, contacte um administrador';
         }
     }
 }

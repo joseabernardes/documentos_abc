@@ -3,11 +3,7 @@
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'UserModel.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once Config::getApplicationExceptionsPath() . "UserException.php";
 
 /**
  * Description of UserManager
@@ -20,35 +16,33 @@ class UserManager extends MyDataAccessPDO {
     const TABLE_TOKEN = 'token';
 
     public function add(UserModel $a) {
-        $ins = array();
-        $ins['UserID'] = $a->getUserID();
-        $ins['UserPASS'] = $a->getUserPASS();
-        $ins['UserEMAIL'] = $a->getUserEMAIL();
-        $ins['UserNAME'] = $a->getUserNAME();
-        $ins['UserPHOTO'] = $a->getUserPHOTO();
-        $ins['UserPHONE'] = $a->getUserPHONE();
-        $ins['UserAUTHLEVEL'] = $a->getUserAUTHLEVEL();
-        $ins['UserADDRESS'] = $a->getUserADDRESS();
-        $ins['UserTokenID'] = $a->getUserTokenID();
-        $this->insert(self::TABLE_NAME, $ins);
+        try {
+            $this->insert(self::TABLE_NAME, $a->convertObjectToArray());
+        } catch (Exception $ex) {
+            throw new UserException($ex->getMessage(), Config::CUD_EXCEPTION);
+        }
     }
 
     public function updateUser(UserModel $obj) {
         try {
             $this->update(self::TABLE_NAME, $obj->convertObjectToArray(), array('UserID' => $obj->getUserID()));
         } catch (Exception $e) {
-            throw $e;
+            throw new UserException($e->getMessage(), Config::CUD_EXCEPTION);
         }
     }
 
     public function getUserByID($UserID) {
-        $where = array('UserID' => $UserID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
+        try {
+            $array = $this->getRecords(self::TABLE_NAME, array('UserID' => $UserID));
+            if (count($array) == 1) {
+                $rec = reset($array);
+                return UserModel::convertArrayToObject($rec);
+            } else {
+                throw new Exception('Multiples IDs');
+            }
+        } catch (Exception $ex) {
+            throw new UserException($ex->getMessage(), Config::GET_EXCEPTION);
         }
-        return $list;
     }
 
     public function getUsers() {
@@ -62,7 +56,7 @@ class UserManager extends MyDataAccessPDO {
 
     public function getUsersEmailStarts($email) {
         $email = $this->getConnection()->quote($email . '%');
-        $sql = "SELECT * FROM user WHERE UserEMAIL LIKE {$email} AND UserAUTHLEVEL != 'USERINACTIVE' ";
+        $sql = "SELECT * FROM user WHERE UserEMAIL LIKE {$email} AND UserAUTHLEVEL != 'USERINACTIVE' LIMIT 5";
         $array = $this->getRecordsByUserQuery($sql);
         $list = array();
         foreach ($array AS $rec) {
@@ -70,15 +64,15 @@ class UserManager extends MyDataAccessPDO {
         }
         return $list;
     }
-   
+
     public function getUserByEmail($UserEMAIL) {
-        $where = array('UserEMAIL' => $UserEMAIL);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['UserID']] = UserModel::convertArrayToObject($rec);
+        $array = $this->getRecords(self::TABLE_NAME, array('UserEMAIL' => $UserEMAIL));
+        if (count($array) == 1) {
+            $rec = reset($array);
+            return UserModel::convertArrayToObject($rec);
+        } else {
+            return false;
         }
-        return $list;
     }
 
     public function getUserByAuthLevel($UserAUTHLEVEL) {

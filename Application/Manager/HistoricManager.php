@@ -3,18 +3,18 @@
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'HistoricModel.php';
+require_once Config::getApplicationExceptionsPath() . "DocumentException.php";
 
 class HistoricManager extends MyDataAccessPDO {
 
     const TABLE_NAME = 'documentediting';
 
     public function add(HistoricModel $a) {
-        $ins = array();
-        $ins['EditingID'] = $a->getEditingID();
-        $ins['DocumentID'] = $a->getDocumentID();
-        $ins['EditingReason'] = $a->getEditingReason();
-        $ins['EditingDATE'] = $a->getEditingDATE();
-        return $this->insert(self::TABLE_NAME, $ins);
+        try {
+            return $this->insert(self::TABLE_NAME, $a->convertObjectToArray());
+        } catch (Exception $ex) {
+            throw new DocumentException($ex->getMessage(), DocumentException::HIST_EXCEPTION);
+        }
     }
 
     public function getHistoricByID($EditingID) {

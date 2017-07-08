@@ -24,6 +24,17 @@ a#alert{
     display: block;
     text-align: center;
 }
+@media screen and (max-width:450px) {
+
+    ul#alertas li{
+        width: calc(100% - 20px);
+
+
+
+    }
+
+}
+
 
 form#login, form#registar{
     display: block;
@@ -31,6 +42,10 @@ form#login, form#registar{
 }
 form#login input, form#registar input{
     width: 100%;
+}
+
+.final_erro{
+    width: auto;
 }
 
 form#registar{
@@ -41,4 +56,13 @@ form#registar input#Cp1R ,form#registar input#Cp2R{
     /*min-width: 83.5px;*/
     width: 48.5%;
     /*display: inline-block;*/
+}
+
+
+ul#manageCat{
+    margin-left: 10px;
+}
+
+div#notes{
+    right:10px;
 }

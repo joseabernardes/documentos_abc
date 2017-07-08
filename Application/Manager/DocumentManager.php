@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'DocumentModel.php';
+require_once Config::getApplicationExceptionsPath() . "DocumentException.php";
 
 class DocumentManager extends MyDataAccessPDO {
 
@@ -11,23 +12,11 @@ class DocumentManager extends MyDataAccessPDO {
     const TABLE_DOCUMENT_USER_SHARED = 'document_user_shared';
 
     public function add(DocumentModel $a) {
-        $ins = array();
-        $ins['DocumentID'] = $a->getDocumentID();
-        $ins['DocumentTITLE'] = $a->getDocumentTITLE();
-        $ins['DocumentSUMMARY'] = $a->getDocumentSUMMARY();
-        $ins['DocumentUserID'] = $a->getDocumentUserId();
-        $ins['DocumentCategoryID'] = $a->getDocumentCategoryId();
-        $ins['DocumentDATE'] = $a->getDocumentDATE();
-        $ins['DocumentCONTENT'] = $a->getDocumentCONTENT();
-        $ins['DocumentPATH'] = $a->getDocumentPATH();
-        $ins['DocumentVisibilityID'] = $a->getDocumentVisibilityId();
-        $ins['DocumentCOMMENTS'] = $a->getDocumentCOMMENTS();
         try {
-            $docid = $this->insert(self::TABLE_NAME, $ins);
+            $docid = $this->insert(self::TABLE_NAME, $a->convertObjectToArray());
         } catch (Exception $ex) {
-            $docid = -1;
+            throw new DocumentException($ex->getMessage(), Config::CUD_EXCEPTION);
         }
-
         return $docid;
     }
 
@@ -35,18 +24,22 @@ class DocumentManager extends MyDataAccessPDO {
         try {
             $this->update(self::TABLE_NAME, $obj->convertObjectToArray(), array('DocumentID' => $obj->getDocumentID()));
         } catch (Exception $e) {
-            throw $e;
+            throw new DocumentException($e->getMessage(), Config::CUD_EXCEPTION);
         }
     }
 
     public function getDocumentByID($DocumentID) {
-        $where = array('DocumentID' => $DocumentID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['DocumentID']] = DocumentModel::convertArrayToObject($rec);
+        try {
+            $array = $this->getRecords(self::TABLE_NAME, array('DocumentID' => $DocumentID));
+            if (count($array) == 1) {   
+                $rec = reset($array);
+                return DocumentModel::convertArrayToObject($rec);
+            } else {
+                throw new Exception('IDs');
+            }
+        } catch (Exception $ex) {
+            throw new DocumentException($ex->getMessage(), Config::GET_EXCEPTION);
         }
-        return $list;
     }
 
     public function getDocumentByLimitOrdered($limit) {
@@ -84,8 +77,7 @@ class DocumentManager extends MyDataAccessPDO {
         $array = $this->getRecords(self::TABLE_DOCUMENT_TAG, $where);
         $list = array();
         foreach ($array AS $rec) {
-            $aaa = $this->getDocumentByID($rec['DocumentID']);
-            $list[$rec['DocumentID']] = reset($aaa);
+            $list[$rec['DocumentID']] = $this->getDocumentByID($rec['DocumentID']);
         }
         return $list;
     }
@@ -135,16 +127,15 @@ class DocumentManager extends MyDataAccessPDO {
     }
 
     public function getTagsByDocumentID($documentID) {
-        $where = array('DocumentID' => $documentID);
-        $array = $this->getRecords(self::TABLE_DOCUMENT_TAG, $where);
-        return $array;
+        return $this->getRecords(self::TABLE_DOCUMENT_TAG, array('DocumentID' => $documentID));
     }
 
     public function addSharedUsers($documentID, $userID, $comments) {
-        $ins = array();
-        $ins['DocumentID'] = $documentID;
-        $ins['UserID'] = $userID;
-        $ins['DocumentUserCOMMENTS'] = $comments;
+        $ins = array(
+            'DocumentID' => $documentID,
+            'UserID' => $userID,
+            'DocumentUserCOMMENTS' => $comments
+        );
         $this->insert(self::TABLE_DOCUMENT_USER_SHARED, $ins);
     }
 

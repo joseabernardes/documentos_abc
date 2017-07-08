@@ -79,7 +79,7 @@ h1#main-title{
     display: block;
     margin:auto;
 }
-#errorpage a:hover #warningpage a:hover{
+#errorpage a:hover, #warningpage a:hover{
     background-color: gray;
 }
 input[type=radio]{
@@ -168,10 +168,6 @@ a#alert:hover{
     background-color: rgb(210,68,58);
 }
 
-@media screen and (max-width:800px) {
-
-
-}
 
 /*---------------------------------FOOTER---------------------------------*/
 footer img{
@@ -224,14 +220,15 @@ fieldset{
     border-color: lightgrey;
 }
 
-#postError #left, #postError #right{
-    display: inline-block;
-}
-#postError #right{
-    float:right;
-    margin-bottom: 14px;
-}
 
+form > img#avatar{
+    display: block;
+    max-width: 300px;
+    max-height: 300px; 
+    height: auto;
+    width: 100%;
+
+}
 
 /*-----------------------------AUTHENTICATION-----------------------------*/
 
@@ -319,6 +316,8 @@ form#change-profile label{
 form#change-profile input#alpwd{
     width: auto;
 }
+
+
 /*--------------------------------DOCUMENT--------------------------------*/
 
 
@@ -472,6 +471,7 @@ div.card a{
 div.card img{
     width:300px;
     height:300px;
+    object-fit: cover;
 }
 
 /*------------------------------VIEW-DOCUMENT------------------------------*/
@@ -482,6 +482,77 @@ main#view-doc{
     margin-right: auto; 
     display: flex;
     flex-flow: column;
+
+}
+
+div#notes{
+    padding:5px;
+    position: absolute;
+    right: 50px;
+    margin-top: 5px;
+    display: none;
+
+}
+div#notes > div.note >textarea{
+    width: 250px;
+    display: block;
+    background-color: rgb(247, 233, 141);
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    border: none;
+    overflow: hidden;
+    resize:none;
+    margin-bottom: 10px;
+    clear: right;
+    padding: 10px;
+
+
+}
+
+div#notes > div.note > img{
+    background-color: rgb(247, 233, 141);
+    width: 20px;
+    height: 20px;
+    margin:0px;
+    float:right;
+    padding:3px;
+}
+div#notes input#add{
+    background-color: rgba(210,68,58,0.7);
+    width: 30px;
+}
+div#notes input#add, input#show{
+    height: 30px;
+    border:none;
+    color:white;
+    display: block;
+    margin:0px 0 5px auto;
+}
+input#show{
+    background-color: rgba(240,182,56,0.8);
+}
+
+input#show:hover{
+    background-color: rgb(240,182,56);
+}
+
+
+
+
+div#notes input#add:hover{
+    background-color: rgb(210,68,58);   
+}
+div#notes > div.note > img:hover{
+    opacity: 0.8;
+}
+
+
+div#notes > div.note >textarea:focus, div#notes input#add:focus, input#show:focus{
+    outline: none;
+
+}
+
+div#notes > div.note >textarea:focus{
+    box-shadow:2px 2px 10px rgba(0,0,0,0.3);
 }
 
 main#view-doc > p#doc  {
@@ -610,11 +681,10 @@ main#view-doc div#commentsBox li.comment a{
     color:black;
 }
 
-main#view-doc div#commentsBox li.comment span{
+main#view-doc div#commentsBox li.comment a.time{
     font-size: 12px;
     color: white;
     margin-left: 5px;
-    display: inline-block;
 }
 
 main#view-doc div#commentsBox div#newComment input#send{
@@ -636,10 +706,18 @@ main#view-doc div#commentsBox p#noComments{
 
 /*-----------------Validar utilizadores----------------*/
 
+section#validate{
+
+    padding: 60px 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 article.article{
+
     display: inline-block;
     width: 200px;
-    margin: 60px auto 20px 50px;
+    margin: auto;
     text-align: center;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
@@ -663,6 +741,7 @@ input.check:checked + label{
 }
 
 article.article img#image{
+    object-fit: cover;
     width: 200px;
     height: 200px;
 }
@@ -746,7 +825,7 @@ main#index > div#searchMain{
     padding: 0 10px;
 }
 
-main#index div.topIndex{
+div.topIndex{
     flex: 1;
     max-width: 300px;
     margin: 20px 0;
@@ -922,6 +1001,19 @@ div.topIndex > div > ul > li{
 /*--------------------Meus Docunmetos-----------------*/
 
 
+div.docsContainer.topIndex{
+    display: flex;
+    margin: 50px auto;
+    max-width: 1000px;
+    flex-wrap: wrap;
+}
+
+div.docsContainer.topIndex > div{
+    margin: 10px auto;
+    width: 300px;
+    padding:2px;
+}
+
 div#mydocs h3, div#sharedDocs h3{
     background-color:lightgray;
     padding: 15px;
@@ -966,6 +1058,7 @@ ul#alertas{
     list-style-type: none;
     padding:0;
     display: flex;
+    flex-direction: column;
 
 }
 
@@ -973,8 +1066,11 @@ ul#alertas li{
     padding:5px;
     background-color: rgb(240,182,56);
     width: 400px;
-    margin: auto;
+    margin: 5px auto;
 
+}
+ul#alertas li.red-alert{
+    background-color: rgba(210,68,58,0.8);
 }
 
 ul#alertas li input{
@@ -985,27 +1081,28 @@ ul#alertas li input{
     width: 100%;
 
 }
-ul#alertas li a.link{
+ul#alertas li a.link, ul#alertas li span.link {
     color:white;
-    text-decoration: none;
+    /*text-decoration: none;*/
     font-size: 16px;
 }
 
 ul#alertas li a{
-    text-decoration: none;
+    /*text-decoration: none;*/
     color:black;
+
+}
+ul#alertas li a:hover{
     font-style: italic;
 }
-ul#alertas li span{
+ul#alertas li span:first-child{
     color:white;
     text-align: center;
     display: block;
     font-size: 12px;
     float: right;
 }
-ul#alertas li a:hover{
-    text-decoration: underline;
-}
+
 ul#alertas li input:hover{
     background-color: rgb(84,144,242);
     color:white;

@@ -1,5 +1,5 @@
 <label for="title">Titulo</label>
-<p><input class="<?= array_key_exists('title', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required title="Maximo 90 caracteres" id="title" type="text" name="title" maxlength="90" value="<?= $input['title'] ?>"/></p>
+<p><input class="<?= array_key_exists('title', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" required title="Maximo 90 caracteres" id="title" type="text" name="title" maxlength="100" value="<?= $input['title'] ?>"/></p>
 <?php if (array_key_exists('title', $errors)) { ?><span class="<?= SPAN_CLASS_ERROR_NAME ?>"> &bull; <?= $errors['title'] ?></span> <?php } ?>
 <label for="summary">Resumo</label>
 <p><textarea  title="Maximo 200 carateres" name="summary" required class="<?= array_key_exists('summary', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" maxlength="200" id="summary" rows="5"/><?= $input['summary'] ?></textarea></p>
@@ -7,8 +7,8 @@
 <label for="category">Categoria</label>
 <p><select id="category" class="<?= array_key_exists('category', $errors) ? INPUT_CLASS_ERROR_NAME : '' ?>" name="category">
         <?php
-        $cat = new CategoryManager();
-        $catDump = $cat->getAllCategories();
+        $categoryManager = new CategoryManager();
+        $catDump = $categoryManager->getAllCategories();
 
         foreach ($catDump as $value) {
             ?>

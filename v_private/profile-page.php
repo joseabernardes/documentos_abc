@@ -4,9 +4,12 @@ require_once Config::getApplicationManagerPath() . 'AddressManager.php';
 require_once Config::getApplicationModelPath() . 'AddressModel.php';
 require_once Config::getApplicationManagerPath() . 'UserManager.php';
 $userid1 = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-$userManager1 = new UserManager();
-$arrayUsers1 = $userManager1->getUserByID($userid1);
-$user1 = reset($arrayUsers1);
+$userManager = new UserManager();
+try {
+    $user1 = $userManager->getUserByID($userid1);
+} catch (UserException $ex) {
+    $user1 = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,14 +28,20 @@ $user1 = reset($arrayUsers1);
                 ?>    
                 <div class="card">
                     <img src="..<?= $user1->getUserPHOTO() ?>" alt="imagem" />
-                    <?php
-                    $addressManagement = new AddressManager();
-                    $addressQ = $addressManagement->getAddressByID($user1->getUserADDRESS());
-                    $addModel = reset($addressQ);
-                    ?>
                     <p><?= $user1->getUserNAME(); ?></p>
-                    <p><?= $addModel->getAddressCITY(); ?></p>
-                    <?php $link = 'mailto:' . $user1->getUserEMAIL()?>
+                    <?php
+                    try {
+                         $addressManager = new AddressManager();
+                        $address = $addressManager->getAddressByID($user1->getUserADDRESS());
+                        $city = $address->getAddressCITY();
+                        $country = $address->getAddressCOUNTRY();
+                    } catch (AddressException $ex) {
+                        $city = '####';
+                        $country = '####';
+                    }
+                    ?>
+                    <p><?= $city . ', ' . $country ?></p>
+                    <?php $link = 'mailto:' . $user1->getUserEMAIL() ?>
                     <a href="<?= $link ?>">Contactar</a>  
                 </div>
                 <?php

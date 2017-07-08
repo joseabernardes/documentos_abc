@@ -4,7 +4,7 @@
  */
 function addCategories() {
     var name = $("#inputS").val();
-    $.post('../Application/Services/manageCategories.php', {name: name, type: 'add'}, function (data) {
+    $.post('../Application/Services/manageCategories.php', {input: name, type: 'add'}, function (data) {
         checkadd(data, name);
     }).fail(function () {
         alert("erro");
@@ -13,42 +13,58 @@ function addCategories() {
 
 
 function removeCategories(event) {
-    var id = $(event.target).attr("id");
-    if (parseInt(id) !== 1) {
-        $.post('../Application/Services/manageCategories.php', {id: id, type: 'remove'}, function (data) {
-            checkremove(data, event);
-        }).fail(function () {
-            alert("erro");
-        });
-    }else{
-         checkremove('false', event);
+    var result = confirm("Tem a certeza que pretende eliminar?");
+    if (result) {
+        var id = $(event.target).attr("id");
+        if (parseInt(id) !== 1) {
+            $.post('../Application/Services/manageCategories.php', {input: id, type: 'remove'}, function (data) {
+                checkremove(data, event);
+            }).fail(function () {
+                alert("erro");
+            });
+        } else {
+            checkremove('false', event);
+        }
+
     }
 }
 
 function checkadd(data, name) {
-    if (data === 'false') {
-        $("#addButton").css("box-shadow", "0px 0px 5px 1px red");
-        $("#addButton").css("color", "red");
-        setTimeout(function () {
-            $("#addButton").css("box-shadow", "none");
-            $("#addButton").css("color", "black");
 
-        }, 300);
-    } else {
-        $("#inputS").val('');
-        addCatDOM(data, name);
+    try {
+        var json = JSON.parse(data);
+
+        if (json === false) {
+            $("#addButton").css("box-shadow", "0px 0px 5px 1px red");
+            $("#addButton").css("color", "red");
+            setTimeout(function () {
+                $("#addButton").css("box-shadow", "none");
+                $("#addButton").css("color", "black");
+
+            }, 300);
+        } else {
+            $("#inputS").val('');
+            addCatDOM(json, name);
+
+        }
+    } catch (ex) {
 
     }
 }
 function checkremove(data, event) {
-    if (data === 'false') {
-        $(event.target).css("box-shadow", "0px 0px 5px 1px red");
-        setTimeout(function () {
-             $(event.target).css("box-shadow", "none");
+    try {
+        var json = JSON.parse(data);
+        if (json === false) {
+            $(event.target).css("box-shadow", "0px 0px 5px 1px red");
+            setTimeout(function () {
+                $(event.target).css("box-shadow", "none");
 
-        }, 300);
-    } else {
-        removeCatDOM(event);
+            }, 300);
+        } else {
+            removeCatDOM(event);
+        }
+    } catch (ex) {
+
     }
 }
 
@@ -57,8 +73,9 @@ function checkremove(data, event) {
  */
 
 function addCatDOM(data, name) {
+
     var button = $("<input></input>");
-    button.addClass("delete").attr("type", "button").attr("value", "-").attr("id", data).click(removeCategories);
+    button.addClass("delete").attr("type", "button").attr("value", "x").attr("id", parseInt(data)).click(removeCategories);
     var li = $("<li></li>");
     li.addClass("cate").text(name);
     li.prepend(button);

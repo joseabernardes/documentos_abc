@@ -67,7 +67,7 @@ function addUserAJAXproce(data) {
 }
 
 function addUserAJAX(email) {
-    $.post('../Application/Services/getUsers.php', {type: 'add', input: email}, function (data) {
+    $.post('../Application/Services/getUsers.php', {type: 'emailShareFull', input: email}, function (data) {
         addUserAJAXproce(data);
     }).fail(function () {
         alert("erro");
@@ -76,7 +76,7 @@ function addUserAJAX(email) {
 
 
 function searchUserAJAX(string) {
-    $.post('../Application/Services/getUsers.php', {type: 'search', input: string}, function (data) {
+    $.post('../Application/Services/getUsers.php', {type: 'emailShare', input: string}, function (data) {
         searchUserAJAXproce(data);
     }).fail(function () {
         alert("erro");
@@ -157,8 +157,7 @@ function removeUserEVH(event) {
     var id = $(event.target).parent().attr("id");
     var user = containsID(parseInt(id), sharedUsers);
     if (user !== false) {
-        var newUser = {userID: user.userID, userEMAIL: user.userEMAIL, allowComments: user.allowComments};
-        removeUserfromArray(newUser, sharedUsers);
+        removeUserfromArray(user, sharedUsers);
         removeUserDOM(user.userID);
     }
 }
@@ -176,7 +175,6 @@ function allowCommentsSharedEVH(event) {
     var user = containsID(parseInt(id), sharedUsers);
     if (user !== false) {
         user.allowComments = this.checked;
-        window.console.log(this.checked);
     }
 }
 
@@ -185,7 +183,7 @@ function preventEnterEVH(event) {
         if ($(event.target).is('input#addUser')) {
             event.preventDefault();
             addUserEVH();
-        } else if (!$(event.target).is('textarea#summary')) {
+        } else if (!$(event.target).is('textarea:not(#tags)')) {
             event.preventDefault();
         }
     }

@@ -48,16 +48,6 @@ function addCommentAJAX(obj) {
  * --------------------------------- DOM ACCESS/CREATE ---------------------------------
  */
 
-var ee = {
-    CommentID: 1,
-    CommentCONTENT: "José Bernardes",
-    CommentDATE: 1,
-    CommentDocumentID: 2,
-    CommentNAME: 3,
-    CommentEMAIL: 3,
-    CommentUserID: 3};
-
-
 function getCommentObjectDOM() {
     if ($("#name").length) { //não existe
         var name = $("input#name").val();
@@ -80,25 +70,27 @@ function getCommentObjectDOM() {
 function addCommentDOM(obj) {
 
     var li = $("<li></li>");
-    li.addClass("comment");
+    li.addClass("comment").attr('id', 'c-' + obj.CommentID);
     var h3 = $("<h3></h3>");
     h3.html(obj.CommentNAME);
     var a = $("<a></a>");
     if (obj.CommentUserID === null) {
         a.attr('href', 'mailto:' + obj.CommentEMAIL);
     } else {
-        a.attr('href', 'profile-page.php?id=' + obj.CommentUserID);
+        a.attr('href', '../v_private/profile-page.php?id=' + obj.CommentUserID);
     }
-    var span = $("<span></span>");
-    span.html('◷ ' + obj.CommentDATE);
+    var time = $("<a></a>");
+    time.html('◷ ' + obj.CommentDATE).attr('href', '#c-' + obj.CommentID).addClass('time');
     var p = $("<p></p>");
     p.html(obj.CommentCONTENT);
     a.append(h3);
-    li.append(a).append(span).append(p);
+    li.append(a).append(time).append(p);
     $("#commentsBox ol").append(li);
     $("textarea#commentArea").val('');
-    $("input#name").val('')
+    $("input#name").val('');
     $("input#email").val('');
+    var element = $("div#commentsBox > h2 > span");
+    element.html(parseInt(element.html()) + 1);
 
 }
 
@@ -108,10 +100,7 @@ function addCommentDOM(obj) {
 
 function addCommentEVH() {
     addCommentAJAX(getCommentObjectDOM());
-
-
 }
-
 
 $(document).ready(function () {
     $("#send").click(addCommentEVH);

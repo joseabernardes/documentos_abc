@@ -45,7 +45,7 @@ function searchAJAX(string) {
 }
 
 function searchUserAJAX(string) {
-    $.post('../Application/Services/getUsers.php', {type: 'searchAll', input: string}, function (data) {
+    $.post('../Application/Services/getUsers.php', {type: 'emailSearch', input: string}, function (data) {
         searchUserAJAXproce(data);
     }).fail(function () {
         alert("erro");
@@ -67,20 +67,12 @@ function addSearchUserDOM(data) {
 }
 
 
-//                     'DocumentID' => $value->getDocumentID(),
-//                        'DocumentTITLE' => $value->getDocumentTITLE(),
-//                        'DocumentUserID' => $value->getDocumentUserId(),
-//                        'DocumentUserNAME' => $user->getUserNAME(),
-//                        'DocumentSUMMARY' => $value->getDocumentSUMMARY(),
-//                        'DocumentDATE' => $value->getDocumentDATE(),
-//                        'DocumentTags' => $tag
-
 function addSearchResultsDOM(data) {
     $("main#index h3 > span").html(data.length);
     for (var i = 0; i < data.length; i++) {
         var li = $("<li></li>");
         var aTitle = $("<a></a>");
-        aTitle.attr('href', '../v_private/view-document.php?id=' + data[i].DocumentID);
+        aTitle.attr('href', 'view-document.php?id=' + data[i].DocumentID);
         var h3 = $("<h3></h3>");
         h3.html(data[i].DocumentTITLE);
         aTitle.append(h3);
@@ -103,7 +95,7 @@ function addSearchResultsDOM(data) {
 
         for (var j = 0; j < data[i].DocumentTags.length; j++) {
             var tempA = $("<a></a>");
-            tempA.attr('href', 'view-docs.php?type=tag&id=' + data[i].DocumentTags[j]);
+            tempA.attr('href', 'view-docs-by.php?type=tag&id=' + data[i].DocumentTags[j]);
             tempA.html(data[i].DocumentTags[j]);
             tempA.addClass('user');
             if (j === 0) {

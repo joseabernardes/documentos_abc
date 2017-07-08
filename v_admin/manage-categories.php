@@ -1,49 +1,49 @@
 <?php
 require_once __DIR__ . '/../partials/_init.php';
 require_once Config::getApplicationManagerPath() . 'CategoryManager.php';
-require_once Config::getApplicationModelPath() . 'CategoryModel.php';
+$pageTitle = 'Gerir Categorias';
 ?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Gerir Categorias</title>
+
         <?php include_once '../partials/_head.php'; ?>
         <script src="../scripts/categories.js" type="text/javascript"></script>
+        <title><?= $pageTitle ?></title>
     </head>
     <body>
         <?php include_once '../partials/_header.php'; ?> 
-        <h1 id="main-title">Gerir Categorias</h1>
+        <h1 id="main-title"><?= $pageTitle ?></h1>
         <?php
         if (SessionManager::keyExists('authUsername')) {
+            $userManager = new UserManager();
+            try {
+                $user = $userManager->getUserByID(SessionManager::getSessionValue('authUsername'));
+                if ($user->getUserAUTHLEVEL() === 'ADMIN') {
+                    ?>
+                    <div id="search">
+                        <input type="text" id="inputS"/>
+                        <input type="button" id="addButton" value="+">
+                    </div>
+                    <ul id="manageCat">
+                        <?php
+                        $categoryManager = new CategoryManager();
+                        $catArray = $categoryManager->getAllCategories();
 
-            $umng1 = new UserManager();
-            $mu1 = $umng1->getUserByID(SessionManager::getSessionValue('authUsername'));
-            $us1 = reset($mu1);
-            if ($us1->getUserAUTHLEVEL() === 'ADMIN') {
-                ?>
-                <div id="search">
-                    <input type="text" id="inputS"/>
-                    <input type="button" id="addButton" value="+">
-                </div>
-                <ul id="manageCat">
+                        foreach ($catArray as $value) {
+                            ?>
+                            <li class="cate"><input class="delete" type="button" value="x" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
+                            <?php } ?>
+                    </ul>       
                     <?php
-                    $categMan = new CategoryManager();
-                    $catArray = $categMan->getAllCategories();
-
-                    foreach ($catArray as $value) {
-                        ?>
-                        <li class="cate"><input class="delete" type="button" value="-" id="<?= $value->getCategoryID() ?>"/><?= $value->getCategoryNAME() ?></li>
-                        <?php } ?>
-                </ul>       
-                <?php
-            } else {
-                $string = 'Não tens permissões para tal!';
+                } else {
+                    $string = 'Necessário permissões de Administrador';
+                    $url = '../v_public/index.php';
+                    $text = 'Sair';
+                    include_once __DIR__ . '/../partials/_error.php';
+                }
+            } catch (UserException $ex) {
+                $string = 'Falha ao identificar utilizador';
                 $url = '../v_public/index.php';
                 $text = 'Sair';
                 include_once __DIR__ . '/../partials/_error.php';

@@ -1,27 +1,50 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-function markAlerts(event) {
-    var id = $(event.target).attr("id");
-    console.log(id);
+/*
+ * -------------------------------------- AJAX --------------------------------------
+ */
+function deleteAlertsAJAXproce(data, id) {
+    try {
+        var json = JSON.parse(data);
+    } catch (err) {
+        window.console.log(err);
+        json = false;
+    }
+    if (json === true) {
+        deleteAlertDOM(id);
+    }
+}
+
+
+function deleteAlertsAJAX(event) {
+    var id = getIDDOM(event);
     $.post('../Application/Services/markAlerts.php', {id: id}, function (data) {
-        check(data,id);
+        deleteAlertsAJAXproce(data, id);
     }).fail(function () {
         alert("erro");
     });
 }
 
-function check(data, id) {
-    if (data === 'true') {
-        $("#" + id).parent().remove();
-    }
+
+/*
+ * --------------------------------- DOM ACCESS/CREATE ---------------------------------
+ */
+
+function getIDDOM(event) {
+    return $(event.target).attr("id");
 }
 
+function deleteAlertDOM(id) {
+    $("#" + id).parent().remove();
+
+}
+
+
+/*
+ * --------------------------------- Event Handlers ---------------------------------
+ */
+
 $(document).ready(function () {
-    $(".markAlert").click(markAlerts);
+    $(".markAlert").click(deleteAlertsAJAX);
 });
 
 

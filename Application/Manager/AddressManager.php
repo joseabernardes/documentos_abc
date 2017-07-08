@@ -3,12 +3,7 @@
 require_once __DIR__ . '/../../Config.php';
 require_once Config::getApplicationDatabasePath() . 'MyDataAccessPDO.php';
 require_once Config::getApplicationModelPath() . 'AddressModel.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+require_once Config::getApplicationExceptionsPath() . "AddressException.php";
 /**
  * Description of AddressManager
  *
@@ -19,30 +14,40 @@ class AddressManager extends MyDataAccessPDO {
     const TABLE_NAME = 'address';
 
     public function add(AddressModel $a) {
-        $ins = array();
-        $ins['AddressID'] = $a->getAddressID();
-        $ins['AddressADDRESS'] = $a->getAddressADDRESS();
-        $ins['AddressCITY'] = $a->getAddressCITY();
-        $ins['AddressCP1'] = $a->getAddressCP1();
-        $ins['AddressCP2'] = $a->getAddressCP2();
-        return $this->insert(self::TABLE_NAME, $ins);
+        try {
+            return $this->insert(self::TABLE_NAME, $a->convertObjectToArray());
+        } catch (Exception $ex) {
+            throw new AddressException("Insert", 2);
+        }
     }
 
     public function getAddressByID($AddressID) {
-        $where = array('AddressID' => $AddressID);
-        $array = $this->getRecords(self::TABLE_NAME, $where);
-        $list = array();
-        foreach ($array AS $rec) {
-            $list[$rec['AddressID']] = AddressModel::convertArrayToObject($rec);
+        try {
+            $array = $this->getRecords(self::TABLE_NAME, array('AddressID' => $AddressID));
+            if (count($array) == 1) {
+                $rec = reset($array);
+                return AddressModel::convertArrayToObject($rec);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception $ex) {
+            throw new AddressException("multiple ID", 1);
         }
-        return $list;
+    }
+
+    public function deleteAddress($AddressID) {
+        try {
+            $this->delete(self::TABLE_NAME, array('AddressID' => $AddressID));
+        } catch (Exception $e) {
+            throw new AddressException("Delete", 2);
+        }
     }
 
     public function updateAdress(AddressModel $a) {
         try {
             $this->update(self::TABLE_NAME, $a->convertObjectToArray(), array('AddressID' => $a->getAddressID()));
         } catch (Exception $e) {
-            throw $e;
+            throw new AddressException("Update", 2);
         }
     }
 
